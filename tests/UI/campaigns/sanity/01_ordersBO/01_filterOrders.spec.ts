@@ -12,7 +12,7 @@ import {
 
 import {
   test, expect, Page, BrowserContext,
-} from '@playwright/test'; 
+} from '@playwright/test';
 import semver from 'semver';
 
 const psVersion = utilsTest.getPSVersion();
