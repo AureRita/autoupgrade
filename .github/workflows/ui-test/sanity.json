@@ -107,6 +107,12 @@
       "PS_VERSION_END": "9.0.0",
       "PHP_VERSION": "8.1",
       "UPGRADE_CHANNEL":  "local"
+    },
+    {
+      "PS_VERSION_START": "8.1.7",
+      "PS_VERSION_END": "9.1.0",
+      "PHP_VERSION": "8.1",
+      "UPGRADE_CHANNEL":  "local"
     }
   ]
 }
