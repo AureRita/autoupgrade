@@ -20,7 +20,7 @@ env:
 jobs:
   ui_test_matrix:
     if: github.event.pull_request.draft == false
-    name: UI Tests (Matrix)
+    name: Sanity Tests (Matrix)
     runs-on: ubuntu-latest
     env:
       JSON_FILE: ${{ (github.event_name == 'schedule' || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'dev' && github.event.pull_request.base.ref == 'master')) && 'nightly.json' || 'sanity.json' }}
@@ -34,7 +34,7 @@ jobs:
         run: echo "matrix=$(jq -c '. | del(.include[] | select(has("comment")))' .github/workflows/ui-test/${{ env.JSON_FILE }})" >> $GITHUB_OUTPUT
 
   ui_test:
-    name: UI Tests
+    name: Sanity Tests
     runs-on: ubuntu-latest
     needs: ui_test_matrix
     strategy:
@@ -105,14 +105,14 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run Sanity tests
-        working-directory: tests/UI/campaigns/sanity/
+        working-directory: tests/UI/
         env:
           PS_VERSION: ${{ matrix.PS_VERSION_END }}
           DB_USER: prestashop
           DB_PASSWD: prestashop
           DB_NAME: prestashop
           DB_PREFIX: ps_
-        run: npx playwright test
+        run: npm run test:sanity
 
       - name: Rollback
         run: |
@@ -121,14 +121,14 @@ jobs:
           docker exec -t prestashop chmod 777 -R /var/www/html/app
 
       - name: Run Sanity tests
-        working-directory: tests/UI/campaigns/sanity/
+        working-directory: tests/UI/
         env:
           PS_VERSION: ${{ matrix.PS_VERSION_START }}
           DB_USER: prestashop
           DB_PASSWD: prestashop
           DB_NAME: prestashop
           DB_PREFIX: ps_
-        run: npx playwright test
+        run: npm run test:sanity
 
       - name: Export Docker errors
         working-directory: tests/UI/
