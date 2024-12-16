@@ -1,4 +1,4 @@
-name: UI Tests
+name: Sanity Tests
 on:
   ## Check each PR
   push:
@@ -105,7 +105,7 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run Sanity tests
-        working-directory: tests/UI/
+        working-directory: tests/UI/campaigns/sanity/
         env:
           PS_VERSION: ${{ matrix.PS_VERSION_END }}
           DB_USER: prestashop
@@ -121,7 +121,7 @@ jobs:
           docker exec -t prestashop chmod 777 -R /var/www/html/app
 
       - name: Run Sanity tests
-        working-directory: tests/UI/
+        working-directory: tests/UI/campaigns/sanity/
         env:
           PS_VERSION: ${{ matrix.PS_VERSION_START }}
           DB_USER: prestashop
