@@ -1,4 +1,4 @@
-name: UI Tests
+name: Upgrade UI
 on:
   ## Check each PR
   push:
@@ -20,7 +20,7 @@ env:
 jobs:
   ui_test_matrix:
     if: github.event.pull_request.draft == false
-    name: UI Tests (Matrix)
+    name: Upgrade UI (Matrix)
     runs-on: ubuntu-latest
     env:
       JSON_FILE: ${{ (github.event_name == 'schedule' || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'dev' && github.event.pull_request.base.ref == 'master')) && 'nightly.json' || 'sanity.json' }}
@@ -59,6 +59,15 @@ jobs:
 
       - name: Add permission to modules
         run: docker exec -t prestashop chmod 777 -R /var/www/html/modules
+
+      - name: Display new interface
+        working-directory: /var/www/html/modules/autoupgrade
+        run: |
+          cd _dev
+          npm install
+          npm run vite:build
+          cd ..
+          composer install
 
       - name: Install dependencies
         working-directory: tests/UI/

@@ -5,7 +5,11 @@ import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
+  boInstalledModulesPage,
+  boModuleSelectionPage,
+  boModuleCatalogPage,
   boModuleManagerUninstalledModulesPage,
+  boMarketplacePage,
   boMaintenancePage,
   dataModules,
   modAutoupgradeBoMain,
@@ -42,7 +46,66 @@ test.describe('Verify the New UI', () => {
     expect(pageTitle).toContain(boDashboardPage.pageTitle);
   });
 
-  if (semver.lt(psVersion, '8.0.0')) {
+  // Steps to install module
+  if (semver.lt(psVersion, '7.4.0')) {
+    test('should go to \'Modules > Modules & Services\' page', async () => {
+      await boDashboardPage.goToSubMenu(
+        page,
+        boDashboardPage.modulesParentLink,
+        boDashboardPage.moduleManagerLink,
+      );
+      await boModuleManagerPage.closeSfToolBar(page);
+
+      const pageTitle = await boModuleSelectionPage.getPageTitle(page);
+      expect(pageTitle).toContain(boModuleSelectionPage.pageTitle);
+    });
+
+    test(`should install the module '${dataModules.autoupgrade.name}'`, async () => {
+      const successMessage = await boModuleSelectionPage.installModule(page, dataModules.autoupgrade.tag);
+      expect(successMessage).toEqual(boModuleSelectionPage.installMessageSuccessful(dataModules.autoupgrade.tag));
+    });
+  } else if (semver.lt(psVersion, '7.5.0')) {
+    test('should go to \'Modules > Modules & Services\' page', async () => {
+      await boDashboardPage.goToSubMenu(
+        page,
+        boDashboardPage.modulesParentLink,
+        boDashboardPage.moduleManagerLink,
+      );
+      await boModuleManagerPage.closeSfToolBar(page);
+
+      const pageTitle = await boInstalledModulesPage.getPageTitle(page);
+      expect(pageTitle).toContain(boInstalledModulesPage.pageTitle);
+    });
+
+    test('should go to Selection page', async () => {
+      await boInstalledModulesPage.goToSelectionPage(page);
+
+      const pageTitle = await boModuleSelectionPage.getPageTitle(page);
+      expect(pageTitle).toContain(boModuleSelectionPage.pageTitle);
+    });
+
+    test(`should install the module '${dataModules.autoupgrade.name}'`, async () => {
+      const successMessage = await boModuleSelectionPage.installModule(page, dataModules.autoupgrade.tag);
+      expect(successMessage).toEqual(boModuleSelectionPage.installMessageSuccessful(dataModules.autoupgrade.tag));
+    });
+  } else if (semver.lt(psVersion, '7.6.0')) {
+    test('should go to \'Modules > Marketplace\' page', async () => {
+      await boDashboardPage.goToSubMenu(
+        page,
+        boDashboardPage.modulesParentLink,
+        boDashboardPage.moduleCatalogueLink,
+      );
+      await boModuleManagerPage.closeSfToolBar(page);
+
+      const pageTitle = await boMarketplacePage.getPageTitle(page);
+      expect(pageTitle).toContain(boMarketplacePage.pageTitle);
+    });
+
+    test(`should install the module '${dataModules.autoupgrade.name}'`, async () => {
+      const successMessage = await boMarketplacePage.installModule(page, dataModules.autoupgrade.tag);
+      expect(successMessage).toEqual(boMarketplacePage.installMessageSuccessful(dataModules.autoupgrade.tag));
+    });
+  } else if (semver.lt(psVersion, '8.0.0')) {
     test('should go to \'Modules > Module Manager\' page', async () => {
       await boDashboardPage.goToSubMenu(
         page,
@@ -63,27 +126,77 @@ test.describe('Verify the New UI', () => {
     });
   }
 
-  test('should go to Module Manager page', async () => {
-    await boDashboardPage.goToSubMenu(
-      page,
-      boDashboardPage.modulesParentLink,
-      boDashboardPage.moduleManagerLink,
-    );
+  // Steps to go to module configuration page
+  if (semver.lt(psVersion, '7.4.0')) {
+    test('should go to Installed modules page', async () => {
+      await boModuleSelectionPage.goToInstalledModulesPage(page);
 
-    const pageTitle = await boModuleManagerPage.getPageTitle(page);
-    expect(pageTitle).toContain(boModuleManagerPage.pageTitle);
-  });
+      const pageTitle = await boInstalledModulesPage.getPageTitle(page);
+      expect(pageTitle).toContain(boInstalledModulesPage.pageTitle);
+    });
 
-  test(`should search the module '${dataModules.autoupgrade.name}'`, async () => {
-    const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.autoupgrade);
-    expect(isModuleVisible).toEqual(true);
-  });
+    test(`should search the module '${dataModules.autoupgrade.name}'`, async () => {
+      const isModuleVisible = await boInstalledModulesPage.searchModule(page, dataModules.autoupgrade);
+      expect(isModuleVisible).toEqual(true);
+    });
 
-  test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
-    await boModuleManagerPage.goToConfigurationPage(page, dataModules.autoupgrade.tag);
+    test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
+      await boInstalledModulesPage.goToModuleConfigurationPage(page, dataModules.autoupgrade.tag);
 
-    const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
-    expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
+      const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
+      expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
+    });
+  } else if (semver.lt(psVersion, '7.5.0')) {
+    test('should go to Modules and services page', async () => {
+      await boDashboardPage.goToSubMenu(
+        page,
+        boDashboardPage.modulesParentLink,
+        boDashboardPage.moduleManagerLink,
+      );
+
+      const pageTitle = await boInstalledModulesPage.getPageTitle(page);
+      expect(pageTitle).toContain(boInstalledModulesPage.pageTitle);
+    });
+
+    test(`should search the module '${dataModules.autoupgrade.name}'`, async () => {
+      const isModuleVisible = await boInstalledModulesPage.searchModule(page, dataModules.autoupgrade);
+      expect(isModuleVisible).toEqual(true);
+    });
+
+    test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
+      await boInstalledModulesPage.goToModuleConfigurationPage(page, dataModules.autoupgrade.tag);
+
+      const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
+      expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
+    });
+  } else {
+    test('should go to Module Manager page', async () => {
+      await boDashboardPage.goToSubMenu(
+        page,
+        boDashboardPage.modulesParentLink,
+        boDashboardPage.moduleManagerLink,
+      );
+
+      const pageTitle = await boModuleManagerPage.getPageTitle(page);
+      expect(pageTitle).toContain(boModuleManagerPage.pageTitle);
+    });
+
+    test(`should search the module '${dataModules.autoupgrade.name}'`, async () => {
+      const isModuleVisible = await boModuleManagerPage.searchModule(page, dataModules.autoupgrade);
+      expect(isModuleVisible).toEqual(true);
+    });
+
+    test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
+      await boModuleManagerPage.goToConfigurationPage(page, dataModules.autoupgrade.tag);
+
+      const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
+      expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
+    });
+  }
+
+  test('should display the new interface', async ()=> {
+    const url = await modAutoupgradeBoMain.getCurrentURL(page);
+    console.log(url);
   });
 
   /*test('should go to maintenance page', async () => {
