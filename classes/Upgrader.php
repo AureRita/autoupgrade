@@ -33,8 +33,6 @@ use PrestaShop\Module\AutoUpgrade\Models\PrestashopRelease;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Services\PhpVersionResolverService;
 use PrestaShop\Module\AutoUpgrade\Xml\FileLoader;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
 
 class Upgrader
 {
@@ -57,37 +55,6 @@ class Upgrader
         $this->currentPsVersion = $currentPsVersion;
         $this->phpVersionResolverService = $phpRequirementService;
         $this->upgradeConfiguration = $upgradeConfiguration;
-    }
-
-    /**
-     * downloadLast download the last version of PrestaShop and save it in $dest/$filename.
-     *
-     * @param string $dest directory where to save the file
-     * @param string $filename new filename
-     *
-     * @throws DistributionApiException
-     * @throws UpgradeException
-     *
-     * @TODO ftp if copy is not possible (safe_mode for example)
-     */
-    public function downloadLast(string $dest, string $filename): bool
-    {
-        if ($this->onlineDestinationRelease === null) {
-            $this->getOnlineDestinationRelease();
-        }
-
-        $destPath = realpath($dest) . DIRECTORY_SEPARATOR . $filename;
-
-        try {
-            $filesystem = new Filesystem();
-            $filesystem->copy($this->onlineDestinationRelease->getZipDownloadUrl(), $destPath);
-        } catch (IOException $e) {
-            // If the Symfony filesystem failed, we can try with
-            // the legacy method which uses curl.
-            Tools14::copy($this->onlineDestinationRelease->getZipDownloadUrl(), $destPath);
-        }
-
-        return is_file($destPath);
     }
 
     /**

@@ -25,7 +25,9 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException;
 use PrestaShop\Module\AutoUpgrade\Log\Logger;
+use PrestaShop\Module\AutoUpgrade\Services\DownloadService;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleDownloader;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleDownloaderContext;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\Source\ModuleSource;
@@ -39,6 +41,9 @@ class ModuleDownloaderTest extends TestCase
 
     /** @var PHPUnit_Framework_MockObject_MockObject|Logger|(Logger&PHPUnit_Framework_MockObject_MockObject) */
     private $logger;
+
+    /** @var PHPUnit_Framework_MockObject_MockObject|DownloadService|(Logger&PHPUnit_Framework_MockObject_MockObject) */
+    private $downloadService;
 
     public static function setUpBeforeClass()
     {
@@ -54,6 +59,7 @@ class ModuleDownloaderTest extends TestCase
             $this->markTestSkipped('An issue with this version of PHPUnit and PHP 8+ prevents this test to run.');
         }
 
+        $this->downloadService = $this->createMock(DownloadService::class);
         $translator = $this->createMock(Translator::class);
         $translator->method('trans')
             ->willReturnCallback(function ($message, $parameters = []) {
@@ -61,7 +67,7 @@ class ModuleDownloaderTest extends TestCase
             });
 
         $this->logger = $this->createMock(Logger::class);
-        $this->moduleDownloader = new ModuleDownloader($translator, $this->logger, sys_get_temp_dir() . '/fakeDownloaderDestination');
+        $this->moduleDownloader = new ModuleDownloader($this->downloadService, $translator, $this->logger, sys_get_temp_dir() . '/fakeDownloaderDestination');
     }
 
     public function testModuleDownloaderSucceedsOnFirstTryWithLocalFile()
@@ -172,6 +178,10 @@ class ModuleDownloaderTest extends TestCase
                 ['Download of source #0 has failed.']
             );
         $this->expectExceptionMessage('All download attempts have failed. Check your environment and try again.');
+
+        $this->downloadService
+            ->method('downloadWithRetry')
+            ->willThrowException(new UpgradeException('Invalid contents from provider (Got an XML file).'));
 
         $this->moduleDownloader->downloadModule($moduleContext);
     }
