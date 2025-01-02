@@ -7,7 +7,6 @@ import {
   boModuleManagerPage,
   boInstalledModulesPage,
   boModuleSelectionPage,
-  boModuleCatalogPage,
   boModuleManagerUninstalledModulesPage,
   boMarketplacePage,
   boMaintenancePage,
@@ -19,6 +18,7 @@ import {
   test, expect, Page, BrowserContext,
 } from '@playwright/test';
 import semver from 'semver';
+import {exec} from 'child_process';
 
 const psVersion = utilsTest.getPSVersion();
 
@@ -186,6 +186,7 @@ test.describe('Verify the New UI', () => {
       expect(isModuleVisible).toEqual(true);
     });
 
+    // Go to the old UI
     test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
       await boModuleManagerPage.goToConfigurationPage(page, dataModules.autoupgrade.tag);
 
@@ -194,12 +195,33 @@ test.describe('Verify the New UI', () => {
     });
   }
 
-  test('should display the new interface', async ()=> {
+  // @todelete : Display new UI
+  test('should display the new interface', async () => {
     const url = await modAutoupgradeBoMain.getCurrentURL(page);
-    console.log(url);
+    const uurl = url.split('&token');
+    await modAutoupgradeBoMain.goTo(page, `${uurl[0]}&new-ui=1&route=home-page&token${uurl[1]}`);
+
+    const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
+    expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
   });
 
-  /*test('should go to maintenance page', async () => {
+  test('should click on update your store radio button then get started', async () => {
+    const isStepContentVisible = await modAutoupgradeBoMain.updateYourStore(page);
+    expect(isStepContentVisible).toEqual(true);
+
+    const stepTitle = await modAutoupgradeBoMain.getStepTitle(page);
+    expect(stepTitle).toEqual('Version choice');
+
+    await exec('docker exec -t prestashop chmod -R 777 /var/www/html/modules');
+  });
+
+  test('should choose the version to update and check requirements block', async () => {
+    test.setTimeout(100_000);
+    const isRequirementBlockVisible = await modAutoupgradeBoMain.chooseNewVersion(page);
+    expect(isRequirementBlockVisible).toEqual(true);
+  });
+
+  test('should go to maintenance page', async () => {
     page = await modAutoupgradeBoMain.goToMaintenancePage(page);
 
     const pageTitle = await boMaintenancePage.getPageTitle(page);
@@ -209,7 +231,7 @@ test.describe('Verify the New UI', () => {
   test('should disable the store', async () => {
     const result = await boMaintenancePage.changeShopStatus(page, false);
     expect(result).toContain(boMaintenancePage.successfulUpdateMessage);
-  })
+  });
 
   test('should add maintenance IP', async () => {
     const result = await boMaintenancePage.addMyIpAddress(page);
@@ -224,9 +246,63 @@ test.describe('Verify the New UI', () => {
   });
 
   test('should check that all the requirements are OK', async () => {
-    await modAutoupgradeBoMain.reloadPage(page);
+    await exec('docker exec -t prestashop chmod -R 777 /var/www/html/modules');
 
-    const isAlertDangerVisible = await modAutoupgradeBoMain.isRequirementsAlertDangerVisible(page);
-    expect(isAlertDangerVisible).toEqual(false);
-  });*/
+    const isNextButtonEnabled = await modAutoupgradeBoMain.checkRequirements(page);
+    expect(isNextButtonEnabled).toEqual(true);
+  });
+
+  test('should check the current PS version', async () => {
+    const currentVersion = await modAutoupgradeBoMain.getCurrentPSAndPHPVersion(page);
+    expect(currentVersion).toContain(psVersion);
+  });
+
+  test('should check the new PS version', async () => {
+    const newVersion = await modAutoupgradeBoMain.getNewPSVersion(page);
+    expect(newVersion).not.toContain(`${psVersion} `);
+  });
+
+  test('should click on next button and check that the step title is \'Update options\'', async () => {
+    await modAutoupgradeBoMain.goToNextStep(page);
+
+    const stepTitle = await modAutoupgradeBoMain.getStepTitle(page);
+    expect(stepTitle).toEqual('Update options');
+  });
+
+  test('should click on next button and check that the step title is \'Back up your store\'', async () => {
+    await modAutoupgradeBoMain.goToNextStep(page);
+
+    const stepTitle = await modAutoupgradeBoMain.getStepTitle(page);
+    expect(stepTitle).toEqual('Back up your store');
+  });
+
+  test('should click on \'Launch backup\' button and check the modal', async () => {
+    const isModalVisible = await modAutoupgradeBoMain.clickOnLaunchBackup(page);
+    expect(isModalVisible).toEqual(true);
+  });
+
+  test('should click on cancel button and check that the modal is not visible', async () => {
+    const isModalNotVisible = await modAutoupgradeBoMain.cancelBackup(page);
+    expect(isModalNotVisible).toEqual(true);
+  });
+
+  test('should click on update without backup and confirm the modal', async () => {
+    await modAutoupgradeBoMain.clickOnUpdateWithoutBackup(page);
+    await page.waitForTimeout(2000);
+
+    const stepTitle = await modAutoupgradeBoMain.getStepTitle(page);
+    expect(stepTitle).toEqual('Update');
+  });
+
+  test('should wait until the end of the update ', async () => {
+    test.setTimeout(5000_000);
+
+    const successMessage = await modAutoupgradeBoMain.checkUpdateSuccess(page);
+    expect(successMessage).toEqual(modAutoupgradeBoMain.updateSuccessMessage);
+  });
+
+  test('should check the title of the last step', async () => {
+    const stepTitle = await modAutoupgradeBoMain.getStepTitle(page);
+    expect(stepTitle).toEqual('Post-update checklist');
+  });
 });

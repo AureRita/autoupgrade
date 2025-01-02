@@ -23,7 +23,7 @@ jobs:
     name: Upgrade UI (Matrix)
     runs-on: ubuntu-latest
     env:
-      JSON_FILE: ${{ (github.event_name == 'schedule' || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'dev' && github.event.pull_request.base.ref == 'master')) && 'nightly.json' || 'sanity.json' }}
+      JSON_FILE: ${{ (github.event_name == 'schedule' || (github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'dev' && github.event.pull_request.base.ref == 'master')) && 'nightlyUI.json' || 'ui.json' }}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -57,17 +57,12 @@ jobs:
       - name: Composer install
         run: composer install
 
-      - name: Add permission to modules
-        run: docker exec -t prestashop chmod 777 -R /var/www/html/modules
-
       - name: Display new interface
-        working-directory: /var/www/html/modules/autoupgrade
         run: |
-          cd _dev
-          npm install
-          npm run vite:build
-          cd ..
-          composer install
+          docker exec -t prestashop bash -c 'apt-get update'
+          docker exec -t prestashop bash -c 'curl -sL https://deb.nodesource.com/setup_20.x | bash -'
+          docker exec -t prestashop bash -c 'apt-get install -y nodejs'
+          docker exec -t prestashop bash -c 'cd /var/www/html/modules/autoupgrade/_dev && npm install && npm run vite:build'
 
       - name: Install dependencies
         working-directory: tests/UI/
