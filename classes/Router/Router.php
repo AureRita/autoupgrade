@@ -178,13 +178,21 @@ class Router
             'controller' => RestorePageBackupSelectionController::class,
             'method' => 'save',
         ],
-        Routes::RESTORE_STEP_BACKUP_SELECTION_SUBMIT_FORM => [
+        Routes::RESTORE_STEP_BACKUP_SELECTION_SUBMIT_RESTORE_FORM => [
             'controller' => RestorePageBackupSelectionController::class,
-            'method' => 'submit',
+            'method' => 'submitRestore',
         ],
-        Routes::RESTORE_STEP_BACKUP_SELECTION_DELETE_FORM => [
+        Routes::RESTORE_STEP_BACKUP_SELECTION_CONFIRM_RESTORE_FORM => [
             'controller' => RestorePageBackupSelectionController::class,
-            'method' => 'delete',
+            'method' => 'startRestore',
+        ],
+        Routes::RESTORE_STEP_BACKUP_SELECTION_SUBMIT_DELETE_FORM => [
+            'controller' => RestorePageBackupSelectionController::class,
+            'method' => 'submitDelete',
+        ],
+        Routes::RESTORE_STEP_BACKUP_SELECTION_CONFIRM_DELETE_FORM => [
+            'controller' => RestorePageBackupSelectionController::class,
+            'method' => 'confirmDelete',
         ],
         /* step: restore */
         Routes::RESTORE_PAGE_RESTORE => [

@@ -10,6 +10,8 @@ import RestorePageBackupSelection from '../pages/RestorePageBackupSelection';
 import RestorePageRestore from '../pages/RestorePageRestore';
 import RestorePagePostRestore from '../pages/RestorePagePostRestore';
 
+import RestoreBackupDialog from '../dialogs/RestoreBackupDialog';
+import DeleteBackupDialog from '../dialogs/DeleteBackupDialog';
 import StartUpdateDialog from '../dialogs/StartUpdateDialog';
 import SendErrorReportDialog from '../dialogs/SendErrorReportDialog';
 
@@ -38,6 +40,8 @@ export default class ScriptHandler {
     'restore-page-restore': RestorePageRestore,
     'restore-page-post-restore': RestorePagePostRestore,
 
+    'restore-backup-dialog': RestoreBackupDialog,
+    'delete-backup-dialog': DeleteBackupDialog,
     'start-update-dialog': StartUpdateDialog,
     'send-error-report-dialog': SendErrorReportDialog
   };
