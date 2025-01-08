@@ -67,29 +67,59 @@ $e: ".error-page";
       &__buttons {
         flex-direction: column;
       }
+
+      &__button {
+        justify-content: center;
+      }
     }
   }
 
   // Handle auto fit height
-  @container html-height (min-width: 0) {
+  @container html-block (min-width: 0) {
     display: grid;
+    grid-template-rows: 1fr;
     grid-template-columns: minmax(0, 1fr);
+    min-height: calc(100cqh - var(--#{$ua-prefix}header-offset-mobile));
+  }
+
+  @container html-block (min-width: 1024px) {
     min-height: calc(100cqh - var(--#{$ua-prefix}header-offset));
   }
 }
 
-// Handle auto fit height
+// Enable auto fit height
 html {
   &:has(#{$ua-id}) {
-    &:has(.error-page) {
+    &:has(#{$e}) {
       container-type: size;
-      container-name: html-height;
+      container-name: html-block;
+
+      &:is(:not(.v1-7-8-0):not(.v1-7-3-0)) {
+        #{$e} {
+          padding-block-end: 0;
+        }
+      }
 
       #{$e} {
         display: grid;
         height: 100%;
         container-type: inline-size;
         container-name: ua-error;
+        padding-block-end: 0.75rem;
+      }
+
+      // Custom styles to adapt PrestaShop Back Office
+      body {
+        overflow-y: auto;
+        background-color: var(--#{$ua-prefix}bo-background-color);
+
+        #nav-sidebar {
+          height: calc(100% - var(--#{$ua-prefix}header-height));
+        }
+      }
+
+      #main {
+        padding-block-end: 0;
       }
     }
   }

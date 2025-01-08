@@ -5,6 +5,10 @@ $e: "#ua";
 #{$ua-id} {
   // Default BO theme layout fix
   padding-inline-end: 5px;
+
+  &:is(:not(.v1-7-8-0):not(.v1-7-3-0)) {
+    padding-inline-end: 0;
+  }
 }
 
 #{$e} {
