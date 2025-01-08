@@ -1,9 +1,3 @@
 <div id="{{ page_parent_id }}" class="{{ ps_version }}">
-  {% if page == "home" %}
-    {% include "@ModuleAutoUpgrade/pages/home.html.twig" %}
-  {% elseif page == "update" %}
-    {% include "@ModuleAutoUpgrade/pages/update.html.twig" %}
-  {% elseif page == "restore" %}
-    {% include "@ModuleAutoUpgrade/pages/restore.html.twig" %}
-  {% endif %}
+  {% include "@ModuleAutoUpgrade/pages/" ~ page ~ ".html.twig" %}
 </div>

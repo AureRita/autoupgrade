@@ -27,6 +27,7 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Router;
 
+use PrestaShop\Module\AutoUpgrade\Controller\Error404Controller;
 use PrestaShop\Module\AutoUpgrade\Controller\ErrorReportController;
 use PrestaShop\Module\AutoUpgrade\Controller\HomePageController;
 use PrestaShop\Module\AutoUpgrade\Controller\LogsController;
@@ -223,6 +224,11 @@ class Router
             'controller' => LogsController::class,
             'method' => 'getDownloadLogsButton',
         ],
+
+        Routes::ERROR_404 => [
+            'controller' => Error404Controller::class,
+            'method' => 'index',
+        ],
     ];
 
     /**
@@ -232,7 +238,8 @@ class Router
      */
     public function handle(Request $request)
     {
-        $route = self::ROUTES[$request->query->get('route')] ?? self::ROUTES[Routes::HOME_PAGE];
+        $routeName = $request->query->get('route') ?? Routes::HOME_PAGE;
+        $route = self::ROUTES[$routeName] ?? self::ROUTES[Routes::ERROR_404];
 
         $method = $route['method'];
 
