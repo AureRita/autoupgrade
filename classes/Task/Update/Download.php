@@ -35,7 +35,6 @@ use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
 use PrestaShop\Module\AutoUpgrade\Task\TaskName;
 use PrestaShop\Module\AutoUpgrade\Task\TaskType;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
-use PrestaShop\Module\AutoUpgrade\UpgradeTools\FilesystemAdapter;
 
 /**
  * Download PrestaShop archive according to the chosen channel.
@@ -62,12 +61,20 @@ class Download extends AbstractTask
 
         $this->logger->debug($this->translator->trans('Downloading from %s', [$this->container->getUpgrader()->getOnlineDestinationRelease()->getZipDownloadUrl()]));
         $this->logger->debug($this->translator->trans('File will be saved in %s', [$this->container->getFilePath()]));
-        if (file_exists($this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH))) {
-            FilesystemAdapter::deleteDirectory($this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH), false);
+
+        $downloadPath = $this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH);
+
+        if ($this->container->getFileSystem()->exists($downloadPath)) {
+            foreach (scandir($downloadPath) as $item) {
+                if ($item !== '.' && $item !== '..') {
+                    $path = $downloadPath . DIRECTORY_SEPARATOR . $item;
+                    $this->container->getFileSystem()->remove($path);
+                }
+            }
             $this->logger->debug($this->translator->trans('Download directory has been emptied'));
         }
         $report = '';
-        $relative_download_path = str_replace(_PS_ROOT_DIR_, '', $this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH));
+        $relative_download_path = str_replace(_PS_ROOT_DIR_, '', $downloadPath);
         if (\ConfigurationTest::test_dir($relative_download_path, false, $report)) {
             $this->downloadArchive();
         } else {

@@ -71,8 +71,8 @@ class BackupFiles extends AbstractTask
             }
 
             // delete old backup, create new
-            if (file_exists($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $backupFilesFilename)) {
-                unlink($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $backupFilesFilename);
+            if ($this->container->getFileSystem()->exists($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $backupFilesFilename)) {
+                $this->container->getFileSystem()->remove($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $backupFilesFilename);
             }
 
             $this->logger->debug($this->translator->trans('Backup files initialized in %s', [$backupFilesFilename]));

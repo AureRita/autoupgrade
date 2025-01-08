@@ -73,7 +73,7 @@ class CacheCleaner
         }
 
         foreach ($dirsToClean as $dir) {
-            if (!file_exists($dir)) {
+            if (!$this->container->getFileSystem()->exists($dir)) {
                 $this->logger->debug($this->container->getTranslator()->trans('Directory "%s" does not exist and cannot be emptied.', [str_replace($this->container->getProperty(UpgradeContainer::PS_ROOT_PATH), '', $dir)]));
                 continue;
             }
@@ -81,12 +81,7 @@ class CacheCleaner
                 if ($file[0] === '.' || $file === 'index.php') {
                     continue;
                 }
-                // ToDo: Use Filesystem instead ?
-                if (is_file($dir . $file)) {
-                    unlink($dir . $file);
-                } elseif (is_dir($dir . $file . DIRECTORY_SEPARATOR)) {
-                    FilesystemAdapter::deleteDirectory($dir . $file . DIRECTORY_SEPARATOR);
-                }
+                $this->container->getFileSystem()->remove($dir . $file);
                 $this->logger->debug($this->container->getTranslator()->trans('File %s removed', [$file]));
             }
         }

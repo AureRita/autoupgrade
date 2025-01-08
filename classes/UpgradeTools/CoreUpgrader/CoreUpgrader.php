@@ -67,11 +67,6 @@ abstract class CoreUpgrader
     protected $logger;
 
     /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
      * Version PrestaShop is upgraded to.
      *
      * @var string
@@ -92,15 +87,20 @@ abstract class CoreUpgrader
      */
     protected $pathToUpgradeScripts;
 
+    /**
+     * @var Filesystem
+     */
+    protected $fileSystem;
+
     public function __construct(UpgradeContainer $container, LoggerInterface $logger)
     {
         $this->container = $container;
+        $this->fileSystem = $this->container->getFileSystem();
         $this->logger = $logger;
-        $this->filesystem = new Filesystem();
         $this->destinationUpgradeVersion = $this->container->getUpdateState()->getDestinationVersion();
         $this->pathToInstallFolder = realpath($this->container->getProperty(UpgradeContainer::LATEST_PATH) . DIRECTORY_SEPARATOR . 'install');
         $this->pathToUpgradeScripts = dirname(__DIR__, 3) . '/upgrade/';
-        if (file_exists($this->pathToInstallFolder . DIRECTORY_SEPARATOR . 'autoload.php')) {
+        if ($this->fileSystem->exists($this->pathToInstallFolder . DIRECTORY_SEPARATOR . 'autoload.php')) {
             require_once $this->pathToInstallFolder . DIRECTORY_SEPARATOR . 'autoload.php';
         }
         $this->db = \Db::getInstance();
@@ -271,7 +271,7 @@ abstract class CoreUpgrader
      */
     protected function getUpgradeSqlFilesListToApply(string $upgrade_dir_sql, string $oldversion): array
     {
-        if (!file_exists($upgrade_dir_sql)) {
+        if (!$this->fileSystem->exists($upgrade_dir_sql)) {
             throw new UpgradeException($this->container->getTranslator()->trans('Unable to find upgrade directory in the installation path.'));
         }
 
@@ -424,7 +424,7 @@ abstract class CoreUpgrader
             $func_name = str_replace($stringParameters, '', $php[0]);
             $pathToPhpDirectory = $this->pathToUpgradeScripts . 'php/';
 
-            if (!file_exists($pathToPhpDirectory . strtolower($func_name) . '.php')) {
+            if (!$this->fileSystem->exists($pathToPhpDirectory . strtolower($func_name) . '.php')) {
                 $this->logMissingFileError($pathToPhpDirectory, $func_name, $query);
 
                 return;
@@ -566,7 +566,7 @@ abstract class CoreUpgrader
     {
         $this->loadEntityInterface();
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Tools.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Tools.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Tools.php';
         }
 
@@ -583,105 +583,105 @@ abstract class CoreUpgrader
             define('_PS_USE_SQL_SLAVE_', false);
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/ObjectModel.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/ObjectModel.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/ObjectModel.php';
         }
         if (!class_exists('ObjectModel', false) && class_exists('ObjectModelCore')) {
             eval('abstract class ObjectModel extends ObjectModelCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Configuration.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Configuration.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Configuration.php';
         }
         if (!class_exists('Configuration', false) && class_exists('ConfigurationCore')) {
             eval('class Configuration extends ConfigurationCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/cache/Cache.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/cache/Cache.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/cache/Cache.php';
         }
         if (!class_exists('Cache', false) && class_exists('CacheCore')) {
             eval('abstract class Cache extends CacheCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/PrestaShopCollection.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/PrestaShopCollection.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/PrestaShopCollection.php';
         }
         if (!class_exists('PrestaShopCollection', false) && class_exists('PrestaShopCollectionCore')) {
             eval('class PrestaShopCollection extends PrestaShopCollectionCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/shop/ShopUrl.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/shop/ShopUrl.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/shop/ShopUrl.php';
         }
         if (!class_exists('ShopUrl', false) && class_exists('ShopUrlCore')) {
             eval('class ShopUrl extends ShopUrlCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/shop/Shop.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/shop/Shop.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/shop/Shop.php';
         }
         if (!class_exists('Shop', false) && class_exists('ShopCore')) {
             eval('class Shop extends ShopCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Translate.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Translate.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Translate.php';
         }
         if (!class_exists('Translate', false) && class_exists('TranslateCore')) {
             eval('class Translate extends TranslateCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/module/Module.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/module/Module.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/module/Module.php';
         }
         if (!class_exists('Module', false) && class_exists('ModuleCore')) {
             eval('class Module extends ModuleCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Validate.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Validate.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Validate.php';
         }
         if (!class_exists('Validate', false) && class_exists('ValidateCore')) {
             eval('class Validate extends ValidateCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Language.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Language.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Language.php';
         }
         if (!class_exists('Language', false) && class_exists('LanguageCore')) {
             eval('class Language extends LanguageCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Tab.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Tab.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Tab.php';
         }
         if (!class_exists('Tab', false) && class_exists('TabCore')) {
             eval('class Tab extends TabCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Dispatcher.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Dispatcher.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Dispatcher.php';
         }
         if (!class_exists('Dispatcher', false) && class_exists('DispatcherCore')) {
             eval('class Dispatcher extends DispatcherCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Hook.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Hook.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Hook.php';
         }
         if (!class_exists('Hook', false) && class_exists('HookCore')) {
             eval('class Hook extends HookCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Context.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Context.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Context.php';
         }
         if (!class_exists('Context', false) && class_exists('ContextCore')) {
             eval('class Context extends ContextCore{}');
         }
 
-        if (file_exists(_PS_ROOT_DIR_ . '/classes/Group.php')) {
+        if ($this->fileSystem->exists(_PS_ROOT_DIR_ . '/classes/Group.php')) {
             require_once _PS_ROOT_DIR_ . '/classes/Group.php';
         }
         if (!class_exists('Group', false) && class_exists('GroupCore')) {
@@ -718,8 +718,8 @@ abstract class CoreUpgrader
             _PS_ROOT_DIR_ . '/var/cache/prod/class_index.php',
         ];
         foreach ($files as $path) {
-            if (file_exists($path)) {
-                unlink($path);
+            if ($this->fileSystem->exists($path)) {
+                $this->fileSystem->remove($path);
             }
         }
     }
@@ -834,7 +834,7 @@ abstract class CoreUpgrader
     {
         foreach ($themes as $theme) {
             $files = $this->container->getFilesystemAdapter()->listSampleFiles($theme['directory'], '_rtl.css');
-            $this->filesystem->remove($files);
+            $this->fileSystem->remove($files);
         }
     }
 

@@ -29,6 +29,7 @@ namespace PrestaShop\Module\AutoUpgrade\UpgradeTools;
 
 use PrestaShop\Module\AutoUpgrade\Log\LoggerInterface;
 use PrestaShop\Module\AutoUpgrade\Tools14;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Translation
 {
@@ -38,14 +39,17 @@ class Translation
     private $logger;
     /** @var Translator */
     private $translator;
+    /** @var Filesystem */
+    private $filesystem;
 
     /**
      * @param string[] $installedLanguagesIso
      */
-    public function __construct(Translator $translator, LoggerInterface $logger, array $installedLanguagesIso)
+    public function __construct(Translator $translator, Filesystem $filesystem, LoggerInterface $logger, array $installedLanguagesIso)
     {
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->filesystem = $filesystem;
         $this->installedLanguagesIso = $installedLanguagesIso;
     }
 
@@ -120,7 +124,7 @@ class Translation
                 return false;
         }
 
-        if (!file_exists($orig)) {
+        if (!$this->filesystem->exists($orig)) {
             $this->logger->notice($this->translator->trans('File %s does not exist, merge skipped.', [$orig]));
 
             return true;
@@ -139,7 +143,7 @@ class Translation
         }
         $var_orig = $$var_name;
 
-        if (!file_exists($dest)) {
+        if (!$this->filesystem->exists($dest)) {
             $this->logger->notice($this->translator->trans('File %s does not exist, merge skipped.', [$dest]));
 
             return false;
@@ -149,7 +153,7 @@ class Translation
             // in that particular case : file exists, but variable missing, we need to delete that file
             // (if not, this invalid file will be copied in /translations during upgradeDb process)
             if ('module' == $type) {
-                unlink($dest);
+                $this->filesystem->remove($dest);
             }
             $this->logger->warning($this->translator->trans(
                 '%variablename% variable missing in file %filename%. File %filename% deleted and merge skipped.',

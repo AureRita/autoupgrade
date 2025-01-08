@@ -98,9 +98,7 @@ class UpgradeContainer
     const ARCHIVE_FILEPATH = 'destDownloadFilepath';
     const PS_VERSION = 'version';
 
-    /**
-     * @var Analytics
-     */
+    /** @var Analytics */
     private $analytics;
 
     /** @var BackupFinder */
@@ -109,186 +107,126 @@ class UpgradeContainer
     /** @var BackupManager */
     private $backupManager;
 
-    /**
-     * @var CacheCleaner
-     */
+    /** @var CacheCleaner */
     private $cacheCleaner;
 
-    /**
-     * @var ChecksumCompare
-     */
+    /** @var ChecksumCompare */
     private $checksumCompare;
 
     /** @var ComposerService */
     private $composerService;
 
-    /**
-     * @var Cookie
-     */
+    /** @var Cookie */
     private $cookie;
 
-    /**
-     * @var \Db
-     */
+    /** @var \Db */
     public $db;
 
-    /**
-     * @var FileStorage
-     */
+    /** @var FileStorage */
     private $fileStorage;
 
-    /**
-     * @var FileFilter
-     */
+    /** @var FileFilter */
     private $fileFilter;
 
-    /**
-     * @var PrestashopConfiguration
-     */
+    /** @var PrestashopConfiguration */
     private $prestashopConfiguration;
 
-    /**
-     * @var ConfigurationStorage
-     */
+    /** @var ConfigurationStorage */
     private $configurationStorage;
 
-    /**
-     * @var UpgradeConfiguration
-     */
+    /** @var UpgradeConfiguration */
     private $updateConfiguration;
 
-    /**
-     * @var RestoreConfiguration
-     */
+    /** @var RestoreConfiguration */
     private $restoreConfiguration;
 
-    /**
-     * @var FilesystemAdapter
-     */
+    /** @var FilesystemAdapter */
     private $filesystemAdapter;
 
-    /**
-     * @var FileLoader
-     */
+    /** @var FileLoader */
     private $fileLoader;
 
-    /**
-     * @var Logger
-     */
+    /** @var Logger */
     private $logger;
 
-    /**
-     * @var LogsService
-     */
+    /** @var LogsService */
     private $logsService;
 
-    /**
-     * @var ModuleAdapter
-     */
+    /** @var ModuleAdapter */
     private $moduleAdapter;
 
-    /**
-     * @var AbstractModuleSourceProvider[]
-     */
+    /** @var AbstractModuleSourceProvider[] */
     private $moduleSourceProviders;
 
-    /**
-     * @var CompletionCalculator
-     */
+    /** @var CompletionCalculator */
     private $completionCalculator;
 
-    /**
-     * @var Twig_Environment|\Twig\Environment
-     */
+    /** @var Twig_Environment|\Twig\Environment */
     private $twig;
 
-    /**
-     * @var BackupState
-     */
+    /** @var BackupState */
     private $backupState;
 
-    /**
-     * @var LogsState
-     */
+    /** @var LogsState */
     private $logsState;
 
-    /**
-     * @var RestoreState
-     */
+    /** @var RestoreState */
     private $restoreState;
 
-    /**
-     * @var UpdateState
-     */
+    /** @var UpdateState */
     private $updateState;
 
-    /**
-     * @var SymfonyAdapter
-     */
+    /** @var SymfonyAdapter */
     private $symfonyAdapter;
 
-    /**
-     * @var Upgrader
-     */
+    /** @var Upgrader */
     private $upgrader;
 
-    /**
-     * @var Workspace
-     */
+    /** @var Workspace */
     private $workspace;
 
-    /**
-     * @var ZipAction
-     */
+    /** @var ZipAction */
     private $zipAction;
 
-    /**
-     * @var LocalArchiveRepository
-     */
+    /** @var LocalArchiveRepository */
     private $localArchiveRepository;
 
-    /**
-     * @var AssetsEnvironment
-     */
+    /** @var AssetsEnvironment */
     private $assetsEnvironment;
 
-    /**
-     * @var ConfigurationValidator
-     */
+    /** @var ConfigurationValidator */
     private $configurationValidator;
 
-    /**
-     * @var LocalChannelConfigurationValidator
-     */
+    /** @var LocalChannelConfigurationValidator */
     private $localChannelConfigurationValidator;
 
-    /**
-     * @var PrestashopVersionService
-     */
+    /** @var PrestashopVersionService */
     private $prestashopVersionService;
 
-    /**
-     * @var UpgradeSelfCheck
-     */
+    /** @var UpgradeSelfCheck */
     private $upgradeSelfCheck;
+
+    /** @var PhpVersionResolverService */
+    private $phpVersionResolverService;
+
+    /** @var DistributionApiService */
+    private $distributionApiService;
+
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var Translator */
+    private $translator;
+
+    /** @var Translation */
+    private $translation;
+
+    /** @var DownloadService */
+    private $downloadService;
 
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /**
-     * @var PhpVersionResolverService
-     */
-    private $phpVersionResolverService;
-
-    /**
-     * @var DistributionApiService
-     */
-    private $distributionApiService;
-
-    /**
-     * @var DownloadService
-     */
-    private $downloadService;
     /**
      * AdminSelfUpgrade::$autoupgradePath
      * Ex.: /var/www/html/PrestaShop/admin-dev/autoupgrade.
@@ -313,7 +251,7 @@ class UpgradeContainer
         $this->adminDir = $adminDir;
         $this->psRootDir = $psRootDir;
 
-        if (file_exists($psRootDir . '/modules/autoupgrade/.env')) {
+        if ($this->getFileSystem()->exists($psRootDir . '/modules/autoupgrade/.env')) {
             $dotenv = new Dotenv();
             $dotenv->load($psRootDir . '/modules/autoupgrade/.env');
         }
@@ -432,7 +370,7 @@ class UpgradeContainer
     public function getComposerService(): ComposerService
     {
         if (null === $this->composerService) {
-            $this->composerService = new ComposerService();
+            $this->composerService = new ComposerService($this->getFileSystem());
         }
 
         return $this->composerService;
@@ -470,7 +408,7 @@ class UpgradeContainer
     public function getFileStorage(): FileStorage
     {
         if (null === $this->fileStorage) {
-            $this->fileStorage = new FileStorage($this->getProperty(self::WORKSPACE_PATH) . DIRECTORY_SEPARATOR);
+            $this->fileStorage = new FileStorage($this->getFileSystem(), $this->getProperty(self::WORKSPACE_PATH) . DIRECTORY_SEPARATOR);
         }
 
         return $this->fileStorage;
@@ -505,6 +443,8 @@ class UpgradeContainer
             $upgrader = new Upgrader(
                 $this->getPhpVersionResolverService(),
                 $this->getUpdateConfiguration(),
+                $this->getFileSystem(),
+                $this->getFileLoader(),
                 $this->getProperty(self::PS_VERSION)
             );
 
@@ -541,7 +481,7 @@ class UpgradeContainer
     public function getFileLoader(): FileLoader
     {
         if (null === $this->fileLoader) {
-            $this->fileLoader = new FileLoader();
+            $this->fileLoader = new FileLoader($this->getFileSystem());
         }
 
         return $this->fileLoader;
@@ -686,21 +626,32 @@ class UpgradeContainer
      */
     public function getTranslationAdapter(): Translation
     {
-        return new Translation($this->getTranslator(), $this->getLogger(), $this->getUpdateState()->getInstalledLanguagesIso());
-    }
-
-    public function getTranslator(): Translator
-    {
-        $locale = null;
-        // @phpstan-ignore booleanAnd.rightAlwaysTrue (If PrestaShop core is not instantiated properly, do not try to translate)
-        if (method_exists('\Context', 'getContext') && \Context::getContext()->language) {
-            $locale = \Context::getContext()->language->iso_code;
+        if (null === $this->translation) {
+            $this->translation = new Translation($this->getTranslator(), $this->getFileSystem(), $this->getLogger(), $this->getUpdateState()->getInstalledLanguagesIso());
         }
 
-        return new Translator(
-            $this->getProperty(self::PS_ROOT_PATH) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'autoupgrade' . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR,
-            $locale
-        );
+        return $this->translation;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getTranslator(): Translator
+    {
+        if (null === $this->translator) {
+            $locale = null;
+            // @phpstan-ignore booleanAnd.rightAlwaysTrue (If PrestaShop core is not instantiated properly, do not try to translate)
+            if (method_exists('\Context', 'getContext') && \Context::getContext()->language) {
+                $locale = \Context::getContext()->language->iso_code;
+            }
+
+            $this->translator = new Translator(
+                $this->getProperty(self::PS_ROOT_PATH) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'autoupgrade' . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR,
+                $locale
+            );
+        }
+
+        return $this->translator;
     }
 
     /**
@@ -739,6 +690,7 @@ class UpgradeContainer
     {
         if (null === $this->prestashopConfiguration) {
             $this->prestashopConfiguration = new PrestashopConfiguration(
+                $this->getFileSystem(),
                 $this->getProperty(self::PS_ROOT_PATH)
             );
         }
@@ -863,7 +815,7 @@ class UpgradeContainer
 
             $this->workspace = new Workspace(
                 $this->getTranslator(),
-                new Filesystem(),
+                $this->getFileSystem(),
                 $paths
             );
         }
@@ -878,6 +830,7 @@ class UpgradeContainer
     {
         if (null === $this->zipAction) {
             $this->zipAction = new ZipAction(
+                $this->getFileSystem(),
                 $this->getTranslator(),
                 $this->getLogger(),
                 $this->getUpdateConfiguration(),
@@ -949,10 +902,19 @@ class UpgradeContainer
     public function getPrestashopVersionService(): PrestashopVersionService
     {
         if (null === $this->prestashopVersionService) {
-            $this->prestashopVersionService = new PrestashopVersionService($this->getZipAction());
+            $this->prestashopVersionService = new PrestashopVersionService($this->getZipAction(), $this->getFileSystem());
         }
 
         return $this->prestashopVersionService;
+    }
+
+    public function getFileSystem(): Filesystem
+    {
+        if (null === $this->filesystem) {
+            $this->filesystem = new Filesystem();
+        }
+
+        return $this->filesystem;
     }
 
     /**
@@ -990,7 +952,7 @@ class UpgradeContainer
     public function initPrestaShopAutoloader(): void
     {
         $autoloader = $this->getProperty(self::PS_ROOT_PATH) . '/vendor/autoload.php';
-        if (file_exists($autoloader)) {
+        if ($this->getFileSystem()->exists($autoloader)) {
             require_once $autoloader;
         }
 

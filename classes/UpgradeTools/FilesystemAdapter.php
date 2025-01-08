@@ -28,7 +28,6 @@
 namespace PrestaShop\Module\AutoUpgrade\UpgradeTools;
 
 use FilesystemIterator;
-use PrestaShop\Module\AutoUpgrade\Tools14;
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -83,16 +82,6 @@ class FilesystemAdapter
         $this->autoupgradeDir = $autoupgradeDir;
         $this->adminSubDir = $adminSubDir;
         $this->prodRootDir = $prodRootDir;
-    }
-
-    /**
-     * Delete directory and subdirectories.
-     *
-     * @param string $dirname Directory name
-     */
-    public static function deleteDirectory(string $dirname, bool $delete_self = true): bool
-    {
-        return Tools14::deleteDirectory($dirname, $delete_self);
     }
 
     /**

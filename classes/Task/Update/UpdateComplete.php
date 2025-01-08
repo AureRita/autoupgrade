@@ -34,7 +34,7 @@ use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
 use PrestaShop\Module\AutoUpgrade\Task\TaskName;
 use PrestaShop\Module\AutoUpgrade\Task\TaskType;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
-use PrestaShop\Module\AutoUpgrade\UpgradeTools\FilesystemAdapter;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
  * Ends the upgrade process and displays the success message.
@@ -62,16 +62,20 @@ class UpdateComplete extends AbstractTask
 
         $this->next = TaskName::TASK_COMPLETE;
 
-        if ($this->container->getUpdateConfiguration()->isChannelOnline() && file_exists($this->container->getFilePath()) && unlink($this->container->getFilePath())) {
-            $this->logger->debug($this->translator->trans('%s removed', [$this->container->getFilePath()]));
-        } elseif (is_file($this->container->getFilePath())) {
-            $this->logger->debug($this->translator->trans('Please remove %s by FTP', [$this->container->getFilePath()]));
+        $filesystem = $this->container->getFileSystem();
+        $filePath = $this->container->getFilePath();
+        $latestPath = $this->container->getProperty(UpgradeContainer::LATEST_PATH);
+
+        if ($filesystem->exists($filePath)) {
+            if ($this->container->getUpdateConfiguration()->isChannelOnline()) {
+                $this->removeFile($filePath);
+            } else {
+                $this->logger->debug($this->translator->trans('Please remove %s by FTP', [$filePath]));
+            }
         }
 
-        if (file_exists($this->container->getProperty(UpgradeContainer::LATEST_PATH)) && FilesystemAdapter::deleteDirectory($this->container->getProperty(UpgradeContainer::LATEST_PATH))) {
-            $this->logger->debug($this->translator->trans('%s removed', [$this->container->getProperty(UpgradeContainer::LATEST_PATH)]));
-        } elseif (is_dir($this->container->getProperty(UpgradeContainer::LATEST_PATH))) {
-            $this->logger->debug($this->translator->trans('Please remove %s by FTP', [$this->container->getProperty(UpgradeContainer::LATEST_PATH)]));
+        if ($filesystem->exists($latestPath)) {
+            $this->removeFile($latestPath);
         }
 
         // removing temporary files
@@ -79,5 +83,15 @@ class UpdateComplete extends AbstractTask
         $this->container->getAnalytics()->track('Upgrade Succeeded', Analytics::WITH_UPDATE_PROPERTIES);
 
         return ExitCode::SUCCESS;
+    }
+
+    private function removeFile(string $filePath): void
+    {
+        try {
+            $this->container->getFileSystem()->remove($filePath);
+            $this->logger->debug($this->translator->trans('%s removed', [$filePath]));
+        } catch (IOException $e) {
+            $this->logger->debug($this->translator->trans('Please remove %s by FTP', [$filePath]));
+        }
     }
 }

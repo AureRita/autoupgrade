@@ -31,10 +31,15 @@ use LogicException;
 use PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException;
 use PrestaShop\Module\AutoUpgrade\Log\Logger;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
 class ModuleMigration
 {
+    /** @var Filesystem */
+    private $filesystem;
+
     /** @var Translator */
     private $translator;
 
@@ -44,8 +49,9 @@ class ModuleMigration
     /** @var string */
     private $sandboxFolder;
 
-    public function __construct(Translator $translator, Logger $logger, string $sandboxFolder)
+    public function __construct(Filesystem $filesystem, Translator $translator, Logger $logger, string $sandboxFolder)
     {
+        $this->filesystem = $filesystem;
         $this->translator = $translator;
         $this->logger = $logger;
         $this->sandboxFolder = $sandboxFolder;
@@ -154,9 +160,10 @@ class ModuleMigration
         $uniqueMethodName = $moduleMigrationContext->getModuleName() . '_' . $methodName;
 
         $sandboxedFilePath = $this->sandboxFolder . DIRECTORY_SEPARATOR . $uniqueMethodName . '.php';
-        $pushedFileContents = file_put_contents($sandboxedFilePath, str_replace($methodName, $uniqueMethodName, file_get_contents($filePath)));
 
-        if ($pushedFileContents === false) {
+        try {
+            $this->filesystem->dumpFile($sandboxedFilePath, str_replace($methodName, $uniqueMethodName, file_get_contents($filePath)));
+        } catch (IOException $e) {
             throw (new UpgradeException($this->translator->trans('Could not write temporary file %s.', [$sandboxedFilePath])))->setSeverity(UpgradeException::SEVERITY_WARNING);
         }
 

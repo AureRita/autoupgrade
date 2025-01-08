@@ -7,6 +7,7 @@ use PrestaShop\Module\AutoUpgrade\ZipAction;
 use RuntimeException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PrestashopVersionService
 {
@@ -15,9 +16,15 @@ class PrestashopVersionService
      */
     private $zipAction;
 
-    public function __construct(ZipAction $zipAction)
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    public function __construct(ZipAction $zipAction, Filesystem $filesystem)
     {
         $this->zipAction = $zipAction;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -29,7 +36,7 @@ class PrestashopVersionService
         $internalZipFileName = 'prestashop.zip';
         $versionFile = 'install/install_version.php';
 
-        if (!file_exists($zipFile)) {
+        if (!$this->filesystem->exists($zipFile)) {
             throw new FileNotFoundException("Unable to find $zipFile file");
         }
         $zip = $this->zipAction->open($zipFile);
@@ -42,7 +49,7 @@ class PrestashopVersionService
         $fileContent = $this->zipAction->extractFileFromArchive($internalZip, $versionFile);
         $internalZip->close();
 
-        @unlink($tempInternalZipPath);
+        $this->filesystem->remove($tempInternalZipPath);
 
         return $this->extractVersionFromContent($fileContent);
     }
@@ -66,10 +73,8 @@ class PrestashopVersionService
      */
     private function createTemporaryFile(string $content): string
     {
-        $tempFilePath = tempnam(sys_get_temp_dir(), 'internal_zip_');
-        if (file_put_contents($tempFilePath, $content) === false) {
-            throw new IOException('Unable to create temporary file');
-        }
+        $tempFilePath = $this->filesystem->tempnam(sys_get_temp_dir(), 'internal_zip_');
+        $this->filesystem->appendToFile($tempFilePath, $content);
 
         return $tempFilePath;
     }

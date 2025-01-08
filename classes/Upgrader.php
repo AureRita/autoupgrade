@@ -33,6 +33,7 @@ use PrestaShop\Module\AutoUpgrade\Models\PrestashopRelease;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Services\PhpVersionResolverService;
 use PrestaShop\Module\AutoUpgrade\Xml\FileLoader;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Upgrader
 {
@@ -46,15 +47,23 @@ class Upgrader
     protected $phpVersionResolverService;
     /** @var UpgradeConfiguration */
     protected $updateConfiguration;
+    /** @var Filesystem */
+    protected $filesystem;
+    /** @var FileLoader */
+    protected $fileLoader;
 
     public function __construct(
         PhpVersionResolverService $phpRequirementService,
         UpgradeConfiguration $updateConfiguration,
+        Filesystem $filesystem,
+        FileLoader $fileLoader,
         string $currentPsVersion
     ) {
         $this->currentPsVersion = $currentPsVersion;
         $this->phpVersionResolverService = $phpRequirementService;
         $this->updateConfiguration = $updateConfiguration;
+        $this->filesystem = $filesystem;
+        $this->fileLoader = $fileLoader;
     }
 
     /**
@@ -117,9 +126,7 @@ class Upgrader
      */
     public function getLatestModuleVersion(): string
     {
-        $fileLoader = new FileLoader();
-
-        $channelFile = $fileLoader->getXmlChannel();
+        $channelFile = $this->fileLoader->getXmlChannel();
 
         if (empty($channelFile)) {
             throw new UpgradeException('Unable to retrieve channel.xml.');
@@ -131,12 +138,11 @@ class Upgrader
     /**
      * delete the file /config/xml/$version.xml if exists.
      */
-    public function clearXmlMd5File(string $version): bool
+    public function clearXmlMd5File(string $version): void
     {
-        if (file_exists(_PS_ROOT_DIR_ . '/config/xml/' . $version . '.xml')) {
-            return unlink(_PS_ROOT_DIR_ . '/config/xml/' . $version . '.xml');
+        $fileToRemove = _PS_ROOT_DIR_ . '/config/xml/' . $version . '.xml';
+        if ($this->filesystem->exists($fileToRemove)) {
+            $this->filesystem->remove($fileToRemove);
         }
-
-        return true;
     }
 }

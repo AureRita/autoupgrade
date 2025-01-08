@@ -118,8 +118,8 @@ class BackupDatabase extends AbstractTask
                     !(isset($schema[0]['Table'], $schema[0]['Create Table'])
                         || isset($schema[0]['View'], $schema[0]['Create View']))) {
                     fclose($fp);
-                    if (file_exists($backupfile)) {
-                        unlink($backupfile);
+                    if ($this->container->getFileSystem()->exists($backupfile)) {
+                        $this->container->getFileSystem()->remove($backupfile);
                     }
                     $this->logger->error($this->translator->trans('An error occurred while backing up. Unable to obtain the schema of %s', [$table]));
                     $this->logger->info($this->translator->trans('Error during database backup.'));
@@ -279,7 +279,7 @@ class BackupDatabase extends AbstractTask
         }
 
         if (!is_dir($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $state->getBackupName())) {
-            mkdir($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $state->getBackupName());
+            $this->container->getFileSystem()->mkdir($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $state->getBackupName());
         }
         $state->setDbStep(0);
         $listOfTables = $this->filterTablesToSync(
@@ -345,7 +345,7 @@ class BackupDatabase extends AbstractTask
     private function openPartialBackupFile(string $backupfile)
     {
         // Figure out what compression is available and open the file
-        if (file_exists($backupfile)) {
+        if ($this->container->getFileSystem()->exists($backupfile)) {
             throw (new UpgradeException($this->translator->trans('Backup file %s already exists. Operation aborted.', [$backupfile])))->setSeverity(UpgradeException::SEVERITY_ERROR);
         }
 
