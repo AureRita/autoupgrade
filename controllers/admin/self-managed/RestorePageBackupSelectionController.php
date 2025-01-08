@@ -3,6 +3,7 @@
 namespace PrestaShop\Module\AutoUpgrade\Controller;
 
 use PrestaShop\Module\AutoUpgrade\AjaxResponseBuilder;
+use PrestaShop\Module\AutoUpgrade\Exceptions\BackupException;
 use PrestaShop\Module\AutoUpgrade\Parameters\RestoreConfiguration;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeFileNames;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
@@ -11,7 +12,6 @@ use PrestaShop\Module\AutoUpgrade\Twig\PageSelectors;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\RestoreSteps;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\Stepper;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use PrestaShop\Module\AutoUpgrade\Exceptions\BackupException;
 
 class RestorePageBackupSelectionController extends AbstractPageWithStepController
 {
@@ -80,6 +80,7 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
 
     /**
      * @return array<string, mixed>
+     *
      * @throws BackupException
      */
     private function getDialogParams(): array
