@@ -94,9 +94,11 @@ html {
       container-type: size;
       container-name: html-block;
 
-      &:is(:not(.v1-7-8-0):not(.v1-7-3-0)) {
-        #{$e} {
-          padding-block-end: 0;
+      #{$ua-id} {
+        &:not(.v1-7-8-0):not(.v1-7-3-0) {
+          #{$e} {
+            padding-block-end: 0;
+          }
         }
       }
 

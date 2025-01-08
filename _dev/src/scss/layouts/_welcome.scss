@@ -3,6 +3,12 @@
 $e: ".welcome-page";
 
 #{$ua-id} {
+  &:has(.welcome-page) {
+    #ua_main {
+      padding-block-start: 0;
+    }
+  }
+
   #{$e} {
     &__card-list {
       display: flex;
