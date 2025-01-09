@@ -18,7 +18,7 @@ export default class RestoreBackupDialog implements DomLifecycle {
       throw new Error('Form not found');
     }
     if (!form.dataset.routeToConfirmRestore) {
-      throw new Error(`Missing data route to confirm delete from form dataset.`);
+      throw new Error(`Missing data route to confirm restore from form dataset.`);
     }
 
     return form;

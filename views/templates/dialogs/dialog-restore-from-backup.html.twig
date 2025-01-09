@@ -1,7 +1,7 @@
 {% extends "@ModuleAutoUpgrade/components/dialog.html.twig" %}
 
 {% set title = 'Restore from a backup?'|trans({}) %}
-{% set dialogSize = 'sm' %}
+{% set dialogSize = 'md' %}
 {% set message = 'You are about to restore %backup_version% using the backup from %backup_date%.'|trans({'%backup_version%': '<b> PrestaShop ' ~ backup_version ~ '</b>', '%backup_date%': '<b>' ~ backup_date ~ '</b>'}) %}
 
 {% block dialog_content %}
