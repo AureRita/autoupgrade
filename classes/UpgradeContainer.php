@@ -981,6 +981,21 @@ class UpgradeContainer
     }
 
     /**
+     * @return UrlGenerator
+     */
+    public function getUrlGenerator(): UrlGenerator
+    {
+        if (null === $this->urlGenerator) {
+            $this->urlGenerator = new UrlGenerator(
+                $this->getProperty(self::PS_ROOT_PATH),
+                $this->getProperty(self::PS_ADMIN_SUBDIR),
+            );
+        }
+
+        return $this->urlGenerator;
+    }
+
+    /**
      * Checks if the composer autoload exists, and loads it.
      *
      * @throws Exception
