@@ -36,7 +36,6 @@ class RestorePageRestoreController extends AbstractPageWithStepController
     protected function getParams(): array
     {
         $updateSteps = new Stepper($this->upgradeContainer->getTranslator(), TaskType::TASK_TYPE_RESTORE);
-        $backupFinder = $this->upgradeContainer->getBackupFinder();
 
         return array_merge(
             $updateSteps->getStepParams($this::CURRENT_STEP),
