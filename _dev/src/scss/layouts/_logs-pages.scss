@@ -29,6 +29,10 @@ html {
       // Logs adjustments
       .logs {
         flex-grow: 1;
+
+        &__scroll {
+          container-type: size;
+        }
       }
 
       // Page adjustments to handle auto fit height

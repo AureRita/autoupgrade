@@ -72,18 +72,6 @@ $e: ".error-page";
       }
     }
   }
-
-  // Handle auto fit height
-  @container html-block (min-width: 0) {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: minmax(0, 1fr);
-    min-height: calc(100cqh - var(--#{$ua-prefix}header-offset-mobile));
-  }
-
-  @container html-block (min-width: 1024px) {
-    min-height: calc(100cqh - var(--#{$ua-prefix}header-offset));
-  }
 }
 
 // Enable auto fit height
@@ -121,6 +109,22 @@ html {
 
       #main {
         padding-block-end: 0;
+      }
+
+      // Handle auto fit height
+      @container html-block (min-width: 0) {
+        #{$ua-id} {
+          display: grid;
+          grid-template-rows: 1fr;
+          grid-template-columns: minmax(0, 1fr);
+          min-height: calc(100cqh - var(--#{$ua-prefix}header-offset-mobile));
+        }
+      }
+
+      @container html-block (min-width: 1024px) {
+        #{$ua-id} {
+          min-height: calc(100cqh - var(--#{$ua-prefix}header-offset));
+        }
       }
     }
   }
