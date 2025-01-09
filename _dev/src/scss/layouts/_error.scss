@@ -17,7 +17,6 @@ $e: ".error-page";
     &__img {
       max-width: 100%;
       height: auto;
-      filter: var(--#{$ua-prefix}error-img-filter);
     }
 
     &__infos {
