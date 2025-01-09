@@ -13,19 +13,15 @@
 
 {% block dialog_extra_content %}{% endblock %}
 
-{% block dialog_footer %}
-  <div class="dialog__footer">
-    {% block dialog_footer_inner %}
-      <button type="button" class="btn btn-link" data-dismiss="dialog">
-        {{ 'Cancel'|trans({}) }}
-      </button>
+{% block dialog_footer_inner %}
+  <button type="button" class="btn btn-link" data-dismiss="dialog">
+    {{ 'Cancel'|trans({}) }}
+  </button>
 
-      <form id="{{ form_name }}" name="{{ form_name }}" data-route-to-confirm-delete="{{ form_route_to_confirm_delete }}">
-        <input type="hidden" name="{{ form_fields.BACKUP_NAME }}" value="{{ backup_name }}">
-        <button type="submit" class="btn btn-danger">
-          {{ 'Delete '|trans({}) }}
-        </button>
-      </form>
-    {% endblock %}
-  </div>
+  <form id="{{ form_name }}" name="{{ form_name }}" data-route-to-confirm-delete="{{ form_route_to_confirm_delete }}">
+    <input type="hidden" name="{{ form_fields.BACKUP_NAME }}" value="{{ backup_name }}">
+    <button type="submit" class="btn btn-danger">
+      {{ 'Delete'|trans({}) }}
+    </button>
+  </form>
 {% endblock %}

@@ -23,7 +23,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-import DialogBackupDelete from "../../../views/templates/dialogs/dialog-backup-delete.html.twig";
+import DialogBackupDelete from "../../../views/templates/dialogs/dialog-delete-backup.html.twig";
 
 export default {
   title: "Components/Dialog",
@@ -34,7 +34,12 @@ export const BackupDelete = {
   args: {
     backup_name: "autoupgrade_save_8.1.6",
     backup_date: "15/07/2024 8:00",
-    is_only_backup: true,
+    only_backup: true,
+    form_name: "delete-backup",
+    form_route_to_confirm_delete: "/",
+    form_fields: {
+      BACKUP_NAME: "backup_name",
+    },
   },
   play: async () => {
     const dialog = document.querySelector('.dialog');

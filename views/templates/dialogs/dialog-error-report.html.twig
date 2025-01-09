@@ -50,17 +50,13 @@
   </form>
 {% endblock %}
 
-{% block dialog_footer %}
-  <div class="dialog__footer">
-    {% block dialog_footer_inner %}
-      <button type="button" class="btn btn-link" data-dismiss="dialog">
-        {{ 'Cancel'|trans({}) }}
-      </button>
+{% block dialog_footer_inner %}
+  <button type="button" class="btn btn-link" data-dismiss="dialog">
+    {{ 'Cancel'|trans({}) }}
+  </button>
 
-      <button type="submit" form="form-error-feedback" class="btn btn-primary">
-        <i class="material-icons">send</i>
-        {{ 'Send error report'|trans({}) }}
-      </button>
-    {% endblock %}
-  </div>
+  <button type="submit" form="form-error-feedback" class="btn btn-primary">
+    <i class="material-icons">send</i>
+    {{ 'Send error report'|trans({}) }}
+  </button>
 {% endblock %}

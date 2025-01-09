@@ -23,30 +23,26 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-import RestorePage from "../../../views/templates/pages/restore.html.twig";
-import { RestoreLogsProgress as LogsProgress } from "../components/LogsProgress.stories";
-import { RestoreLogsViewer as LogsViewer } from "../components/LogsViewer.stories";
-import { Restore as Stepper } from "../components/Stepper.stories";
+import DialogRestoreFromBackup from "../../../views/templates/dialogs/dialog-restore-from-backup.html.twig";
 
 export default {
-  component: RestorePage,
-  id: "41",
-  title: "Pages/Rollback",
+  title: "Components/Dialog",
+  component: DialogRestoreFromBackup,
+  args: {
+    backup_version: "1.7.8.1",
+    backup_name: "backup-name",
+    backup_date: "2024-01-01",
+    form_name: "backup_to_restore",
+    form_route_to_confirm_restore: "/",
+    form_fields: {
+      BACKUP_NAME: "backup_name",
+    },
+  },
 };
 
-export const Restore = {
-  args: {
-    // Step
-    step: {
-      code: "restore",
-      title: "Restore",
-    },
-    step_parent_id: "ua_container",
-    data_transparency_link: "https://www.prestashop-project.org/data-transparency",
-    // Logs
-    ...LogsProgress.args,
-    ...LogsViewer.args,
-    // Stepper
-    ...Stepper.args,
+export const RestoreFromBackup = {
+  play: async () => {
+    const dialog = document.querySelector('.dialog');
+    dialog.showModal();
   },
 };

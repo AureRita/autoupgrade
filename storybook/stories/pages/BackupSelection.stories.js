@@ -23,7 +23,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-import BackupSelectionPage from "../../../views/templates/pages/rollback.html.twig";
+import BackupSelectionPage from "../../../views/templates/pages/restore.html.twig";
 import { Default as BackupSelectionComponent } from "../components/BackupSelection.stories";
 import { BackupSelection as Stepper } from "../components/Stepper.stories";
 

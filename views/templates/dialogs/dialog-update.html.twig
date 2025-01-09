@@ -31,27 +31,23 @@
   {% endif %}
 {% endblock %}
 
-{% block dialog_footer %}
-  <div class="dialog__footer">
-    {% block dialog_footer_inner %}
-      <button type="button" class="btn btn-link" data-dismiss="dialog">
-        {{ 'Cancel'|trans({}) }}
-      </button>
+{% block dialog_footer_inner %}
+  <button type="button" class="btn btn-link" data-dismiss="dialog">
+    {{ 'Cancel'|trans({}) }}
+  </button>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        form="form-confirm-update"
-      >
-        <img
-          class="dialog__rocket-icon rocket-icon"
-          src="{{ assets_base_path }}/img/rocket_white.svg"
-          width="20"
-          height="20"
-          alt=""
-        />
-        {{ 'Start update'|trans({}) }}
-      </button>
-    {% endblock %}
-  </div>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    form="form-confirm-update"
+  >
+    <img
+      class="dialog__rocket-icon rocket-icon"
+      src="{{ assets_base_path }}/img/rocket_white.svg"
+      width="20"
+      height="20"
+      alt=""
+    />
+    {{ 'Start update'|trans({}) }}
+  </button>
 {% endblock %}
