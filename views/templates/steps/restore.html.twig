@@ -7,13 +7,40 @@
 {% endblock %}
 
 {% block content %}
+  {% include "@ModuleAutoUpgrade/components/alert.html.twig" with {
+    id: 'error-alert',
+    hidden: true,
+    alertStatus: 'danger',
+    title: 'Restoration failed'|trans({}),
+    message: 'Please try again. You can also send us an error report to help us improve the Update assistant module.'|trans({})
+  } %}
   {% include "@ModuleAutoUpgrade/components/progress-tracker.html.twig" with {
-    successRoute: 'restore-step-post-restore'
+    successRoute: 'restore-step-post-restore',
+    downloadLogsRoute: download_logs_route,
+    downloadLogsType: download_logs_type,
   } %}
 {% endblock %}
 
 {% block buttons_inner %}
-  <button class="btn btn-lg btn-primary" type="button">
-    {{ 'Restore'|trans({}) }}
-  </button>
+  <div class="page__buttons hidden" id="error-buttons">
+    <form
+            id="submit-error-report"
+            name="submit-error-report"
+            data-route-to-submit="{{ submit_error_report_route }}"
+    >
+      <button class="btn btn-lg btn-default" type="submit">
+        <i class="material-icons">send</i>
+        {{ 'Send error report'|trans({}) }}
+      </button>
+    </form>
+    <form
+      id="try-again-button"
+      name="try-again-button"
+      data-route-to-submit="{{ try_again_route }}"
+    >
+      <button class="btn btn-lg btn-primary" type="submit">
+        {{ 'Try again'|trans({}) }}
+      </button>
+    </form>
+  </div>
 {% endblock %}
