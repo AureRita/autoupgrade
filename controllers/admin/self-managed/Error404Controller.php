@@ -27,11 +27,29 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Controller;
 
+use PrestaShop\Module\AutoUpgrade\Router\Routes;
+use Symfony\Component\HttpFoundation\Response;
+
 class Error404Controller extends AbstractPageController
 {
+    const ERROR_CODE = 404;
+
+    public function index()
+    {
+        $response = parent::index();
+
+        if ($response instanceof Response) {
+            $response->setStatusCode(self::ERROR_CODE);
+        } else {
+            http_response_code(self::ERROR_CODE);
+        }
+
+        return $response;
+    }
+
     protected function getPageTemplate(): string
     {
-        return 'errors/404';
+        return 'errors/' . self::ERROR_CODE;
     }
 
     protected function getParams(): array
@@ -39,6 +57,11 @@ class Error404Controller extends AbstractPageController
         return [
             // TODO: assets_base_path is provided by all controllers. What about a asset() twig function instead?
             'assets_base_path' => $this->upgradeContainer->getAssetsEnvironment()->getAssetsBaseUrl($this->request),
+
+            'error_code' => self::ERROR_CODE,
+
+            'exit_to_shop_admin' => $this->upgradeContainer->getUrlGenerator()->getShopAdminAbsolutePathFromRequest($this->request),
+            'exit_to_app_home' => Routes::HOME_PAGE,
         ];
     }
 }

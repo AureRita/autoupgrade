@@ -41,6 +41,7 @@ use PrestaShop\Module\AutoUpgrade\Parameters\RestoreConfiguration;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Progress\CompletionCalculator;
 use PrestaShop\Module\AutoUpgrade\Repository\LocalArchiveRepository;
+use PrestaShop\Module\AutoUpgrade\Router\UrlGenerator;
 use PrestaShop\Module\AutoUpgrade\Services\ComposerService;
 use PrestaShop\Module\AutoUpgrade\Services\DistributionApiService;
 use PrestaShop\Module\AutoUpgrade\Services\DownloadService;
@@ -269,6 +270,9 @@ class UpgradeContainer
      * @var UpgradeSelfCheck
      */
     private $upgradeSelfCheck;
+
+    /** @var UrlGenerator */
+    private $urlGenerator;
 
     /**
      * @var PhpVersionResolverService
@@ -901,7 +905,7 @@ class UpgradeContainer
     public function getAssetsEnvironment(): AssetsEnvironment
     {
         if (null === $this->assetsEnvironment) {
-            $this->assetsEnvironment = new AssetsEnvironment($this->getProperty(self::PS_ROOT_PATH));
+            $this->assetsEnvironment = new AssetsEnvironment($this->getUrlGenerator());
         }
 
         return $this->assetsEnvironment;
@@ -959,6 +963,21 @@ class UpgradeContainer
         }
 
         return $this->downloadService = new DownloadService($this->getTranslator(), $this->getLogger());
+    }
+
+    /**
+     * @return UrlGenerator
+     */
+    public function getUrlGenerator(): UrlGenerator
+    {
+        if (null === $this->urlGenerator) {
+            $this->urlGenerator = new UrlGenerator(
+                $this->getProperty(self::PS_ROOT_PATH),
+                $this->getProperty(self::PS_ADMIN_SUBDIR),
+            );
+        }
+
+        return $this->urlGenerator;
     }
 
     /**

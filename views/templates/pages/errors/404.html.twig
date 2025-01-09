@@ -17,7 +17,13 @@
 {% endblock %}
 
 {% block button %}
-  <a class="error-page__button btn btn-primary btn-lg" href="#">
-    {{ 'Go back to Update assistant'|trans({}) }}
+  <form id="home-page-form" name="home-page-form" data-route-to-submit="{{ exit_to_app_home }}" class="hidden">
+    <button class="error-page__button btn btn-primary btn-lg" type="submit">
+      {{ 'Go back to Update assistant'|trans({}) }}
+    </button>
+  </form>
+
+  <a id="exit-button" class="error-page__button btn btn-primary btn-lg hidden" href="{{ exit_to_shop_admin }}">
+    {{ 'Go back to Dashboard'|trans({}) }}
   </a>
 {% endblock %}

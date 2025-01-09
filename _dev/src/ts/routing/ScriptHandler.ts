@@ -17,6 +17,7 @@ import SendErrorReportDialog from '../dialogs/SendErrorReportDialog';
 
 import { ScriptType, ScriptsMatching, CurrentScripts } from '../types/scriptHandlerTypes';
 import { routeHandler } from '../autoUpgrade';
+import ErrorPage from '../pages/ErrorPage';
 
 export default class ScriptHandler {
   #currentScripts: CurrentScripts = {
@@ -41,7 +42,9 @@ export default class ScriptHandler {
 
       'restore-page-backup-selection': RestorePageBackupSelection,
       'restore-page-restore': RestorePageRestore,
-      'restore-page-post-restore': RestorePagePostRestore
+      'restore-page-post-restore': RestorePagePostRestore,
+
+      'error-page': ErrorPage
     },
     [ScriptType.DIALOG]: {
       'restore-backup-dialog': RestoreBackupDialog,
@@ -73,7 +76,9 @@ export default class ScriptHandler {
     const scriptType = this.#getScriptTypeByScriptID(scriptID);
 
     if (!scriptType) {
-      return;
+      console.debug(`No matching class found for ID: ${scriptID}`);
+      // Each route must provide a script to load. If it does not exist, we load the error management script
+      return this.loadScript('error-page');
     }
 
     const classScript = this.#scriptsMatching[scriptType][scriptID];
