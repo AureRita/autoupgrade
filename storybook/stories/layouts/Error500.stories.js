@@ -23,7 +23,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-import ErrorCode500 from "../../../views/templates/errors/500.html.twig";
+import ErrorCode500 from "../../../views/templates/pages/errors/500.html.twig";
 
 export default {
   component: ErrorCode500,
@@ -31,6 +31,7 @@ export default {
   args: {
     psBaseUri: "/",
     error_code: "500",
+    assets_base_path: "",
   }
 };
 
