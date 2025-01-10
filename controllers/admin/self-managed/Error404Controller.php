@@ -32,16 +32,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Error404Controller extends AbstractPageController
 {
-    const ERROR_CODE = 404;
-
     public function index()
     {
         $response = parent::index();
 
         if ($response instanceof Response) {
-            $response->setStatusCode(self::ERROR_CODE);
+            $response->setStatusCode(Response::HTTP_NOT_FOUND);
         } else {
-            http_response_code(self::ERROR_CODE);
+            http_response_code(Response::HTTP_NOT_FOUND);
         }
 
         return $response;
@@ -49,7 +47,7 @@ class Error404Controller extends AbstractPageController
 
     protected function getPageTemplate(): string
     {
-        return 'errors/' . self::ERROR_CODE;
+        return 'errors/' . Response::HTTP_NOT_FOUND;
     }
 
     protected function getParams(): array
@@ -58,7 +56,7 @@ class Error404Controller extends AbstractPageController
             // TODO: assets_base_path is provided by all controllers. What about a asset() twig function instead?
             'assets_base_path' => $this->upgradeContainer->getAssetsEnvironment()->getAssetsBaseUrl($this->request),
 
-            'error_code' => self::ERROR_CODE,
+            'error_code' => Response::HTTP_NOT_FOUND,
 
             'exit_to_shop_admin' => $this->upgradeContainer->getUrlGenerator()->getShopAdminAbsolutePathFromRequest($this->request),
             'exit_to_app_home' => Routes::HOME_PAGE,
