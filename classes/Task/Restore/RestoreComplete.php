@@ -46,7 +46,6 @@ class RestoreComplete extends AbstractTask
         $this->next = TaskName::TASK_COMPLETE;
 
         $this->container->getFileStorage()->cleanAllRestoreFiles();
-        $this->container->getFileStorage()->cleanAllUpdateFiles();
         $this->container->getAnalytics()->track('Restore Succeeded', Analytics::WITH_RESTORE_PROPERTIES);
 
         $this->container->getRestoreState()->setProgressPercentage(

@@ -297,13 +297,6 @@ class AdminSelfUpgradeController extends ModuleAdminController
             empty($_REQUEST['params']) ? [] : $_REQUEST['params']
         );
 
-        if (!$this->ajax) {
-            // removing temporary files before init state to make sure state is already available
-            $this->upgradeContainer->getFileStorage()->cleanAllUpdateFiles();
-            $this->upgradeContainer->getFileStorage()->cleanAllBackupFiles();
-            $this->upgradeContainer->getFileStorage()->cleanAllRestoreFiles();
-        }
-
         if (!$this->upgradeContainer->getUpdateState()->isInitialized()) {
             $this->upgradeContainer->getUpdateState()->initDefault(
                 $this->upgradeContainer->getProperty(UpgradeContainer::PS_VERSION),

@@ -49,6 +49,7 @@ class UpdateInitialization extends AbstractTask
     public function run(): int
     {
         $this->logger->info($this->translator->trans('Starting update...'));
+        $this->container->getFileStorage()->cleanAllUpdateFiles();
         $this->container->getUpdateState()->setProgressPercentage(
             $this->container->getCompletionCalculator()->getBasePercentageOfTask(self::class)
         );

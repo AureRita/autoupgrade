@@ -77,7 +77,6 @@ class RestoreCommand extends AbstractBackupCommand
                     return ExitCode::SUCCESS;
                 }
             }
-            $this->upgradeContainer->getFileStorage()->cleanAllRestoreFiles();
             $controller = new AllRestoreTasks($this->upgradeContainer);
             $controller->setOptions([
                 RestoreConfiguration::BACKUP_NAME => $backup,
