@@ -28,6 +28,7 @@
 namespace PrestaShop\Module\AutoUpgrade\Controller;
 
 use PrestaShop\Module\AutoUpgrade\AjaxResponseBuilder;
+use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeFileNames;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -56,6 +57,7 @@ class HomePageController extends AbstractPageController
         $routeChoice = $this->request->request->get(self::FORM_FIELDS['route_choice']);
 
         if ($routeChoice === self::FORM_OPTIONS['update_value']) {
+            $this->upgradeContainer->getFileStorage()->clean(UpgradeFileNames::UPDATE_CONFIG_FILENAME);
             return AjaxResponseBuilder::nextRouteResponse(Routes::UPDATE_PAGE_VERSION_CHOICE);
         }
 
@@ -64,6 +66,7 @@ class HomePageController extends AbstractPageController
             return AjaxResponseBuilder::errorResponse('You can\'t access this route because you have no backups.', 401);
         }
 
+        $this->upgradeContainer->getFileStorage()->clean(UpgradeFileNames::RESTORE_CONFIG_FILENAME);
         return AjaxResponseBuilder::nextRouteResponse(Routes::RESTORE_PAGE_BACKUP_SELECTION);
     }
 

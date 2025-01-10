@@ -201,7 +201,9 @@ class UpdatePageVersionChoiceController extends AbstractPageWithStepController
             $config->merge($requestConfig);
 
             $configurationStorage->save($config);
-            $state = $this->upgradeContainer->getUpdateState()->setDestinationVersion($this->upgradeContainer->getUpgrader()->getDestinationVersion());
+            $state = $this->upgradeContainer->getUpdateState()
+                ->setDestinationVersion($this->upgradeContainer->getUpgrader()->getDestinationVersion())
+                ->setBackupCompleted(false);
             $state->save();
 
             if ($channel !== null) {
