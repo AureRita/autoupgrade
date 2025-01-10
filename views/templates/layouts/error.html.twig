@@ -3,8 +3,10 @@
 {% block update_assistant %}
   <div id="ua_error_{{ error_code }}" class="error-page">
     <div class="error-page__container">
-      {% block img %}
-        {# Default image can go here, or it can be left empty so that children can override it #}
+      {% block error_code %}
+        <div class="error-page__code">
+          {% for char in error_code|split('') %}<span class="error-page__code-char" data-error-code-char-index="{{ loop.index }}">{{ char == '0' ? 'O' : char }}</span>{% endfor %}
+        </div>
       {% endblock %}
 
       <div class="error-page__infos">

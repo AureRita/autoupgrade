@@ -42,6 +42,12 @@ export default defineConfig({
           return 'assets/[name].[ext]';
         }
       }
+    },
+    minify: 'terser',
+    terserOptions: {
+      mangle: {
+        reserved: ['$']
+      }
     }
   },
   plugins: [

@@ -19,6 +19,7 @@ node_modules/
 /tests/UI/test-results/
 
 ## Compile assets
+/views/assets/
 /views/css/
 /views/img/
 /views/js/

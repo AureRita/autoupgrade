@@ -46,6 +46,7 @@ $cdk-prefix: "cdk-";
   --#{$ua-prefix}primary: var(--#{$ua-prefix}primary-800);
   --#{$ua-prefix}primary-hover: var(--#{$ua-prefix}primary-700);
   --#{$ua-prefix}muted-background-color: var(--#{$ua-prefix}primary-200);
+  --#{$ua-prefix}font-family-prestafont: "Prestafont", sans-serif;
   --#{$ua-prefix}font-family-material-icons: var(
     --#{$cdk-prefix}font-family-material-icons,
     "Material Icons"
