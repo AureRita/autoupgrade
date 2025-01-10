@@ -2278,9 +2278,9 @@ Comment: directory already exists</note>
         <target>Send error report?</target>
         <note>Line: 4</note>
       </trans-unit>
-      <trans-unit id="2bbf9588481e8a1615d65dba78ba435c">
-        <source>Help us improve the module by sending us this error report. You can add details in the description if you want to.</source>
-        <target>Help us improve the module by sending us this error report. You can add details in the description if you want to.</target>
+      <trans-unit id="b283581d613b9844810fbd3721f5747f">
+        <source>Help us improve the module by sending us this error report. For your information, the logs will be attached with your message. You can add more details in the description if you wish</source>
+        <target>Help us improve the module by sending us this error report. For your information, the logs will be attached with your message. You can add more details in the description if you wish</target>
         <note>Line: 10</note>
       </trans-unit>
       <trans-unit id="e3c2f912efa622f6e06c414660d40034">
@@ -2288,25 +2288,30 @@ Comment: directory already exists</note>
         <target>Learn more about your data and your rights</target>
         <note>Line: 16</note>
       </trans-unit>
+      <trans-unit id="e20cbb947afcf84cf58de1358ee1068d">
+        <source>Error message</source>
+        <target>Error message</target>
+        <note>Line: 27</note>
+      </trans-unit>
       <trans-unit id="ea5957193770106ccbb79106b47c06a6">
         <source>Email (optional)</source>
         <target>Email (optional)</target>
-        <note>Line: 27</note>
+        <note>Line: 41</note>
       </trans-unit>
       <trans-unit id="6832ac593617c3e5f61c82a20b0d9a3a">
         <source>Enter your email address</source>
         <target>Enter your email address</target>
-        <note>Line: 34</note>
+        <note>Line: 48</note>
       </trans-unit>
       <trans-unit id="0ba3309bf076bf416d0bb498fdfcb77f">
         <source>Description (optional)</source>
         <target>Description (optional)</target>
-        <note>Line: 40</note>
+        <note>Line: 54</note>
       </trans-unit>
       <trans-unit id="70570ccbf37717a289b3ac438d3cf0c4">
         <source>You can add details about the error here.</source>
         <target>You can add details about the error here.</target>
-        <note>Line: 46</note>
+        <note>Line: 60</note>
       </trans-unit>
     </body>
   </file>
