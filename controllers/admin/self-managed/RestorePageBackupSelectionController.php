@@ -12,6 +12,9 @@ use PrestaShop\Module\AutoUpgrade\Twig\PageSelectors;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\RestoreSteps;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\Stepper;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class RestorePageBackupSelectionController extends AbstractPageWithStepController
 {
@@ -95,6 +98,9 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
         ];
     }
 
+    /**
+     * @throws BackupException
+     */
     public function submitDelete(): JsonResponse
     {
         $onlyBackup = count($this->upgradeContainer->getBackupFinder()->getAvailableBackups()) === 1;
@@ -130,6 +136,9 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
         return AjaxResponseBuilder::nextRouteResponse(Routes::RESTORE_STEP_BACKUP_SELECTION);
     }
 
+    /**
+     * @throws BackupException
+     */
     public function submitRestore(): JsonResponse
     {
         $backupName = $this->request->request->get(RestoreConfiguration::BACKUP_NAME);
@@ -175,7 +184,9 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
     }
 
     /**
-     * @param array<string, mixed> $params
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     private function displayDialog(string $dialogName, array $params, string $scriptName): JsonResponse
     {
