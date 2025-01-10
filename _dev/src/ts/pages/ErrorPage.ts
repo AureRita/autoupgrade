@@ -13,11 +13,11 @@ export default class ErrorPage extends PageAbstract {
     }
   }
 
-  public mount = () => {
+  public mount = (): void => {
     this.errorPage?.mount();
   };
 
-  public beforeDestroy = () => {
+  public beforeDestroy = (): void => {
     this.errorPage?.beforeDestroy();
   };
 }

@@ -8,12 +8,12 @@ export default class ErrorPage404 implements DomLifecycle {
     this.isOnHomePage = new URLSearchParams(window.location.search).get('route') === 'home-page';
   }
 
-  public mount = () => {
+  public mount = (): void => {
     this.#activeActionButton.classList.remove('hidden');
     this.#form.addEventListener('submit', this.#onSubmit);
   };
 
-  public beforeDestroy = () => {
+  public beforeDestroy = (): void => {
     this.#form.removeEventListener('submit', this.#onSubmit);
   };
 
@@ -45,7 +45,7 @@ export default class ErrorPage404 implements DomLifecycle {
     return link;
   }
 
-  readonly #onSubmit = async (event: Event) => {
+  readonly #onSubmit = async (event: Event): Promise<void> => {
     event.preventDefault();
 
     await api.post(this.#form.dataset.routeToSubmit!, new FormData(this.#form));
