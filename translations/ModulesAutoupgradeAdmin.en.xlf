@@ -2228,30 +2228,6 @@ Comment: directory already exists</note>
       </trans-unit>
     </body>
   </file>
-  <file original="views/templates/dialogs/dialog-backup-delete.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
-    <body>
-      <trans-unit id="f2a6c498fb90ee345d997f888fce3b18">
-        <source>Delete</source>
-        <target>Delete</target>
-        <note>Line: 27</note>
-      </trans-unit>
-      <trans-unit id="b6cf8e12bbbeee058067ebf8c8dda7e2">
-        <source>Delete backup</source>
-        <target>Delete backup</target>
-        <note>Line: 3</note>
-      </trans-unit>
-      <trans-unit id="169cbe3a251a748f39948fac21672d3f">
-        <source>You are about to delete the [1]%backup_name%[/1] backup made on [1]%backup_date%[/1]. %redirect_message%</source>
-        <target>You are about to delete the [1]%backup_name%[/1] backup made on [1]%backup_date%[/1]. %redirect_message%</target>
-        <note>Line: 4</note>
-      </trans-unit>
-      <trans-unit id="1d29e7654982fdc3f9dbf5f9f200ed60">
-        <source>As it's your only backup, you will be redirected to the module's home page.</source>
-        <target>As it's your only backup, you will be redirected to the module's home page.</target>
-        <note>Line: 7</note>
-      </trans-unit>
-    </body>
-  </file>
   <file original="views/templates/dialogs/dialog-backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
       <trans-unit id="a55151123e9668d00ca7edbfbaf34b49">
@@ -2267,7 +2243,31 @@ Comment: directory already exists</note>
       <trans-unit id="0b69cd55a690bee672a1fb91091222f1">
         <source>Start backup</source>
         <target>Start backup</target>
-        <note>Line: 22</note>
+        <note>Line: 20</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="views/templates/dialogs/dialog-delete-backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="f2a6c498fb90ee345d997f888fce3b18">
+        <source>Delete</source>
+        <target>Delete</target>
+        <note>Line: 24</note>
+      </trans-unit>
+      <trans-unit id="b6cf8e12bbbeee058067ebf8c8dda7e2">
+        <source>Delete backup</source>
+        <target>Delete backup</target>
+        <note>Line: 3</note>
+      </trans-unit>
+      <trans-unit id="41ee96bba9c1ea02aa9a3702024391a9">
+        <source>You are about to delete the %backup_name% backup made on %backup_date%. As it's your only backup, you will be redirected to the module's home page.</source>
+        <target>You are about to delete the %backup_name% backup made on %backup_date%. As it's your only backup, you will be redirected to the module's home page.</target>
+        <note>Line: 7</note>
+      </trans-unit>
+      <trans-unit id="e732a5a0788d58831c86721e173482cc">
+        <source>You are about to delete the %backup_name% backup made on %backup_date%.</source>
+        <target>You are about to delete the %backup_name% backup made on %backup_date%.</target>
+        <note>Line: 8</note>
       </trans-unit>
     </body>
   </file>
@@ -2315,6 +2315,25 @@ Comment: directory already exists</note>
       </trans-unit>
     </body>
   </file>
+  <file original="views/templates/dialogs/dialog-restore-from-backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="2bd339d85ee3b33e513359ce781b60cc">
+        <source>Restore</source>
+        <target>Restore</target>
+        <note>Line: 21</note>
+      </trans-unit>
+      <trans-unit id="d9ea955da44076b696c6e31e407bb7a9">
+        <source>Restore from a backup?</source>
+        <target>Restore from a backup?</target>
+        <note>Line: 3</note>
+      </trans-unit>
+      <trans-unit id="44e1fe4813ed848371c541e35e8422c3">
+        <source>You are about to restore %backup_version% using the backup from %backup_date%.</source>
+        <target>You are about to restore %backup_version% using the backup from %backup_date%.</target>
+        <note>Line: 5</note>
+      </trans-unit>
+    </body>
+  </file>
   <file original="views/templates/dialogs/dialog-tempered-files.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
       <trans-unit id="2b3196ae5bc51de9273f565ca1fb9fef">
@@ -2334,7 +2353,7 @@ Comment: directory already exists</note>
       <trans-unit id="880d6ec7b06e1f403347a16afbca8335">
         <source>Start update</source>
         <target>Start update</target>
-        <note>Line: 53</note>
+        <note>Line: 51</note>
       </trans-unit>
       <trans-unit id="2ca0ff94d146821c12f5340b117b9ecf">
         <source>Start update?</source>
@@ -2460,15 +2479,6 @@ Comment: directory already exists</note>
         <source>Launch backup</source>
         <target>Launch backup</target>
         <note>Line: 72</note>
-      </trans-unit>
-    </body>
-  </file>
-  <file original="views/templates/steps/backup-selection.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
-    <body>
-      <trans-unit id="2bd339d85ee3b33e513359ce781b60cc">
-        <source>Restore</source>
-        <target>Restore</target>
-        <note>Line: 15</note>
       </trans-unit>
     </body>
   </file>
