@@ -184,6 +184,7 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
     }
 
     /**
+     * @param array<string, mixed> $params
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
