@@ -3,18 +3,25 @@
 namespace PrestaShop\Module\AutoUpgrade\Controller;
 
 use PrestaShop\Module\AutoUpgrade\AjaxResponseBuilder;
+use PrestaShop\Module\AutoUpgrade\Exceptions\BackupException;
 use PrestaShop\Module\AutoUpgrade\Parameters\RestoreConfiguration;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeFileNames;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
 use PrestaShop\Module\AutoUpgrade\Task\TaskType;
+use PrestaShop\Module\AutoUpgrade\Twig\PageSelectors;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\RestoreSteps;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\Stepper;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class RestorePageBackupSelectionController extends AbstractPageWithStepController
 {
     const CURRENT_STEP = RestoreSteps::STEP_BACKUP_SELECTION;
     const FORM_NAME = 'backup_choice';
+    const DELETE_BACKUP_FORM_NAME = 'backup_to_delete';
+    const RESTORE_BACKUP_FORM_NAME = 'backup_to_restore';
     const FORM_FIELDS = [
         RestoreConfiguration::BACKUP_NAME => RestoreConfiguration::BACKUP_NAME,
     ];
@@ -65,8 +72,8 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
             [
                 'form_backup_selection_name' => self::FORM_NAME,
                 'form_route_to_save' => Routes::RESTORE_STEP_BACKUP_SELECTION_SAVE_FORM,
-                'form_route_to_submit' => Routes::RESTORE_STEP_BACKUP_SELECTION_SUBMIT_FORM,
-                'form_route_to_delete' => Routes::RESTORE_STEP_BACKUP_SELECTION_DELETE_FORM,
+                'form_route_to_submit_restore' => Routes::RESTORE_STEP_BACKUP_SELECTION_SUBMIT_RESTORE_FORM,
+                'form_route_to_submit_delete' => Routes::RESTORE_STEP_BACKUP_SELECTION_SUBMIT_DELETE_FORM,
                 'form_fields' => self::FORM_FIELDS,
                 'current_backup' => $currentBackup,
                 'backups_available' => $backupsAvailable,
@@ -74,7 +81,44 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
         );
     }
 
-    public function delete(): JsonResponse
+    /**
+     * @return array<string, mixed>
+     *
+     * @throws BackupException
+     */
+    private function getDialogParams(): array
+    {
+        $backupName = $this->request->request->get(RestoreConfiguration::BACKUP_NAME);
+        $backupDate = $this->upgradeContainer->getBackupFinder()->parseBackupMetadata($backupName)['datetime'];
+
+        return [
+            'backup_name' => $backupName,
+            'backup_date' => $backupDate,
+            'form_fields' => self::FORM_FIELDS,
+        ];
+    }
+
+    /**
+     * @throws BackupException
+     */
+    public function submitDelete(): JsonResponse
+    {
+        $onlyBackup = count($this->upgradeContainer->getBackupFinder()->getAvailableBackups()) === 1;
+
+        return $this->displayDialog('dialog-delete-backup',
+            array_merge(
+                $this->getDialogParams(),
+                [
+                    'only_backup' => $onlyBackup,
+                    'form_name' => self::DELETE_BACKUP_FORM_NAME,
+                    'form_route_to_confirm_delete' => Routes::RESTORE_STEP_BACKUP_SELECTION_CONFIRM_DELETE_FORM,
+                ]
+            ),
+            'delete-backup-dialog'
+        );
+    }
+
+    public function confirmDelete(): JsonResponse
     {
         $backup = $this->request->request->get(self::FORM_FIELDS[RestoreConfiguration::BACKUP_NAME]);
         $this->upgradeContainer->getBackupManager()->deleteBackup($backup);
@@ -93,9 +137,30 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
     }
 
     /**
+     * @throws BackupException
+     */
+    public function submitRestore(): JsonResponse
+    {
+        $backupName = $this->request->request->get(RestoreConfiguration::BACKUP_NAME);
+        $backupVersion = $this->upgradeContainer->getBackupFinder()->parseBackupMetadata($backupName)['version'];
+
+        return $this->displayDialog('dialog-restore-from-backup',
+            array_merge(
+                $this->getDialogParams(),
+                [
+                    'backup_version' => $backupVersion,
+                    'form_name' => self::RESTORE_BACKUP_FORM_NAME,
+                    'form_route_to_confirm_restore' => Routes::RESTORE_STEP_BACKUP_SELECTION_CONFIRM_RESTORE_FORM,
+                ]
+            ),
+            'restore-backup-dialog'
+        );
+    }
+
+    /**
      * @throws \Exception
      */
-    public function submit(): JsonResponse
+    public function startRestore(): JsonResponse
     {
         $this->saveBackupConfiguration();
 
@@ -116,5 +181,24 @@ class RestorePageBackupSelectionController extends AbstractPageWithStepControlle
 
         $restoreConfiguration->merge($config);
         $configurationStorage->save($restoreConfiguration);
+    }
+
+    /**
+     * @param array<string, mixed> $params
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    private function displayDialog(string $dialogName, array $params, string $scriptName): JsonResponse
+    {
+        return AjaxResponseBuilder::hydrationResponse(
+            PageSelectors::DIALOG_PARENT_ID,
+            $this->getTwig()->render(
+                '@ModuleAutoUpgrade/dialogs/' . $dialogName . '.html.twig',
+                $params
+            ),
+            ['addScript' => $scriptName]
+        );
     }
 }

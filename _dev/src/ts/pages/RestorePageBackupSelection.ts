@@ -39,9 +39,9 @@ export default class RestorePageBackupSelection extends StepPage {
     let routeToSubmit: string | undefined;
 
     if ((event.submitter as HTMLButtonElement)?.value === 'delete') {
-      routeToSubmit = this.#form.dataset.routeToDelete;
+      routeToSubmit = this.#form.dataset.routeToSubmitDelete;
     } else {
-      routeToSubmit = this.#form.dataset.routeToSubmit;
+      routeToSubmit = this.#form.dataset.routeToSubmitRestore;
     }
 
     if (!routeToSubmit) {

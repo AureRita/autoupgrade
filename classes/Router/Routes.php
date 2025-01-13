@@ -48,8 +48,10 @@ class Routes
     const RESTORE_PAGE_BACKUP_SELECTION = 'restore-page-backup-selection';
     const RESTORE_STEP_BACKUP_SELECTION = 'restore-step-backup-selection';
     const RESTORE_STEP_BACKUP_SELECTION_SAVE_FORM = 'restore-step-backup-selection-save-form';
-    const RESTORE_STEP_BACKUP_SELECTION_SUBMIT_FORM = 'restore-step-backup-selection-submit-form';
-    const RESTORE_STEP_BACKUP_SELECTION_DELETE_FORM = 'restore-step-backup-selection-delete-form';
+    const RESTORE_STEP_BACKUP_SELECTION_CONFIRM_RESTORE_FORM = 'restore-step-backup-selection-confirm-restore-form';
+    const RESTORE_STEP_BACKUP_SELECTION_SUBMIT_RESTORE_FORM = 'restore-step-backup-selection-submit-restore-form';
+    const RESTORE_STEP_BACKUP_SELECTION_CONFIRM_DELETE_FORM = 'restore-step-backup-selection-confirm-delete-form';
+    const RESTORE_STEP_BACKUP_SELECTION_SUBMIT_DELETE_FORM = 'restore-step-backup-selection-submit-delete-form';
 
     /* step: restore */
     const RESTORE_PAGE_RESTORE = 'restore-page-restore';
