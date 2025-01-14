@@ -300,7 +300,8 @@ class AdminSelfUpgradeController extends ModuleAdminController
         if (!$this->upgradeContainer->getUpdateState()->isInitialized()) {
             $this->upgradeContainer->getUpdateState()->initDefault(
                 $this->upgradeContainer->getProperty(UpgradeContainer::PS_VERSION),
-                $this->upgradeContainer->getUpgrader()->getDestinationVersion()
+                $this->upgradeContainer->getUpgrader(),
+                $this->upgradeContainer->getUpdateConfiguration()
             );
         }
 

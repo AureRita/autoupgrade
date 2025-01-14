@@ -192,19 +192,21 @@ class UpdatePageVersionChoiceController extends AbstractPageWithStepController
             if ($isLocal) {
                 $file = $requestConfig[UpgradeConfiguration::ARCHIVE_ZIP];
                 $fullFilePath = $this->upgradeContainer->getProperty(UpgradeContainer::DOWNLOAD_PATH) . DIRECTORY_SEPARATOR . $file;
-                $requestConfig['archive_version_num'] = $this->upgradeContainer->getPrestashopVersionService()->extractPrestashopVersionFromZip($fullFilePath);
+                $requestConfig[UpgradeConfiguration::ARCHIVE_VERSION_NUM] = $this->upgradeContainer->getPrestashopVersionService()->extractPrestashopVersionFromZip($fullFilePath);
+            } else {
+                $requestConfig[UpgradeConfiguration::ONLINE_VERSION_NUM] = $this->upgradeContainer->getUpgrader()->getDestinationVersion();
             }
 
             $configurationStorage = $this->upgradeContainer->getConfigurationStorage();
 
-            $config = $this->upgradeContainer->getUpdateConfiguration();
-            $config->merge($requestConfig);
+            $updateConfiguration = $this->upgradeContainer->getUpdateConfiguration();
+            $updateConfiguration->merge($requestConfig);
 
-            $configurationStorage->save($config);
-            $state = $this->upgradeContainer->getUpdateState()
-                ->setDestinationVersion($this->upgradeContainer->getUpgrader()->getDestinationVersion())
-                ->setBackupCompleted(false);
-            $state->save();
+            if (!$updateConfiguration->hasAllTheShopConfiguration()) {
+                $this->upgradeContainer->getPrestaShopConfiguration()->fillInUpdateConfiguration($updateConfiguration);
+            }
+
+            $configurationStorage->save($updateConfiguration);
 
             if ($channel !== null) {
                 $params[$channel . '_requirements'] = $this->getRequirements();

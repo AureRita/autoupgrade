@@ -27,7 +27,9 @@
 
 namespace PrestaShop\Module\AutoUpgrade\State;
 
+use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeFileNames;
+use PrestaShop\Module\AutoUpgrade\Upgrader;
 
 class UpdateState extends AbstractState
 {
@@ -54,11 +56,6 @@ class UpdateState extends AbstractState
     protected $installedLanguagesIso = [];
 
     /**
-     * @var bool Marks the backup done during the update configuration
-     */
-    protected $backupCompleted = false;
-
-    /**
      * @var bool Determining if all steps went totally successfully
      *
      * @deprecated To remove with the old UI
@@ -70,18 +67,13 @@ class UpdateState extends AbstractState
         return UpgradeFileNames::STATE_UPDATE_FILENAME;
     }
 
-    public function initDefault(string $currentVersion, ?string $destinationVersion): void
+    public function initDefault(string $currentVersion, Upgrader $upgrader, UpgradeConfiguration $updateConfiguration): void
     {
         $this->disableSave = true;
-        // installedLanguagesIso is used to merge translations files
-        $installedLanguagesIso = array_map(
-            function ($v) { return $v['iso_code']; },
-            \Language::getIsoIds(false)
-        );
-        $this->setInstalledLanguagesIso($installedLanguagesIso);
+        $this->setInstalledLanguagesIso($updateConfiguration->getInstalledLanguagesIsoCode());
 
         $this->setCurrentVersion($currentVersion);
-        $this->setDestinationVersion($destinationVersion);
+        $this->setDestinationVersion($upgrader->getDestinationVersion());
         $this->disableSave = false;
         $this->save();
     }
@@ -124,19 +116,6 @@ class UpdateState extends AbstractState
     public function setInstalledLanguagesIso(array $installedLanguagesIso): self
     {
         $this->installedLanguagesIso = $installedLanguagesIso;
-        $this->save();
-
-        return $this;
-    }
-
-    public function isBackupCompleted(): bool
-    {
-        return $this->backupCompleted;
-    }
-
-    public function setBackupCompleted(bool $completed): self
-    {
-        $this->backupCompleted = $completed;
         $this->save();
 
         return $this;

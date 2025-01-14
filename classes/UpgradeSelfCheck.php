@@ -35,7 +35,6 @@ use PrestaShop\Module\AutoUpgrade\Exceptions\DistributionApiException;
 use PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Services\PhpVersionResolverService;
-use PrestaShop\Module\AutoUpgrade\State\UpdateState;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
 use PrestaShop\Module\AutoUpgrade\Xml\ChecksumCompare;
 use Shop;
@@ -66,8 +65,6 @@ class UpgradeSelfCheck
     private $maxExecutionTime;
     /** @var Upgrader */
     private $upgrader;
-    /** @var UpdateState */
-    private $state;
     /**
      * Path to the root folder of PS
      *
@@ -86,6 +83,8 @@ class UpgradeSelfCheck
      * @var string
      */
     private $autoUpgradePath;
+    /** @var string */
+    private $currentVersion;
     /** @var PrestashopConfiguration */
     private $prestashopConfiguration;
     /** @var UpgradeConfiguration */
@@ -124,7 +123,6 @@ class UpgradeSelfCheck
 
     public function __construct(
         Upgrader $upgrader,
-        UpdateState $state,
         UpgradeConfiguration $updateConfiguration,
         PrestashopConfiguration $prestashopConfiguration,
         Translator $translator,
@@ -132,10 +130,10 @@ class UpgradeSelfCheck
         ChecksumCompare $checksumCompare,
         string $prodRootPath,
         string $adminPath,
-        string $autoUpgradePath
+        string $autoUpgradePath,
+        string $currentVersion
     ) {
         $this->upgrader = $upgrader;
-        $this->state = $state;
         $this->updateConfiguration = $updateConfiguration;
         $this->prestashopConfiguration = $prestashopConfiguration;
         $this->translator = $translator;
@@ -144,6 +142,7 @@ class UpgradeSelfCheck
         $this->prodRootPath = $prodRootPath;
         $this->adminPath = $adminPath;
         $this->autoUpgradePath = $autoUpgradePath;
+        $this->currentVersion = $currentVersion;
     }
 
     /**
@@ -209,7 +208,7 @@ class UpgradeSelfCheck
      */
     public function getRequirementWording(int $requirement, bool $isWebVersion = false): array
     {
-        $version = $this->state->getDestinationVersion();
+        $version = $this->upgrader->getDestinationVersion();
         $phpCompatibilityRange = $this->phpRequirementService->getPhpCompatibilityRange($version);
 
         switch ($requirement) {
@@ -408,7 +407,7 @@ class UpgradeSelfCheck
      */
     public function getCoreMissingFiles(): array
     {
-        $missingFiles = $this->checksumCompare->getTamperedFilesOnShop($this->state->getCurrentVersion());
+        $missingFiles = $this->checksumCompare->getTamperedFilesOnShop($this->currentVersion);
 
         return array_merge($missingFiles['core']['missing'], $missingFiles['mail']['missing']);
     }
@@ -418,7 +417,7 @@ class UpgradeSelfCheck
      */
     public function getCoreAlteredFiles(): array
     {
-        $alteredFiles = $this->checksumCompare->getTamperedFilesOnShop($this->state->getCurrentVersion());
+        $alteredFiles = $this->checksumCompare->getTamperedFilesOnShop($this->currentVersion);
 
         return array_merge($alteredFiles['core']['altered'], $alteredFiles['mail']['altered']);
     }
@@ -428,7 +427,7 @@ class UpgradeSelfCheck
      */
     public function getThemeMissingFiles(): array
     {
-        $missingFiles = $this->checksumCompare->getTamperedFilesOnShop($this->state->getCurrentVersion());
+        $missingFiles = $this->checksumCompare->getTamperedFilesOnShop($this->currentVersion);
 
         return $missingFiles['themes']['missing'];
     }
@@ -438,7 +437,7 @@ class UpgradeSelfCheck
      */
     public function getThemeAlteredFiles(): array
     {
-        $alteredFiles = $this->checksumCompare->getTamperedFilesOnShop($this->state->getCurrentVersion());
+        $alteredFiles = $this->checksumCompare->getTamperedFilesOnShop($this->currentVersion);
 
         return $alteredFiles['themes']['altered'];
     }
@@ -580,7 +579,7 @@ class UpgradeSelfCheck
     public function checkKeyGeneration(): bool
     {
         // Check if key is needed on the version we are upgrading to, if lower, not needed
-        if (version_compare($this->state->getDestinationVersion(), '8.1.0', '<')) {
+        if (version_compare($this->upgrader->getDestinationVersion(), '8.1.0', '<')) {
             return true;
         }
 
@@ -661,7 +660,7 @@ class UpgradeSelfCheck
 
     public function getPhpRequirementsState(): int
     {
-        $version = $this->state->getDestinationVersion();
+        $version = $this->upgrader->getDestinationVersion();
 
         return $this->phpRequirementService->getPhpRequirementsState(PHP_VERSION_ID, $version);
     }

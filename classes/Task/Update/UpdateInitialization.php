@@ -34,6 +34,7 @@ use PrestaShop\Module\AutoUpgrade\Task\AbstractTask;
 use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
 use PrestaShop\Module\AutoUpgrade\Task\TaskName;
 use PrestaShop\Module\AutoUpgrade\Task\TaskType;
+use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 
 /**
  * very first step of the upgrade process. The only thing done is the selection
@@ -50,6 +51,12 @@ class UpdateInitialization extends AbstractTask
     {
         $this->logger->info($this->translator->trans('Starting update...'));
         $this->container->getFileStorage()->cleanAllUpdateFiles();
+
+        $this->container->getUpdateState()->initDefault(
+            $this->container->getProperty(UpgradeContainer::PS_VERSION),
+            $this->container->getUpgrader(),
+            $this->container->getUpdateConfiguration()
+        );
         $this->container->getUpdateState()->setProgressPercentage(
             $this->container->getCompletionCalculator()->getBasePercentageOfTask(self::class)
         );

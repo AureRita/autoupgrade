@@ -58,6 +58,7 @@ class HomePageController extends AbstractPageController
 
         if ($routeChoice === self::FORM_OPTIONS['update_value']) {
             $this->upgradeContainer->getFileStorage()->clean(UpgradeFileNames::UPDATE_CONFIG_FILENAME);
+
             return AjaxResponseBuilder::nextRouteResponse(Routes::UPDATE_PAGE_VERSION_CHOICE);
         }
 
@@ -67,6 +68,7 @@ class HomePageController extends AbstractPageController
         }
 
         $this->upgradeContainer->getFileStorage()->clean(UpgradeFileNames::RESTORE_CONFIG_FILENAME);
+
         return AjaxResponseBuilder::nextRouteResponse(Routes::RESTORE_PAGE_BACKUP_SELECTION);
     }
 

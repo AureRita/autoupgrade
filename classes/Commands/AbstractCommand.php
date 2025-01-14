@@ -98,6 +98,13 @@ abstract class AbstractCommand extends Command
      */
     protected function loadConfiguration(?string $configPath): int
     {
+        $updateConfiguration = $this->upgradeContainer->getUpdateConfiguration();
+        if (!$updateConfiguration->hasAllTheShopConfiguration()) {
+            $this->upgradeContainer->initPrestaShopCore();
+            $this->upgradeContainer->getPrestaShopConfiguration()->fillInUpdateConfiguration($updateConfiguration);
+        }
+        $this->upgradeContainer->getConfigurationStorage()->save($updateConfiguration);
+
         $controller = new UpdateConfig($this->upgradeContainer);
 
         $configurationData = [];
@@ -130,6 +137,7 @@ abstract class AbstractCommand extends Command
 
             return $controller->run();
         }
+
 
         return ExitCode::SUCCESS;
     }

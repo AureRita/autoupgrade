@@ -27,10 +27,9 @@ class UpdateStateTest extends TestCase
             'currentVersion' => '1.7.8.6',
             'destinationVersion' => '9.0.0',
             'installedLanguagesIso' => [],
-            'backupCompleted' => false,
             'warning_exists' => false,
 
-            'progressPercentage' => '20',
+            'progressPercentage' => 20,
         ];
 
         $this->assertEquals($expected, $this->state->export());
@@ -95,7 +94,6 @@ class UpdateStateTest extends TestCase
 
         $this->assertEquals('1.6.1.24', $this->state->getCurrentVersion());
         $this->assertEquals('9.2.3', $this->state->getDestinationVersion());
-        $this->assertTrue($this->state->isBackupCompleted());
         $this->assertEquals(['fr', 'de'], $this->state->getInstalledLanguagesIso());
     }
 

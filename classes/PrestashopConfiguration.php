@@ -28,6 +28,7 @@
 namespace PrestaShop\Module\AutoUpgrade;
 
 use Exception;
+use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 
 class PrestashopConfiguration
 {
@@ -115,5 +116,25 @@ class PrestashopConfiguration
         }
 
         return null;
+    }
+
+    /**
+     * Rely on installed languages to merge translations files
+     *
+     * @return string[]
+     */
+    public function getInstalledLanguages(): array
+    {
+        return array_map(
+            function ($v) { return $v['iso_code']; },
+            \Language::getIsoIds(false)
+        );
+    }
+
+    public function fillInUpdateConfiguration(UpgradeConfiguration $upgradeConfiguration): void
+    {
+        $upgradeConfiguration->merge([
+            UpgradeConfiguration::INSTALLED_LANGUAGES => $this->getInstalledLanguages(),
+        ]);
     }
 }

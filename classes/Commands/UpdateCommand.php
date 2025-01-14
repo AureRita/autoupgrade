@@ -35,6 +35,7 @@ use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeFileNames;
 use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
 use PrestaShop\Module\AutoUpgrade\Task\Runner\AllUpdateTasks;
 use PrestaShop\Module\AutoUpgrade\Task\TaskName;
+use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -95,6 +96,13 @@ class UpdateCommand extends AbstractCommand
                 $exitCode = $this->loadConfiguration($configPath);
                 if ($exitCode !== ExitCode::SUCCESS) {
                     return $exitCode;
+                }
+            } else {
+                $updateState = $this->upgradeContainer->getUpdateState();
+                // In the special case the user inits the process from a specific task that is not the initialization,
+                // we need to initialize the state manually.
+                if (!$updateState->isInitialized()) {
+                    $updateState->initDefault($this->upgradeContainer->getProperty(UpgradeContainer::PS_VERSION), $this->upgradeContainer->getUpgrader(), $this->upgradeContainer->getUpdateConfiguration());
                 }
             }
 
