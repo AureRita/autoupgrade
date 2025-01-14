@@ -1,7 +1,18 @@
-import PageAbstract from '../pages/PageAbstract';
+import DomLifecycle from './DomLifecycle';
 
-interface RoutesMatching {
-  [key: string]: new () => PageAbstract;
+export enum ScriptType {
+  PAGE = 'PAGE',
+  DIALOG = 'DIALOG'
 }
 
-export type { RoutesMatching };
+type CurrentScripts = {
+  [key in ScriptType]: undefined | DomLifecycle;
+};
+
+type ScriptsMatching = {
+  [key in ScriptType]: {
+    [key: string]: new () => DomLifecycle;
+  };
+};
+
+export type { ScriptsMatching, CurrentScripts };

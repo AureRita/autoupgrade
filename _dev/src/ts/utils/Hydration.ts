@@ -1,5 +1,6 @@
 import { ApiResponseHydration } from '../types/apiTypes';
 import { dialogContainer, routeHandler, scriptHandler } from '../autoUpgrade';
+import { ScriptType } from '../types/scriptHandlerTypes';
 
 export default class Hydration {
   /**
@@ -32,7 +33,7 @@ export default class Hydration {
 
     if (elementToUpdate && data.new_content) {
       if (data.new_route) {
-        scriptHandler.unloadRouteScript();
+        scriptHandler.unloadScript(ScriptType.PAGE);
         dialogContainer.beforeDestroy();
       }
 
@@ -40,7 +41,7 @@ export default class Hydration {
 
       if (data.new_route) {
         dialogContainer.mount();
-        scriptHandler.updateRouteScript(data.new_route);
+        scriptHandler.loadScript(data.new_route);
 
         if (!fromPopState) {
           routeHandler.setNewRoute(data.new_route);

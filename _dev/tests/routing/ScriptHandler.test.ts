@@ -58,7 +58,7 @@ describe('ScriptHandler', () => {
 
     expect(homeMount).toHaveBeenCalledTimes(1);
 
-    scriptHandler.updateRouteScript('update-page-version-choice');
+    scriptHandler.loadScript('update-page-version-choice');
 
     expect(homeDestroy).toHaveBeenCalledTimes(1);
     expect(UpdatePageVersionChoice).toHaveBeenCalledTimes(1);
@@ -72,7 +72,9 @@ describe('ScriptHandler', () => {
 
     scriptHandler = new ScriptHandler();
 
-    expect(consoleDebugSpy).toHaveBeenCalledWith(`No matching class found for ID: ${route}`);
+    expect(consoleDebugSpy).toHaveBeenCalledWith(
+      `No matching script in script types found for script with ID: ${route}`
+    );
   });
 
   it('should catch and log errors if page instantiation or mount fails', () => {
@@ -87,7 +89,7 @@ describe('ScriptHandler', () => {
     (routeHandler.getCurrentRoute as jest.Mock).mockReturnValue('home-route');
 
     scriptHandler = new ScriptHandler();
-    scriptHandler.updateRouteScript(route);
+    scriptHandler.loadScript(route);
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       `Failed to load script with ID ${route}:`,

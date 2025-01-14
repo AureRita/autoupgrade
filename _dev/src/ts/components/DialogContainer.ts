@@ -1,5 +1,7 @@
 import DomLifecycle from '../types/DomLifecycle';
 import Hydration from '../utils/Hydration';
+import { scriptHandler } from '../autoUpgrade';
+import { ScriptType } from '../types/scriptHandlerTypes';
 
 export default class DialogContainer implements DomLifecycle {
   public static readonly cancelEvent = 'cancel';
@@ -57,6 +59,7 @@ export default class DialogContainer implements DomLifecycle {
   }
 
   #closeDialog(ev: Event): void {
+    scriptHandler.unloadScript(ScriptType.DIALOG);
     const dialog = ev.target as HTMLDialogElement;
     if (dialog) {
       dialog.close();
