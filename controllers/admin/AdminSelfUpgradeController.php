@@ -466,57 +466,19 @@ class AdminSelfUpgradeController extends ModuleAdminController
             return parent::initContent();
         }
 
-        if (Tools::getValue('new-ui')) {
-            $this->content = $this->upgradeContainer->getTwig()->render('@ModuleAutoUpgrade/module-script-variables.html.twig', [
-                'autoupgrade_variables' => $this->getScriptsVariables(),
-            ]);
-            $request = Request::createFromGlobals();
-            $this->addNewUIAssets($request);
+        $this->content = $this->upgradeContainer->getTwig()->render('@ModuleAutoUpgrade/module-script-variables.html.twig', [
+            'autoupgrade_variables' => $this->getScriptsVariables(),
+        ]);
+        $request = Request::createFromGlobals();
+        $this->addNewUIAssets($request);
 
-            $response = (new Router($this->upgradeContainer))->handle($request);
+        $response = (new Router($this->upgradeContainer))->handle($request);
 
-            if ($response instanceof \Symfony\Component\HttpFoundation\Response) {
-                $response->send();
-                exit;
-            }
-            $this->content .= $response;
-
-            return parent::initContent();
+        if ($response instanceof \Symfony\Component\HttpFoundation\Response) {
+            $response->send();
+            exit;
         }
-
-        // update backup name
-        $backupFinder = $this->upgradeContainer->getBackupFinder();
-        $availableBackups = $backupFinder->getAvailableBackups();
-        $updateConfiguration = $this->upgradeContainer->getUpdateConfiguration();
-        if (!$updateConfiguration->shouldBackupFilesAndDatabase()
-            && !empty($availableBackups)
-            && !in_array($this->upgradeContainer->getBackupState()->getBackupName(), $availableBackups)
-        ) {
-            $this->upgradeContainer->getBackupState()->setBackupName(end($availableBackups));
-        }
-
-        $upgrader = $this->upgradeContainer->getUpgrader();
-
-        $response = new AjaxResponse($this->upgradeContainer->getUpdateState(), $this->upgradeContainer->getLogger());
-        $this->content = (new UpgradePage(
-            $updateConfiguration,
-            $this->upgradeContainer->getTwig(),
-            $this->upgradeContainer->getTranslator(),
-            $this->upgradeContainer->getUpgradeSelfCheck(),
-            $upgrader,
-            $backupFinder,
-            $this->autoupgradePath,
-            $this->prodRootDir,
-            $this->adminDir,
-            self::$currentIndex,
-            $this->token,
-            $this->upgradeContainer->getBackupState()->getBackupName(),
-            $this->downloadPath
-        ))->display(
-            $response
-                ->setUpgradeConfiguration($updateConfiguration)
-                ->getJson()
-        );
+        $this->content .= $response;
 
         return parent::initContent();
     }
