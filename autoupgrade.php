@@ -185,7 +185,7 @@ class Autoupgrade extends Module
         require_once _PS_ROOT_DIR_ . '/modules/autoupgrade/classes/UpgradeTools/Translator.php';
 
         $translator = new \PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator(
-            _PS_ROOT_DIR_ . 'modules' . DIRECTORY_SEPARATOR . 'autoupgrade' . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR,
+            _PS_ROOT_DIR_ . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'autoupgrade' . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR,
             \Context::getContext()->language->iso_code
         );
 
