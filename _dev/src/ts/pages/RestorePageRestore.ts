@@ -44,7 +44,12 @@ export default class RestorePageRestore extends StepPage {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
+    const routeToSubmit = form.dataset.routeToSubmit;
 
-    await api.post(form.dataset.routeToSubmit!);
+    if (!routeToSubmit) {
+      throw new Error('No route to submit form provided. Impossible to submit form.');
+    }
+
+    await api.post(routeToSubmit);
   };
 }
