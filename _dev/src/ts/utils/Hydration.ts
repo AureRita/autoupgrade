@@ -33,7 +33,7 @@ export default class Hydration {
 
     if (elementToUpdate && data.new_content) {
       if (data.new_route) {
-        scriptHandler.unloadScript(ScriptType.PAGE);
+        scriptHandler.unloadScriptType(ScriptType.PAGE);
         dialogContainer.beforeDestroy();
       }
 

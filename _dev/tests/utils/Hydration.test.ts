@@ -5,7 +5,7 @@ import ScriptHandler from '../../src/ts/routing/ScriptHandler';
 import { dialogContainer } from '../../src/ts/autoUpgrade';
 
 const setNewRouteMock = jest.spyOn(RouteHandler.prototype, 'setNewRoute');
-const unloadRouteScriptMock = jest.spyOn(ScriptHandler.prototype, 'unloadScript');
+const unloadRouteScriptMock = jest.spyOn(ScriptHandler.prototype, 'unloadScriptType');
 const loadScriptMock = jest.spyOn(ScriptHandler.prototype, 'loadScript');
 
 jest.mock('../../src/ts/components/DialogContainer', () => {

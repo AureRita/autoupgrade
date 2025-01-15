@@ -80,7 +80,7 @@ export default class ScriptHandler {
 
     try {
       if (this.#currentScripts[scriptType] !== undefined) {
-        this.unloadScript(scriptType);
+        this.unloadScriptType(scriptType);
       }
       this.#currentScripts[scriptType] = new classScript();
       this.#currentScripts[scriptType].mount();
@@ -96,16 +96,16 @@ export default class ScriptHandler {
    * @description Unloads the currently loaded script from his type.
    *  Should be called before updating the DOM.
    */
-  public unloadScript(scriptType: ScriptType): void {
+  public unloadScriptType(scriptType: ScriptType): void {
     this.#currentScripts[scriptType]?.beforeDestroy();
     this.#currentScripts[scriptType] = undefined;
   }
 
   #getScriptTypeByScriptID(scriptID: string): ScriptType | null {
     let scriptType = null;
-    const scriptTypeKeys = Object.keys(ScriptType) as Array<keyof typeof ScriptType>;
+    const scriptTypeKeys = Object.values(ScriptType);
     scriptTypeKeys.forEach((key) => {
-      const type = ScriptType[key as keyof typeof ScriptType];
+      const type = ScriptType[key];
       if (this.#scriptsMatching[type][scriptID]) {
         scriptType = type;
       }

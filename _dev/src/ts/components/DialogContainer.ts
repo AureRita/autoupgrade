@@ -59,7 +59,7 @@ export default class DialogContainer implements DomLifecycle {
   }
 
   #closeDialog(ev: Event): void {
-    scriptHandler.unloadScript(ScriptType.DIALOG);
+    scriptHandler.unloadScriptType(ScriptType.DIALOG);
     const dialog = ev.target as HTMLDialogElement;
     if (dialog) {
       dialog.close();
