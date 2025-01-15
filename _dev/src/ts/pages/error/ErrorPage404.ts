@@ -18,7 +18,7 @@ export default class ErrorPage404 implements DomLifecycle {
   };
 
   get #activeActionButton(): HTMLFormElement | HTMLAnchorElement {
-    return this.isOnHomePage ? this.#form : this.#exitButton;
+    return this.isOnHomePage ? this.#exitButton : this.#form;
   }
 
   get #form(): HTMLFormElement {
