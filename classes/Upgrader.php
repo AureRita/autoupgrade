@@ -107,9 +107,6 @@ class Upgrader
     {
         if ($this->updateConfiguration->isChannelLocal()) {
             return $this->updateConfiguration->getLocalChannelVersion();
-        } elseif ($this->updateConfiguration->getOnlineChannelVersion()) {
-            // Version of online channel has been cached? Return it.
-            return $this->updateConfiguration->getOnlineChannelVersion();
         } else {
             return $this->getOnlineDestinationRelease() ? $this->getOnlineDestinationRelease()->getVersion() : null;
         }

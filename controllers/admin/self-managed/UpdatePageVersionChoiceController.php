@@ -193,8 +193,6 @@ class UpdatePageVersionChoiceController extends AbstractPageWithStepController
                 $file = $requestConfig[UpgradeConfiguration::ARCHIVE_ZIP];
                 $fullFilePath = $this->upgradeContainer->getProperty(UpgradeContainer::DOWNLOAD_PATH) . DIRECTORY_SEPARATOR . $file;
                 $requestConfig[UpgradeConfiguration::ARCHIVE_VERSION_NUM] = $this->upgradeContainer->getPrestashopVersionService()->extractPrestashopVersionFromZip($fullFilePath);
-            } else {
-                $requestConfig[UpgradeConfiguration::ONLINE_VERSION_NUM] = $this->upgradeContainer->getUpgrader()->getDestinationVersion();
             }
 
             $configurationStorage = $this->upgradeContainer->getConfigurationStorage();

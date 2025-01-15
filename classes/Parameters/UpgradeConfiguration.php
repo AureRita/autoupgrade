@@ -49,7 +49,6 @@ class UpgradeConfiguration extends ArrayCollection
     const ARCHIVE_ZIP = 'archive_zip';
     const ARCHIVE_XML = 'archive_xml';
     const ARCHIVE_VERSION_NUM = 'archive_version_num';
-    const ONLINE_VERSION_NUM = 'online_version_num';
     const BACKUP_COMPLETED = 'backup_completed';
     const INSTALLED_LANGUAGES = 'installed_languages';
 
@@ -125,14 +124,6 @@ class UpgradeConfiguration extends ArrayCollection
     public function getLocalChannelVersion(): ?string
     {
         return $this->get(self::ARCHIVE_VERSION_NUM);
-    }
-
-    /**
-     * Get the cached version number of the online release.
-     */
-    public function getOnlineChannelVersion(): ?string
-    {
-        return $this->get(self::ONLINE_VERSION_NUM);
     }
 
     /**

@@ -138,7 +138,6 @@ abstract class AbstractCommand extends Command
             return $controller->run();
         }
 
-
         return ExitCode::SUCCESS;
     }
 }
