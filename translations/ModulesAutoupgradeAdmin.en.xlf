@@ -2588,6 +2588,25 @@ Comment: directory already exists</note>
       </trans-unit>
     </body>
   </file>
+  <file original="views/templates/steps/restore.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="6e8e3d194e68b2ad276cd4defa252c1f">
+        <source>Restoration failed</source>
+        <target>Restoration failed</target>
+        <note>Line: 14</note>
+      </trans-unit>
+      <trans-unit id="047cdd7b0b3174eb3d6459a44a510ec7">
+        <source>Please try again. You can also send us an error report to help us improve the Update assistant module.</source>
+        <target>Please try again. You can also send us an error report to help us improve the Update assistant module.</target>
+        <note>Line: 15</note>
+      </trans-unit>
+      <trans-unit id="f915a95e609bbd517a8a1e7bdcceef37">
+        <source>Try again</source>
+        <target>Try again</target>
+        <note>Line: 42</note>
+      </trans-unit>
+    </body>
+  </file>
   <file original="views/templates/steps/update-options.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
       <trans-unit id="03a9e6840847f96325b7184d5f3c2769">
