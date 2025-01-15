@@ -96,5 +96,9 @@ class WebLogger extends Logger
         $log = $this->formatLog($level, $message);
 
         $this->normalMessages[] = $log;
+
+        if ($level > self::ERROR) {
+            $this->severeMessages[] = $log;
+        }
     }
 }
