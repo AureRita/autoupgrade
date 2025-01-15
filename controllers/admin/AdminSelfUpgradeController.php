@@ -25,7 +25,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-use PrestaShop\Module\AutoUpgrade\AjaxResponse;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Router\Router;
 use PrestaShop\Module\AutoUpgrade\Tools14;
@@ -37,7 +36,6 @@ class AdminSelfUpgradeController extends ModuleAdminController
 {
     /** @var Autoupgrade */
     public $module;
-    public $multishop_context_group = false;
     /** @var bool */
     public $ajax = false;
     /** @var bool */
