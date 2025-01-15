@@ -15,35 +15,40 @@ import DeleteBackupDialog from '../dialogs/DeleteBackupDialog';
 import StartUpdateDialog from '../dialogs/StartUpdateDialog';
 import SendErrorReportDialog from '../dialogs/SendErrorReportDialog';
 
-import DomLifecycle from '../types/DomLifecycle';
-import { RoutesMatching } from '../types/scriptHandlerTypes';
+import { ScriptType, ScriptsMatching, CurrentScripts } from '../types/scriptHandlerTypes';
 import { routeHandler } from '../autoUpgrade';
 
 export default class ScriptHandler {
-  #currentScript: DomLifecycle | undefined;
+  #currentScripts: CurrentScripts = {
+    [ScriptType.PAGE]: undefined,
+    [ScriptType.DIALOG]: undefined
+  };
 
   /**
    * @private
-   * @type {RoutesMatching}
-   * @description Maps route names to their corresponding page classes.
+   * @type {ScriptsMatching}
+   * @description Map script names by script type to their corresponding script classes.
    */
-  readonly #routesMatching: RoutesMatching = {
-    'home-page': HomePage,
-    'update-page-version-choice': UpdatePageVersionChoice,
-    'update-page-update-options': UpdatePageUpdateOptions,
-    'update-page-backup-options': UpdatePageBackupOptions,
-    'update-page-backup': UpdatePageBackup,
-    'update-page-update': UpdatePageUpdate,
-    'update-page-post-update': UpdatePagePostUpdate,
+  readonly #scriptsMatching: ScriptsMatching = {
+    [ScriptType.PAGE]: {
+      'home-page': HomePage,
+      'update-page-version-choice': UpdatePageVersionChoice,
+      'update-page-update-options': UpdatePageUpdateOptions,
+      'update-page-backup-options': UpdatePageBackupOptions,
+      'update-page-backup': UpdatePageBackup,
+      'update-page-update': UpdatePageUpdate,
+      'update-page-post-update': UpdatePagePostUpdate,
 
-    'restore-page-backup-selection': RestorePageBackupSelection,
-    'restore-page-restore': RestorePageRestore,
-    'restore-page-post-restore': RestorePagePostRestore,
-
-    'restore-backup-dialog': RestoreBackupDialog,
-    'delete-backup-dialog': DeleteBackupDialog,
-    'start-update-dialog': StartUpdateDialog,
-    'send-error-report-dialog': SendErrorReportDialog
+      'restore-page-backup-selection': RestorePageBackupSelection,
+      'restore-page-restore': RestorePageRestore,
+      'restore-page-post-restore': RestorePagePostRestore
+    },
+    [ScriptType.DIALOG]: {
+      'restore-backup-dialog': RestoreBackupDialog,
+      'delete-backup-dialog': DeleteBackupDialog,
+      'start-update-dialog': StartUpdateDialog,
+      'send-error-report-dialog': SendErrorReportDialog
+    }
   };
 
   /**
@@ -60,44 +65,56 @@ export default class ScriptHandler {
 
   /**
    * @public
-   * @param {string} scriptID - The ID of the route to load his associated script.
+   * @param {string} scriptID - The ID of the script to load.
    * @returns void
-   * @description Loads and mounts the page script associated with the specified route name.
+   * @description Loads and mounts the script associated with the specified script name.
    */
-  loadScript(scriptID: string) {
-    const classScript = this.#routesMatching[scriptID];
-    if (classScript) {
-      try {
-        this.#currentScript = new classScript();
-        this.#currentScript.mount();
-      } catch (error) {
-        console.error(`Failed to load script with ID ${scriptID}:`, error);
+  public loadScript(scriptID: string) {
+    const scriptType = this.#getScriptTypeByScriptID(scriptID);
+
+    if (!scriptType) {
+      return;
+    }
+
+    const classScript = this.#scriptsMatching[scriptType][scriptID];
+
+    try {
+      if (this.#currentScripts[scriptType] !== undefined) {
+        this.unloadScriptType(scriptType);
       }
-    } else {
-      console.debug(`No matching class found for ID: ${scriptID}`);
+      this.#currentScripts[scriptType] = new classScript();
+      this.#currentScripts[scriptType].mount();
+    } catch (error) {
+      console.error(`Failed to load script with ID ${scriptID}:`, error);
     }
   }
 
   /**
    * @public
-   * @param {string} newRoute - The name of the route to load his associated script.
+   * @param {ScriptType} scriptType - The type of the script to unload his associated script.
    * @returns void
-   * @description Updates the currently loaded route script by destroying the current
-   *              page instance and loading a new one based on the provided route name.
-   */
-  public updateRouteScript(newRoute: string) {
-    this.#currentScript?.beforeDestroy();
-    this.loadScript(newRoute);
-  }
-
-  /**
-   * @public
-   * @returns void
-   * @description Unloads the currently loaded script.
+   * @description Unloads the currently loaded script from his type.
    *  Should be called before updating the DOM.
    */
-  public unloadRouteScript(): void {
-    this.#currentScript?.beforeDestroy();
-    this.#currentScript = undefined;
+  public unloadScriptType(scriptType: ScriptType): void {
+    this.#currentScripts[scriptType]?.beforeDestroy();
+    this.#currentScripts[scriptType] = undefined;
+  }
+
+  #getScriptTypeByScriptID(scriptID: string): ScriptType | null {
+    let scriptType = null;
+    const scriptTypeKeys = Object.values(ScriptType);
+    scriptTypeKeys.forEach((key) => {
+      const type = ScriptType[key];
+      if (this.#scriptsMatching[type][scriptID]) {
+        scriptType = type;
+      }
+    });
+
+    if (!scriptType) {
+      console.debug(`No matching script in script types found for script with ID: ${scriptID}`);
+    }
+
+    return scriptType;
   }
 }

@@ -5,8 +5,7 @@ import ScriptHandler from '../../src/ts/routing/ScriptHandler';
 import { dialogContainer } from '../../src/ts/autoUpgrade';
 
 const setNewRouteMock = jest.spyOn(RouteHandler.prototype, 'setNewRoute');
-const updateRouteScriptMock = jest.spyOn(ScriptHandler.prototype, 'updateRouteScript');
-const unloadRouteScriptMock = jest.spyOn(ScriptHandler.prototype, 'unloadRouteScript');
+const unloadRouteScriptMock = jest.spyOn(ScriptHandler.prototype, 'unloadScriptType');
 const loadScriptMock = jest.spyOn(ScriptHandler.prototype, 'loadScript');
 
 jest.mock('../../src/ts/components/DialogContainer', () => {
@@ -71,7 +70,7 @@ describe('Hydration', () => {
     expect(updatedElement!.innerHTML).toBe('<p>New Content</p>');
   });
 
-  it('should call scriptHandler.updateRouteScript when new_route is provided', () => {
+  it('should call scriptHandler.loadScript when new_route is provided', () => {
     const response: ApiResponseHydration = {
       hydration: true,
       new_content: `<p>New Content</p>`,
@@ -81,7 +80,7 @@ describe('Hydration', () => {
 
     hydration.hydrate(response);
 
-    expect(updateRouteScriptMock).toHaveBeenCalledWith('new_route_value');
+    expect(loadScriptMock).toHaveBeenCalledWith('new_route_value');
   });
 
   it('should call scriptHandler.loadScript when add_script is provided', () => {
@@ -94,7 +93,6 @@ describe('Hydration', () => {
 
     hydration.hydrate(response);
 
-    expect(updateRouteScriptMock).not.toHaveBeenCalled();
     expect(loadScriptMock).toHaveBeenCalledWith('additional_script');
   });
 
