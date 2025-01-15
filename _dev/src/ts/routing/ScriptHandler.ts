@@ -77,7 +77,8 @@ export default class ScriptHandler {
 
     if (!scriptType) {
       console.debug(`No matching class found for ID: ${scriptID}`);
-      // Each route must provide a script to load. If it does not exist, we load the error management script
+      // Outside a hydration, the scriptID matches the route query param.
+      // If it does not exist, we load the error management script instead.
       return this.loadScript('error-page');
     }
 
