@@ -85,6 +85,8 @@ class UpgradeSelfCheck
     private $autoUpgradePath;
     /** @var string */
     private $currentVersion;
+    /** @var string */
+    private $destinationVersion;
     /** @var PrestashopConfiguration */
     private $prestashopConfiguration;
     /** @var UpgradeConfiguration */
@@ -143,6 +145,7 @@ class UpgradeSelfCheck
         $this->adminPath = $adminPath;
         $this->autoUpgradePath = $autoUpgradePath;
         $this->currentVersion = $currentVersion;
+        $this->destinationVersion = $upgrader->getDestinationVersion();
     }
 
     /**
@@ -208,7 +211,7 @@ class UpgradeSelfCheck
      */
     public function getRequirementWording(int $requirement, bool $isWebVersion = false): array
     {
-        $version = $this->upgrader->getDestinationVersion();
+        $version = $this->destinationVersion;
         $phpCompatibilityRange = $this->phpRequirementService->getPhpCompatibilityRange($version);
 
         switch ($requirement) {
@@ -579,7 +582,7 @@ class UpgradeSelfCheck
     public function checkKeyGeneration(): bool
     {
         // Check if key is needed on the version we are upgrading to, if lower, not needed
-        if (version_compare($this->upgrader->getDestinationVersion(), '8.1.0', '<')) {
+        if (version_compare($this->destinationVersion, '8.1.0', '<')) {
             return true;
         }
 
@@ -660,7 +663,7 @@ class UpgradeSelfCheck
 
     public function getPhpRequirementsState(): int
     {
-        $version = $this->upgrader->getDestinationVersion();
+        $version = $this->destinationVersion;
 
         return $this->phpRequirementService->getPhpRequirementsState(PHP_VERSION_ID, $version);
     }
