@@ -297,6 +297,10 @@ class AdminSelfUpgradeController extends ModuleAdminController
             empty($_REQUEST['params']) ? [] : $_REQUEST['params']
         );
 
+        $this->upgradeContainer->getFileStorage()->cleanAllUpdateFiles();
+        $this->upgradeContainer->getFileStorage()->cleanAllBackupFiles();
+        $this->upgradeContainer->getFileStorage()->cleanAllRestoreFiles();
+
         // TODO: Can be removed when the old UI is not needed anymore
         if (!$this->upgradeContainer->getUpdateState()->isInitialized()) {
             $this->upgradeContainer->getPrestaShopConfiguration()->fillInUpdateConfiguration(
