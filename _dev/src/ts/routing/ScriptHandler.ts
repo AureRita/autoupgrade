@@ -72,14 +72,15 @@ export default class ScriptHandler {
    * @returns void
    * @description Loads and mounts the script associated with the specified script name.
    */
-  public loadScript(scriptID: string) {
+  public loadScript(scriptID: string): void {
     const scriptType = this.#getScriptTypeByScriptID(scriptID);
 
     if (!scriptType) {
       console.debug(`No matching class found for ID: ${scriptID}`);
       // Outside a hydration, the scriptID matches the route query param.
       // If it does not exist, we load the error management script instead.
-      return this.loadScript('error-page');
+      this.loadScript('error-page');
+      return;
     }
 
     const classScript = this.#scriptsMatching[scriptType][scriptID];
