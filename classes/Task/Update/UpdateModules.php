@@ -67,7 +67,7 @@ class UpdateModules extends AbstractTask
         $modulesPath = $this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR;
 
         $moduleSourceList = new ModuleSourceAggregate($this->container->getModuleSourceProviders());
-        $moduleDownloader = new ModuleDownloader($this->translator, $this->logger, $this->container->getProperty(UpgradeContainer::TMP_PATH));
+        $moduleDownloader = new ModuleDownloader($this->container->getDownloadService(), $this->translator, $this->logger, $this->container->getProperty(UpgradeContainer::TMP_PATH));
         $moduleUnzipper = new ModuleUnzipper($this->translator, $this->container->getZipAction(), $modulesPath);
         $moduleMigration = new ModuleMigration($this->translator, $this->logger, $this->container->getProperty(UpgradeContainer::TMP_PATH));
 

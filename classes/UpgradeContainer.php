@@ -43,6 +43,7 @@ use PrestaShop\Module\AutoUpgrade\Progress\CompletionCalculator;
 use PrestaShop\Module\AutoUpgrade\Repository\LocalArchiveRepository;
 use PrestaShop\Module\AutoUpgrade\Services\ComposerService;
 use PrestaShop\Module\AutoUpgrade\Services\DistributionApiService;
+use PrestaShop\Module\AutoUpgrade\Services\DownloadService;
 use PrestaShop\Module\AutoUpgrade\Services\LogsService;
 use PrestaShop\Module\AutoUpgrade\Services\PhpVersionResolverService;
 use PrestaShop\Module\AutoUpgrade\Services\PrestashopVersionService;
@@ -279,6 +280,10 @@ class UpgradeContainer
      */
     private $distributionApiService;
 
+    /**
+     * @var DownloadService
+     */
+    private $downloadService;
     /**
      * AdminSelfUpgrade::$autoupgradePath
      * Ex.: /var/www/html/PrestaShop/admin-dev/autoupgrade.
@@ -942,6 +947,18 @@ class UpgradeContainer
         }
 
         return $this->prestashopVersionService;
+    }
+
+    /**
+     * @return DownloadService
+     */
+    public function getDownloadService(): DownloadService
+    {
+        if (null !== $this->downloadService) {
+            return $this->downloadService;
+        }
+
+        return $this->downloadService = new DownloadService($this->getTranslator(), $this->getLogger());
     }
 
     /**

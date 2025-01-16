@@ -30,8 +30,8 @@ use Exception;
 use LogicException;
 use PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException;
 use PrestaShop\Module\AutoUpgrade\Log\Logger;
+use PrestaShop\Module\AutoUpgrade\Services\DownloadService;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ModuleDownloader
@@ -39,14 +39,18 @@ class ModuleDownloader
     /** @var Translator */
     private $translator;
 
+    /** @var DownloadService */
+    private $downloadService;
+
     /** @var Logger */
     private $logger;
 
     /** @var string */
     private $downloadFolder;
 
-    public function __construct(Translator $translator, Logger $logger, string $downloadFolder)
+    public function __construct(DownloadService $downloadService, Translator $translator, Logger $logger, string $downloadFolder)
     {
+        $this->downloadService = $downloadService;
         $this->translator = $translator;
         $this->logger = $logger;
         $this->downloadFolder = $downloadFolder;
@@ -79,7 +83,7 @@ class ModuleDownloader
     }
 
     /**
-     * @throws IOException When copy fails
+     * @throws UpgradeException
      */
     private function attemptDownload(ModuleDownloaderContext $moduleDownloaderContext, int $index): void
     {
@@ -90,7 +94,7 @@ class ModuleDownloader
 
         if ($moduleSource->isZipped()) {
             $destinationPath .= '/' . $moduleDownloaderContext->getModuleName() . '.zip';
-            $filesystem->copy($moduleSource->getPath(), $destinationPath);
+            $this->downloadService->downloadWithRetry($moduleSource->getPath(), $destinationPath);
         } else {
             // Module contents is already unzipped.
             // We move it first in the sandbox folder to make sure all the files can be read.

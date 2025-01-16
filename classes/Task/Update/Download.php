@@ -28,6 +28,8 @@
 namespace PrestaShop\Module\AutoUpgrade\Task\Update;
 
 use Exception;
+use PrestaShop\Module\AutoUpgrade\Exceptions\DistributionApiException;
+use PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException;
 use PrestaShop\Module\AutoUpgrade\Task\AbstractTask;
 use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
 use PrestaShop\Module\AutoUpgrade\Task\TaskName;
@@ -58,9 +60,7 @@ class Download extends AbstractTask
             $this->container->getCompletionCalculator()->getBasePercentageOfTask(self::class)
         );
 
-        $upgrader = $this->container->getUpgrader();
-
-        $this->logger->debug($this->translator->trans('Downloading from %s', [$upgrader->getOnlineDestinationRelease()->getZipDownloadUrl()]));
+        $this->logger->debug($this->translator->trans('Downloading from %s', [$this->container->getUpgrader()->getOnlineDestinationRelease()->getZipDownloadUrl()]));
         $this->logger->debug($this->translator->trans('File will be saved in %s', [$this->container->getFilePath()]));
         if (file_exists($this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH))) {
             FilesystemAdapter::deleteDirectory($this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH), false);
@@ -69,30 +69,39 @@ class Download extends AbstractTask
         $report = '';
         $relative_download_path = str_replace(_PS_ROOT_DIR_, '', $this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH));
         if (\ConfigurationTest::test_dir($relative_download_path, false, $report)) {
-            $res = $upgrader->downloadLast(
-                $this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH),
-                $this->container->getProperty(UpgradeContainer::ARCHIVE_FILENAME)
-            );
-            if ($res) {
-                $md5file = md5_file(realpath($this->container->getProperty(UpgradeContainer::ARCHIVE_FILEPATH)));
-                if ($md5file == $upgrader->getOnlineDestinationRelease()->getZipMd5()) {
-                    $this->next = TaskName::TASK_UNZIP;
-                    $this->logger->debug($this->translator->trans('Download complete.'));
-                    $this->logger->info($this->translator->trans('Download complete. Now extracting...'));
-                } else {
-                    $this->logger->error($this->translator->trans('Download complete but MD5 sum does not match (%s).', [$md5file]));
-                    $this->logger->info($this->translator->trans('Download complete but MD5 sum does not match (%s). Operation aborted.', [$md5file]));
-                    $this->next = TaskName::TASK_ERROR;
-                }
-            } else {
-                $this->logger->error($this->translator->trans('Error during download'));
-                $this->next = TaskName::TASK_ERROR;
-            }
+            $this->downloadArchive();
         } else {
             $this->logger->error($this->translator->trans('Download directory %s is not writable.', [$this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH)]));
             $this->next = TaskName::TASK_ERROR;
         }
 
         return $this->next == TaskName::TASK_ERROR ? ExitCode::FAIL : ExitCode::SUCCESS;
+    }
+
+    /**
+     * @throws DistributionApiException
+     * @throws UpgradeException
+     * @throws Exception
+     */
+    public function downloadArchive(): void
+    {
+        $destPath = realpath($this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH)) . DIRECTORY_SEPARATOR . $this->container->getProperty(UpgradeContainer::ARCHIVE_FILENAME);
+        $archiveUrl = $this->container->getUpgrader()->getOnlineDestinationRelease()->getZipDownloadUrl();
+
+        try {
+            $this->container->getDownloadService()->downloadWithRetry($archiveUrl, $destPath);
+
+            $md5file = md5_file(realpath($this->container->getProperty(UpgradeContainer::ARCHIVE_FILEPATH)));
+            if ($md5file == $this->container->getUpgrader()->getOnlineDestinationRelease()->getZipMd5()) {
+                $this->next = TaskName::TASK_UNZIP;
+                $this->logger->info($this->translator->trans('Download complete. Now extracting...'));
+            } else {
+                $this->logger->error($this->translator->trans('Download complete but MD5 sum does not match (%s).', [$md5file]));
+                $this->next = TaskName::TASK_ERROR;
+            }
+        } catch (UpgradeException $e) {
+            $this->logger->error($this->translator->trans('The .zip archive could not be downloaded. The update is currently impossible. Please try again later.'));
+            $this->next = TaskName::TASK_ERROR;
+        }
     }
 }
