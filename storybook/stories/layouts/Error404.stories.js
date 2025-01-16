@@ -23,7 +23,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-import ErrorCode404 from "../../../views/templates/errors/404.html.twig";
+import ErrorCode404 from "../../../views/templates/pages/errors/404.html.twig";
 
 export default {
   component: ErrorCode404,
@@ -31,6 +31,10 @@ export default {
   args: {
     psBaseUri: "/",
     error_code: "404",
+    assets_base_path: "",
+
+    exit_to_shop_admin: '#',
+    exit_to_app_home: '#',
   }
 };
 

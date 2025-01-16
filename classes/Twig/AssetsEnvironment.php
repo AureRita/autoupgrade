@@ -27,18 +27,19 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Twig;
 
+use PrestaShop\Module\AutoUpgrade\Router\UrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
 class AssetsEnvironment
 {
     const DEV_BASE_URL = 'http://localhost:5173';
 
-    /** @var string */
-    private $shopBasePath;
+    /** @var UrlGenerator */
+    protected $urlGenerator;
 
-    public function __construct(string $shopBasePath)
+    public function __construct(UrlGenerator $urlGenerator)
     {
-        $this->shopBasePath = $shopBasePath;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function isDevMode(): bool
@@ -52,31 +53,6 @@ class AssetsEnvironment
             return self::DEV_BASE_URL;
         }
 
-        return $this->getShopUrlFromRequest($request) . '/modules/autoupgrade/views';
-    }
-
-    private function getShopUrlFromRequest(Request $request): string
-    {
-        // Determine the subdirectories of the PHP entry point (the script being executed)
-        // relative to the shop root folder.
-        // This calculation helps generate a base path that correctly accounts for any subfolder in which
-        // the shop might be installed.
-        $subDirs = explode(
-            DIRECTORY_SEPARATOR,
-            trim(
-                str_replace(
-                    $this->shopBasePath,
-                    '',
-                    dirname($request->server->get('SCRIPT_FILENAME', '')
-                )
-            ), DIRECTORY_SEPARATOR)
-        );
-        $numberOfSubDirs = count($subDirs);
-
-        $path = explode('/', $request->getBasePath());
-
-        $path = array_splice($path, 0, -$numberOfSubDirs);
-
-        return implode('/', $path);
+        return rtrim($this->urlGenerator->getShopAbsolutePathFromRequest($request), '/') . '/modules/autoupgrade/views';
     }
 }

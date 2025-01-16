@@ -67,4 +67,7 @@ class Routes
 
     /* logs */
     const DOWNLOAD_LOGS = 'download-logs';
+
+    /* errors */
+    const ERROR_404 = 'error-404';
 }

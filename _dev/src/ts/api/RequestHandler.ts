@@ -32,16 +32,25 @@ export class RequestHandler {
     data.append('dir', window.AutoUpgradeVariables.admin_dir);
 
     try {
-      const response = await baseApi.post('', data, {
+      const response = await baseApi.post<ApiResponse>('', data, {
         params: { route },
         signal
       });
 
-      const responseData = response.data as ApiResponse;
+      const responseData = response.data;
       await this.#handleResponse(responseData, fromPopState);
     } catch (error) {
-      // TODO: catch errors
-      console.error(error);
+      // A couple or errors are returned in an actual response (i.e 404 or 500)
+      if (error instanceof AxiosError) {
+        if (error.response?.data) {
+          const responseData = error.response.data;
+          responseData.new_route = 'error-page';
+          await this.#handleResponse(responseData, true);
+        }
+      } else {
+        // TODO: catch errors
+        console.error(error);
+      }
     }
   }
 

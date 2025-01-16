@@ -32,7 +32,6 @@ use PrestaShop\Module\AutoUpgrade\Router\Routes;
 use PrestaShop\Module\AutoUpgrade\Task\TaskType;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\Stepper;
 use PrestaShop\Module\AutoUpgrade\Twig\Steps\UpdateSteps;
-use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 
 class UpdatePagePostUpdateController extends AbstractPageWithStepController
 {
@@ -65,7 +64,7 @@ class UpdatePagePostUpdateController extends AbstractPageWithStepController
         return array_merge(
             $updateSteps->getStepParams($this::CURRENT_STEP),
             [
-                'exit_link' => DIRECTORY_SEPARATOR . $this->upgradeContainer->getProperty(UpgradeContainer::PS_ADMIN_SUBDIR) . DIRECTORY_SEPARATOR . 'index.php',
+                'exit_link' => $this->upgradeContainer->getUrlGenerator()->getShopAdminAbsolutePathFromRequest($this->request),
                 'dev_doc_link' => DocumentationLinks::DEV_DOC_UPGRADE_POST_UPGRADE_URL,
                 'download_logs' => $this->upgradeContainer->getLogsService()->getDownloadLogsData(TaskType::TASK_TYPE_UPDATE),
             ]

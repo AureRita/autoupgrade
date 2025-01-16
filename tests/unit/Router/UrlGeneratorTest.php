@@ -25,56 +25,22 @@
  */
 use PHPUnit\Framework\TestCase;
 use PrestaShop\Module\AutoUpgrade\Router\UrlGenerator;
-use PrestaShop\Module\AutoUpgrade\Twig\AssetsEnvironment;
 use Symfony\Component\HttpFoundation\Request;
 
-class AssetsEnvironmentTest extends TestCase
+class UrlGeneratorTest extends TestCase
 {
-    private $assetsEnvironment;
+    /** @var UrlGenerator */
+    private $urlGenerator;
 
     protected function setUp()
     {
         $shopBasePath = '/yo/doge';
         $adminPath = 'wololo';
-        $this->assetsEnvironment = new AssetsEnvironment(new UrlGenerator($shopBasePath, $adminPath));
+        $this->urlGenerator = new UrlGenerator($shopBasePath, $adminPath);
     }
 
-    protected function tearDown()
+    public function testGetShopUrlReturnsUrl()
     {
-        unset($_ENV['AUTOUPGRADE_DEV_WATCH_MODE']);
-    }
-
-    public function testIsDevModeReturnsTrueWhenEnvVarIsSetTo1()
-    {
-        $_ENV['AUTOUPGRADE_DEV_WATCH_MODE'] = '1';
-
-        $this->assertTrue($this->assetsEnvironment->isDevMode());
-    }
-
-    public function testIsDevModeReturnsFalseWhenEnvVarIsNotSet()
-    {
-        $this->assertFalse($this->assetsEnvironment->isDevMode());
-    }
-
-    public function testIsDevModeReturnsFalseWhenEnvVarIsNot1()
-    {
-        $_ENV['AUTOUPGRADE_DEV_WATCH_MODE'] = '0';
-
-        $this->assertFalse($this->assetsEnvironment->isDevMode());
-    }
-
-    public function testGetAssetsBaseUrlReturnsDevUrlInDevMode()
-    {
-        $_ENV['AUTOUPGRADE_DEV_WATCH_MODE'] = '1';
-
-        $request = new Request();
-
-        $this->assertSame(AssetsEnvironment::DEV_BASE_URL, $this->assetsEnvironment->getAssetsBaseUrl($request));
-    }
-
-    public function testGetAssetsBaseUrlReturnsProductionUrl()
-    {
-        $expectedAbsoluteUrlPathToShop = '/modules/autoupgrade/views';
         $server = [
             'HTTP_HOST' => 'localhost',
             'SERVER_PORT' => '80',
@@ -86,10 +52,13 @@ class AssetsEnvironmentTest extends TestCase
 
         $request = new Request([], [], [], [], [], $server);
 
-        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->assetsEnvironment->getAssetsBaseUrl($request));
+        $expectedAbsoluteUrlPathToShop = '/';
+        $expectedAbsoluteUrlPathToAdmin = '/wololo';
+        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->urlGenerator->getShopAbsolutePathFromRequest($request));
+        $this->assertSame($expectedAbsoluteUrlPathToAdmin, $this->urlGenerator->getShopAdminAbsolutePathFromRequest($request));
     }
 
-    public function testGetAssetsBaseUrlReturnsProductionUrlWithShopInSubFolder()
+    public function testGetShopUrlReturnsUrlWithShopInSubFolder()
     {
         $server = [
             'HTTP_HOST' => 'localhost',
@@ -102,11 +71,13 @@ class AssetsEnvironmentTest extends TestCase
 
         $request = new Request([], [], [], [], [], $server);
 
-        $expectedAbsoluteUrlPathToShop = '/hello-world/modules/autoupgrade/views';
-        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->assetsEnvironment->getAssetsBaseUrl($request));
+        $expectedAbsoluteUrlPathToShop = '/hello-world';
+        $expectedAbsoluteUrlPathToAdmin = '/hello-world/wololo';
+        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->urlGenerator->getShopAbsolutePathFromRequest($request));
+        $this->assertSame($expectedAbsoluteUrlPathToAdmin, $this->urlGenerator->getShopAdminAbsolutePathFromRequest($request));
     }
 
-    public function testGetAssetsBaseUrlReturnsProductionUrlWithCustomEntrypoint()
+    public function testGetShopUrlReturnsUrlWithCustomEntrypoint()
     {
         $server = [
             'HTTP_HOST' => 'localhost',
@@ -119,11 +90,13 @@ class AssetsEnvironmentTest extends TestCase
 
         $request = new Request([], [], [], [], [], $server);
 
-        $expectedAbsoluteUrlPathToShop = '/modules/autoupgrade/views';
-        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->assetsEnvironment->getAssetsBaseUrl($request));
+        $expectedAbsoluteUrlPathToShop = '/';
+        $expectedAbsoluteUrlPathToAdmin = '/wololo';
+        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->urlGenerator->getShopAbsolutePathFromRequest($request));
+        $this->assertSame($expectedAbsoluteUrlPathToAdmin, $this->urlGenerator->getShopAdminAbsolutePathFromRequest($request));
     }
 
-    public function testGetAssetsBaseUrlReturnsProductionUrlWithShopInSubFolderAndParams()
+    public function testGetShopUrlReturnsUrlWithShopInSubFolderAndParams()
     {
         $server = [
             'HTTP_HOST' => 'localhost',
@@ -136,7 +109,9 @@ class AssetsEnvironmentTest extends TestCase
 
         $request = new Request([], [], [], [], [], $server);
 
-        $expectedAbsoluteUrlPathToShop = '/hello-world/modules/autoupgrade/views';
-        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->assetsEnvironment->getAssetsBaseUrl($request));
+        $expectedAbsoluteUrlPathToShop = '/hello-world';
+        $expectedAbsoluteUrlPathToAdmin = '/hello-world/wololo';
+        $this->assertSame($expectedAbsoluteUrlPathToShop, $this->urlGenerator->getShopAbsolutePathFromRequest($request));
+        $this->assertSame($expectedAbsoluteUrlPathToAdmin, $this->urlGenerator->getShopAdminAbsolutePathFromRequest($request));
     }
 }
