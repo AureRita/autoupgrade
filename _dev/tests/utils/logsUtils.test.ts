@@ -12,6 +12,18 @@ describe('parseLogWithSeverity', () => {
     });
   });
 
+  it('should parse a log with SUCCESS severity on multi-line', () => {
+    const log = `DEBUG - Migration file: 8.1.7-catchup, Query: /* 8.0.0 */
+DROP TABLE IF EXISTS \`ps_attribute_impact\``;
+    const result = parseLogWithSeverity(log);
+
+    expect(result).toEqual<LogEntry>({
+      severity: Severity.SUCCESS,
+      message:
+        'Migration file: 8.1.7-catchup, Query: /* 8.0.0 */\nDROP TABLE IF EXISTS `ps_attribute_impact`'
+    });
+  });
+
   it('should parse a log with WARNING severity', () => {
     const log = 'WARNING - Disk space is low';
     const result = parseLogWithSeverity(log);
