@@ -1547,22 +1547,22 @@ Comment: directory already exists</note>
       <trans-unit id="064903b5aa01cf4bc4e5c073d9917678">
         <source>List of core alterations</source>
         <target>List of core alterations</target>
-        <note>Line: 244</note>
+        <note>Line: 245</note>
       </trans-unit>
       <trans-unit id="673cc49de07389091a77d1872687cf64">
         <source>Some core files have been altered, customization made on these files will be lost during the update.</source>
         <target>Some core files have been altered, customization made on these files will be lost during the update.</target>
-        <note>Line: 245</note>
+        <note>Line: 246</note>
       </trans-unit>
       <trans-unit id="3e520d769e66a4dcdf43029803ab4e8e">
         <source>List of theme alterations</source>
         <target>List of theme alterations</target>
-        <note>Line: 257</note>
+        <note>Line: 258</note>
       </trans-unit>
       <trans-unit id="fa22ace14d701200f848374a39f3e88c">
         <source>Some theme files have been altered, customization made on these files will be lost during the update.</source>
         <target>Some theme files have been altered, customization made on these files will be lost during the update.</target>
-        <note>Line: 258</note>
+        <note>Line: 259</note>
       </trans-unit>
     </body>
   </file>
@@ -2342,34 +2342,6 @@ Comment: directory already exists</note>
       </trans-unit>
     </body>
   </file>
-  <file original="views/templates/errors/404.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
-    <body>
-      <trans-unit id="8a862ffce3e06bbe655506fd73fe017c">
-        <source>Something went wrong...</source>
-        <target>Something went wrong...</target>
-        <note>Line: 9</note>
-      </trans-unit>
-      <trans-unit id="9af7e43160937bd2ba87e3828a4f90a6">
-        <source>Go back to Update assistant</source>
-        <target>Go back to Update assistant</target>
-        <note>Line: 21</note>
-      </trans-unit>
-      <trans-unit id="704563ab61497154143cbc7e22e42499">
-        <source>The page you requested cannot be found.</source>
-        <target>The page you requested cannot be found.</target>
-        <note>Line: 15</note>
-      </trans-unit>
-    </body>
-  </file>
-  <file original="views/templates/errors/500.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
-    <body>
-      <trans-unit id="5368f5827707bbb2b9142d25d1f9b493">
-        <source>The module is no longer responding. You can try again in a few moments.</source>
-        <target>The module is no longer responding. You can try again in a few moments.</target>
-        <note>Line: 15</note>
-      </trans-unit>
-    </body>
-  </file>
   <file original="views/templates/main.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
       <trans-unit id="9a843f20677a52ca79af903123147af0">
@@ -2386,6 +2358,34 @@ Comment: directory already exists</note>
         <source>Upgrading your store on your own can be risky. If you don't feel comfortable doing the upgrade yourself, many agencies and developers in your area may also provide this kind of service.</source>
         <target>Upgrading your store on your own can be risky. If you don't feel comfortable doing the upgrade yourself, many agencies and developers in your area may also provide this kind of service.</target>
         <note>Line: 27</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="views/templates/pages/errors/404.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="8a862ffce3e06bbe655506fd73fe017c">
+        <source>Something went wrong...</source>
+        <target>Something went wrong...</target>
+        <note>Line: 9</note>
+      </trans-unit>
+      <trans-unit id="9af7e43160937bd2ba87e3828a4f90a6">
+        <source>Go back to Update assistant</source>
+        <target>Go back to Update assistant</target>
+        <note>Line: 22</note>
+      </trans-unit>
+      <trans-unit id="704563ab61497154143cbc7e22e42499">
+        <source>The page you requested cannot be found.</source>
+        <target>The page you requested cannot be found.</target>
+        <note>Line: 15</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="views/templates/pages/errors/500.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="5368f5827707bbb2b9142d25d1f9b493">
+        <source>The module is no longer responding. You can try again in a few moments.</source>
+        <target>The module is no longer responding. You can try again in a few moments.</target>
+        <note>Line: 15</note>
       </trans-unit>
     </body>
   </file>
@@ -2552,6 +2552,11 @@ Comment: directory already exists</note>
         <target>If you can't access your back office, try enabling the debug mode manually in config/defines.inc.php by setting _PS_MODE_DEV_ to true.</target>
         <note>Line: 63</note>
       </trans-unit>
+      <trans-unit id="fef46e5063ce3dc78b8ae64fa474241d">
+        <source>Exit</source>
+        <target>Exit</target>
+        <note>Line: 82</note>
+      </trans-unit>
       <trans-unit id="e6196201ba7431ba94d3bac5d6af97c8">
         <source>%startbold%Open the developer documentation%endbold% to keep this checklist at-hand.</source>
         <target>%startbold%Open the developer documentation%endbold% to keep this checklist at-hand.</target>
@@ -2561,11 +2566,6 @@ Comment: directory already exists</note>
         <source><![CDATA[%startbold%Disable the maintenance mode%endbold% in General settings > Maintenance.]]></source>
         <target><![CDATA[%startbold%Disable the maintenance mode%endbold% in General settings > Maintenance.]]></target>
         <note>Line: 42</note>
-      </trans-unit>
-      <trans-unit id="fef46e5063ce3dc78b8ae64fa474241d">
-        <source>Exit</source>
-        <target>Exit</target>
-        <note>Line: 82</note>
       </trans-unit>
       <trans-unit id="201ad8cac531a92e1ec77ae5c1e7aa20">
         <source>Post-update checklist</source>
