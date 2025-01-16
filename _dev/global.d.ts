@@ -6,6 +6,8 @@ interface AutoUpgradeVariables {
   admin_dir: string;
   stepper_parent_id: string;
   module_version: string;
+  php_version: string;
+  anonymous_id: string;
 }
 
 declare global {
