@@ -71,6 +71,7 @@ use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
 use PrestaShop\Module\AutoUpgrade\Xml\ChecksumCompare;
 use PrestaShop\Module\AutoUpgrade\Xml\FileLoader;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
@@ -862,6 +863,7 @@ class UpgradeContainer
 
             $this->workspace = new Workspace(
                 $this->getTranslator(),
+                new Filesystem(),
                 $paths
             );
         }

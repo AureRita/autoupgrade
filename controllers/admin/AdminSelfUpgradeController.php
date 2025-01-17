@@ -240,18 +240,6 @@ class AdminSelfUpgradeController extends ModuleAdminController
         $this->upgradeContainer->getFileStorage()->cleanAllBackupFiles();
         $this->upgradeContainer->getFileStorage()->cleanAllRestoreFiles();
 
-        // TODO: Can be removed when the old UI is not needed anymore
-        if (!$this->upgradeContainer->getUpdateState()->isInitialized()) {
-            $this->upgradeContainer->getPrestaShopConfiguration()->fillInUpdateConfiguration(
-                $this->upgradeContainer->getUpdateConfiguration()
-            );
-            $this->upgradeContainer->getUpdateState()->initDefault(
-                $this->upgradeContainer->getProperty(UpgradeContainer::PS_VERSION),
-                $this->upgradeContainer->getUpgrader(),
-                $this->upgradeContainer->getUpdateConfiguration()
-            );
-        }
-
         // If you have defined this somewhere, you know what you do
         // load options from configuration if we're not in ajax mode
         if (!$this->ajax) {
@@ -313,7 +301,7 @@ class AdminSelfUpgradeController extends ModuleAdminController
             'autoupgrade_variables' => $this->getScriptsVariables(),
         ]);
         $request = Request::createFromGlobals();
-        $this->addNewUIAssets($request);
+        $this->addUIAssets($request);
 
         $response = (new Router($this->upgradeContainer))->handle($request);
 
@@ -349,7 +337,7 @@ class AdminSelfUpgradeController extends ModuleAdminController
      *
      * @return void
      */
-    private function addNewUIAssets(Request $request)
+    private function addUIAssets(Request $request)
     {
         $assetsEnvironment = $this->upgradeContainer->getAssetsEnvironment();
         $assetsBaseUrl = $assetsEnvironment->getAssetsBaseUrl($request);

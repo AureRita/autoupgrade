@@ -29,12 +29,11 @@ namespace PrestaShop\Module\AutoUpgrade;
 
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Workspace
 {
-    /**
-     * @var Translator
-     */
+    /** @var Translator */
     private $translator;
 
     /**
@@ -42,12 +41,16 @@ class Workspace
      */
     private $paths;
 
+    /** @var Filesystem */
+    private $filesystem;
+
     /**
      * @param string[] $paths
      */
-    public function __construct(Translator $translator, array $paths)
+    public function __construct(Translator $translator, Filesystem $filesystem, array $paths)
     {
         $this->translator = $translator;
+        $this->filesystem = $filesystem;
         $this->paths = $paths;
     }
 
@@ -71,10 +74,8 @@ class Workspace
     public function createPhpIndex(string $directoryPath): void
     {
         $filePath = $directoryPath . DIRECTORY_SEPARATOR . 'index.php';
-        if (!file_exists($filePath)) {
-            if (!copy(_PS_ROOT_DIR_ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'index.php', $filePath)) {
-                throw new IOException($this->translator->trans('Unable to create file %s', [$filePath]));
-            }
+        if (!$this->filesystem->exists($filePath)) {
+            $this->filesystem->copy(_PS_ROOT_DIR_ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'index.php', $filePath);
         }
     }
 
@@ -84,29 +85,27 @@ class Workspace
     public function createHtAccess(string $modulePath): void
     {
         $filePath = $modulePath . DIRECTORY_SEPARATOR . '.htaccess';
-        $content = <<<HTACCESS
+
+        if (!$this->filesystem->exists($filePath)) {
+            $content = <<<HTACCESS
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Si on accède au dossier "log", on autorise l'accès
-    RewriteCond %{REQUEST_URI} ^/log/ [NC]
-    RewriteRule ^ - [L]
-
-    # Sinon, on interdit l'accès
+    RewriteCond %{REQUEST_URI} ^.*/autoupgrade/logs/ [NC]
+    RewriteCond %{REQUEST_URI} !\.txt$ [NC]
     RewriteRule ^ - [F]
+
+    RewriteRule ^ - [L]
 </IfModule>
 HTACCESS;
-        if (!file_exists($filePath)) {
-            if (!file_put_contents($filePath, $content)) {
-                throw new IOException($this->translator->trans('Unable to create file %s', [$filePath]));
-            }
+            $this->filesystem->dumpFile($filePath, $content);
         }
     }
 
     /**
      * @throws IOException
      */
-    public function init($modulePath): void
+    public function init(string $modulePath): void
     {
         $this->createFolders();
         $this->createHtAccess($modulePath);
