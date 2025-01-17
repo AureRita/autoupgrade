@@ -12,7 +12,7 @@ export default class UpdatePageBackupOptions extends StepPage {
     this.#form.addEventListener('change', this.#onInputChange);
 
     document.getElementById('ua_container')?.addEventListener('click', this.#onClick);
-    dialogContainer.DialogContainer.addEventListener(DialogContainer.okEvent, this.#onDialogOk);
+    dialogContainer.dialogContainer.addEventListener(DialogContainer.okEvent, this.#onDialogOk);
   }
 
   public beforeDestroy(): void {
@@ -20,7 +20,7 @@ export default class UpdatePageBackupOptions extends StepPage {
     this.#form.removeEventListener('change', this.#onInputChange);
 
     document.getElementById('ua_container')?.removeEventListener('click', this.#onClick);
-    dialogContainer.DialogContainer.removeEventListener(DialogContainer.okEvent, this.#onDialogOk);
+    dialogContainer.dialogContainer.removeEventListener(DialogContainer.okEvent, this.#onDialogOk);
   }
 
   get #form(): HTMLFormElement {

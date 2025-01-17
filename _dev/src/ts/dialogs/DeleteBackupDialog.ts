@@ -1,34 +1,20 @@
-import DomLifecycle from '../types/DomLifecycle';
-import api from '../api/RequestHandler';
+import DialogAbstract from './DialogAbstract';
 
-export default class DeleteBackupDialog implements DomLifecycle {
+export default class DeleteBackupDialog extends DialogAbstract {
   protected readonly formId = 'backup_to_delete';
 
-  public mount = (): void => {
-    this.#form.addEventListener('submit', this.#onSubmit);
-  };
-
-  public beforeDestroy = (): void => {
-    this.#form.removeEventListener('submit', this.#onSubmit);
-  };
-
-  get #form(): HTMLFormElement {
+  get form(): HTMLFormElement {
     const form = document.forms.namedItem(this.formId);
     if (!form) {
       throw new Error('Form not found');
     }
-    if (!form.dataset.routeToConfirmDelete) {
-      throw new Error(`Missing data route to confirm delete from form dataset.`);
-    }
+
+    ['routeToConfirmDelete'].forEach((data) => {
+      if (!form.dataset[data]) {
+        throw new Error(`Missing data ${data} from form dataset.`);
+      }
+    });
 
     return form;
   }
-
-  #onSubmit = async (event: SubmitEvent): Promise<void> => {
-    event.preventDefault();
-
-    const form = event.target as HTMLFormElement;
-
-    await api.post(form.dataset.routeToConfirmDelete!, new FormData(this.#form));
-  };
 }

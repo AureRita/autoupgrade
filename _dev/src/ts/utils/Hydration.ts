@@ -34,13 +34,11 @@ export default class Hydration {
     if (elementToUpdate && data.new_content) {
       if (data.new_route) {
         scriptHandler.unloadScriptType(ScriptType.PAGE);
-        dialogContainer.beforeDestroy();
       }
 
       elementToUpdate.innerHTML = data.new_content;
 
       if (data.new_route) {
-        dialogContainer.mount();
         scriptHandler.loadScript(data.new_route);
 
         if (!fromPopState) {
