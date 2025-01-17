@@ -97,6 +97,7 @@ class WebLogger extends Logger
 
         $this->normalMessages[] = $log;
 
+        // deprecated : todo need to be removed after NEW UI is completed.
         if ($level > self::ERROR) {
             $this->severeMessages[] = $log;
         }

@@ -25,7 +25,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Router\Router;
 use PrestaShop\Module\AutoUpgrade\Tools14;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
@@ -36,6 +35,7 @@ class AdminSelfUpgradeController extends ModuleAdminController
 {
     /** @var Autoupgrade */
     public $module;
+    public $multishop_context_group = false;
     /** @var bool */
     public $ajax = false;
     /** @var bool */
@@ -186,66 +186,6 @@ class AdminSelfUpgradeController extends ModuleAdminController
     }
 
     /**
-     * function to set configuration fields display.
-     *
-     * @return void
-     */
-    private function _setFields()
-    {
-        $this->_fieldsBackupOptions = [
-            UpgradeConfiguration::PS_AUTOUP_BACKUP => [
-                'title' => $this->trans('Back up my files and database'),
-                'cast' => 'intval',
-                'validation' => 'isBool',
-                'defaultValue' => '1',
-                'type' => 'bool',
-                'desc' => $this->trans('Automatically back up your database and files in order to restore your shop if needed. This is experimental: you should still perform your own manual backup for safety.'),
-            ],
-            UpgradeConfiguration::PS_AUTOUP_KEEP_IMAGES => [
-                'title' => $this->trans('Back up my images'),
-                'cast' => 'intval',
-                'validation' => 'isBool',
-                'defaultValue' => '1',
-                'type' => 'bool',
-                'desc' => $this->trans('To save time, you can decide not to back your images up. In any case, always make sure you did back them up manually.'),
-            ],
-        ];
-        $this->_fieldsUpgradeOptions = [
-            UpgradeConfiguration::PS_AUTOUP_CUSTOM_MOD_DESACT => [
-                'title' => $this->trans('Disable non-native modules'),
-                'cast' => 'intval',
-                'validation' => 'isBool',
-                'type' => 'bool',
-                'desc' => $this->trans('As non-native modules can experience some compatibility issues, we recommend to disable them by default.') . '<br />' .
-                    $this->trans('Keeping them enabled might prevent you from loading the "Modules" page properly after the upgrade.'),
-            ],
-            UpgradeConfiguration::PS_DISABLE_OVERRIDES => [
-                'title' => $this->trans('Disable all overrides'),
-                'cast' => 'intval',
-                'validation' => 'isBool',
-                'type' => 'bool',
-                'desc' => $this->trans('Enable or disable all classes and controllers overrides.'),
-            ],
-            UpgradeConfiguration::PS_AUTOUP_CHANGE_DEFAULT_THEME => [
-                'title' => $this->trans('Switch to the default theme'),
-                'cast' => 'intval',
-                'validation' => 'isBool',
-                'defaultValue' => '0',
-                'type' => 'bool',
-                'desc' => $this->trans('This will change your theme: your shop will then use the default theme of the version of PrestaShop you are upgrading to.'),
-            ],
-            UpgradeConfiguration::PS_AUTOUP_REGEN_EMAIL => [
-                'title' => $this->trans('Regenerate the customized email templates'),
-                'cast' => 'intval',
-                'validation' => 'isBool',
-                'type' => 'bool',
-                'desc' => $this->trans('This will not upgrade the default PrestaShop e-mails.') . '<br />'
-                    . $this->trans('If you customized the default PrestaShop e-mail templates, switching off this option will keep your modifications.'),
-            ],
-        ];
-    }
-
-    /**
      * init to build informations we need.
      *
      * @return void
@@ -283,7 +223,8 @@ class AdminSelfUpgradeController extends ModuleAdminController
         }
         // from $_POST or $_GET
         $this->action = empty($_REQUEST['action']) ? null : $_REQUEST['action'];
-        $this->initPath();
+        $moduleDir = $this->upgradeContainer->getProperty(UpgradeContainer::WORKSPACE_PATH);
+        $this->upgradeContainer->getWorkspace()->init($moduleDir);
 
         $this->upgradeContainer->getBackupState()->importFromArray(
             empty($_REQUEST['params']) ? [] : $_REQUEST['params']
@@ -329,103 +270,15 @@ class AdminSelfUpgradeController extends ModuleAdminController
         }
     }
 
-    /**
-     * create some required directories if they does not exists.
-     *
-     * @return void
-     */
-    public function initPath()
-    {
-        $this->upgradeContainer->getWorkspace()->createFolders();
-
-        // set autoupgradePath, to be used in backupFiles and backupDb config values
-        $this->autoupgradePath = $this->adminDir . DIRECTORY_SEPARATOR . $this->autoupgradeDir;
-        $this->backupPath = $this->autoupgradePath . DIRECTORY_SEPARATOR . 'backup';
-        $this->downloadPath = $this->autoupgradePath . DIRECTORY_SEPARATOR . 'download';
-        $this->latestPath = $this->autoupgradePath . DIRECTORY_SEPARATOR . 'latest';
-        $this->tmpPath = $this->autoupgradePath . DIRECTORY_SEPARATOR . 'tmp';
-
-        if (!file_exists($this->backupPath . DIRECTORY_SEPARATOR . 'index.php')) {
-            if (!copy(_PS_ROOT_DIR_ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'index.php', $this->backupPath . DIRECTORY_SEPARATOR . 'index.php')) {
-                $this->_errors[] = $this->trans('Unable to create file %s', [$this->backupPath . DIRECTORY_SEPARATOR . 'index.php']);
-            }
-        }
-
-        $tmp = "order deny,allow\ndeny from all";
-        if (!file_exists($this->backupPath . DIRECTORY_SEPARATOR . '.htaccess')) {
-            if (!file_put_contents($this->backupPath . DIRECTORY_SEPARATOR . '.htaccess', $tmp)) {
-                $this->_errors[] = $this->trans('Unable to create file %s', [$this->backupPath . DIRECTORY_SEPARATOR . '.htaccess']);
-            }
-        }
-    }
-
     public function postProcess()
     {
         if (!$this->isActualPHPVersionCompatible) {
             return true;
         }
 
-        $this->_setFields();
-
-        if (Tools14::isSubmit('customSubmitAutoUpgrade')) {
-            $this->handleCustomSubmitAutoUpgradeForm();
-        }
-
-        if (Tools14::isSubmit('deletebackup')) {
-            $this->handleDeletebackupForm();
-        }
         parent::postProcess();
 
         return true;
-    }
-
-    /**
-     * @return void
-     */
-    private function handleDeletebackupForm()
-    {
-        $name = Tools14::getValue('name');
-        try {
-            $this->upgradeContainer->getBackupManager()->deleteBackup($name);
-            Tools14::redirectAdmin(self::$currentIndex . '&conf=1&token=' . Tools14::getValue('token'));
-        } catch (InvalidArgumentException $e) {
-            $this->_errors[] = $this->trans('Error when trying to delete backups %s', [$name]);
-        }
-    }
-
-    /**
-     * @return void
-     *
-     * @throws Exception
-     */
-    private function handleCustomSubmitAutoUpgradeForm()
-    {
-        $config_keys = array_keys(array_merge($this->_fieldsUpgradeOptions, $this->_fieldsBackupOptions));
-        $config = [];
-        foreach ($config_keys as $key) {
-            if (!isset($_POST[$key])) {
-                continue;
-            }
-            // The PS_DISABLE_OVERRIDES variable must only be updated on the database side
-            if ($key === UpgradeConfiguration::PS_DISABLE_OVERRIDES) {
-                UpgradeConfiguration::updatePSDisableOverrides((bool) $_POST[$key]);
-            } else {
-                $config[$key] = $_POST[$key];
-            }
-        }
-
-        $error = $this->upgradeContainer->getConfigurationValidator()->validate($config);
-        if (!empty($error)) {
-            throw new UnexpectedValueException(reset($error)['message']);
-        }
-
-        $UpConfig = $this->upgradeContainer->getUpdateConfiguration();
-        $UpConfig->merge($config);
-
-        if ($this->upgradeContainer->getConfigurationStorage()->save($UpConfig)
-        ) {
-            Tools14::redirectAdmin(self::$currentIndex . '&conf=6&token=' . Tools14::getValue('token'));
-        }
     }
 
     /**

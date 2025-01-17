@@ -117,7 +117,6 @@ abstract class ChainedTasks extends AbstractTask
         $initializationSteps = [TaskName::TASK_BACKUP_INITIALIZATION, TaskName::TASK_UPDATE_INITIALIZATION, TaskName::TASK_RESTORE_INITIALIZATION];
 
         if (in_array($this->step, $initializationSteps)) {
-            $this->container->getWorkspace()->createFolders();
             $timestamp = date('Y-m-d-His');
             switch ($this->step) {
                 case TaskName::TASK_BACKUP_INITIALIZATION:
