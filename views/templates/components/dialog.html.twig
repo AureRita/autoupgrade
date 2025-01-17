@@ -14,19 +14,21 @@
       </div>
 
       <div class="dialog__body">
-        {% block dialog_content %}
-          {# Default content can go here, or it can be left empty so that children can override it #}
-          <p>
-            {{ message|raw }}
-          </p>
-        {% endblock %}
+        {% block dialog_content_wrapper %}
+          {% block dialog_content %}
+            {# Default content can go here, or it can be left empty so that children can override it #}
+            <p>
+              {{ message|raw }}
+            </p>
+          {% endblock %}
 
-        {% block dialog_extra_content %}
-          <div class="dialog__extra-content">
-            {% block dialog_extra_content_inner %}
-              {# Default extra content can go here, or it can be left empty so that children can override it #}
-            {% endblock %}
-          </div>
+          {% block dialog_extra_content %}
+            <div class="dialog__extra-content">
+              {% block dialog_extra_content_inner %}
+                {# Default extra content can go here, or it can be left empty so that children can override it #}
+              {% endblock %}
+            </div>
+          {% endblock %}
         {% endblock %}
       </div>
 
