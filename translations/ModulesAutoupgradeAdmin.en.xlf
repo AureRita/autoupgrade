@@ -2318,7 +2318,7 @@ Comment: directory already exists</note>
       <trans-unit id="880d6ec7b06e1f403347a16afbca8335">
         <source>Start update</source>
         <target>Start update</target>
-        <note>Line: 51</note>
+        <note>Line: 54</note>
       </trans-unit>
       <trans-unit id="2ca0ff94d146821c12f5340b117b9ecf">
         <source>Start update?</source>
@@ -2328,17 +2328,17 @@ Comment: directory already exists</note>
       <trans-unit id="3d4d2d6f322e7a03fbe59ed1593215c8">
         <source>Before starting the update, make sure you have a complete and recent backup of your store (database, files, and images).</source>
         <target>Before starting the update, make sure you have a complete and recent backup of your store (database, files, and images).</target>
-        <note>Line: 15</note>
+        <note>Line: 16</note>
       </trans-unit>
       <trans-unit id="4d7ff7fe82a3cec141ca2f2619b82794">
         <source>You are about to launch the update, do you want to continue?</source>
         <target>You are about to launch the update, do you want to continue?</target>
-        <note>Line: 18</note>
+        <note>Line: 19</note>
       </trans-unit>
       <trans-unit id="3cedd2741ced15002cb3c9429ab45f55">
         <source>I have made my own backup and can restore it manually if a problem occur.</source>
         <target>I have made my own backup and can restore it manually if a problem occur.</target>
-        <note>Line: 28</note>
+        <note>Line: 29</note>
       </trans-unit>
     </body>
   </file>
