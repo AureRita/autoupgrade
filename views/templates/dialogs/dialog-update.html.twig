@@ -2,7 +2,7 @@
 
 {% set title = 'Start update?'|trans({}) %}
 
-{% block dialog_content %}
+{% block dialog_content_wrapper %}
   <form
     class="dialog__spacer"
     action=""
@@ -10,25 +10,28 @@
     id="form-confirm-update"
     name="form-confirm-update"
   >
-  {% if not backup_completed %}
-    <p>
-      {{ 'Before starting the update, make sure you have a complete and recent backup of your store (database, files, and images).'|trans({}) }}
-    </p>
-  {% else %}
-    {% set message = 'You are about to launch the update, do you want to continue?'|trans({}) %}
-    {{ parent() }}
-  {% endif %}
-{% endblock %}
+    {% block dialog_content %}
+      {% if not backup_completed %}
+        <p>
+          {{ 'Before starting the update, make sure you have a complete and recent backup of your store (database, files, and images).'|trans({}) }}
+        </p>
+      {% else %}
+        {% set message = 'You are about to launch the update, do you want to continue?'|trans({}) %}
+        {{ parent() }}
+      {% endif %}
+    {% endblock %}
 
-{% block dialog_extra_content %}
-  {% if not backup_completed %}
-    <div class="dialog__no-backup checkbox">
-      <label>
-        <input type="checkbox" value="" id="dialog-start-update-own-backup" />
-        {{ 'I have made my own backup and can restore it manually if a problem occur.'|trans({}) }}
-      </label>
-    </div>
-  {% endif %}
+    {% block dialog_extra_content %}
+      {% if not backup_completed %}
+        <div class="dialog__no-backup checkbox">
+          <label>
+            <input type="checkbox" value="" id="dialog-start-update-own-backup"/>
+            {{ 'I have made my own backup and can restore it manually if a problem occur.'|trans({}) }}
+          </label>
+        </div>
+      {% endif %}
+    {% endblock %}
+  </form>
 {% endblock %}
 
 {% block dialog_footer_inner %}
