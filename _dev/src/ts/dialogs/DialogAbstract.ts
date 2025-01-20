@@ -18,7 +18,7 @@ export default abstract class DialogAbstract implements DomLifecycle {
 
     const form = event.target as HTMLFormElement;
 
-    await api.post(form.dataset.routeToConfirmRestore!, new FormData(this.form));
+    await api.post(form.dataset.routeToSubmit!, new FormData(this.form));
 
     this.dispatchDialogContainerOkEvent(event);
   };

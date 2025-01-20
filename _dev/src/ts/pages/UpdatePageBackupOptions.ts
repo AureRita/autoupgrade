@@ -49,7 +49,7 @@ export default class UpdatePageBackupOptions extends StepPage {
   readonly #onDialogOk = async (ev: Event): Promise<void> => {
     // We handle the backup confirmation dialog as it is really basic
     if ((ev.target as HTMLElement).id === 'dialog-confirm-backup') {
-      api.post(this.#form.dataset.routeToConfirmBackup!);
+      await api.post(this.#form.dataset.routeToConfirmBackup!);
     }
     // The update confirmation dialog gets its logic in a dedicated script
   };

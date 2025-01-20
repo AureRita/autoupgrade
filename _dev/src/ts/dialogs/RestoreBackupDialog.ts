@@ -9,7 +9,7 @@ export default class RestoreBackupDialog extends DialogAbstract {
       throw new Error('Form not found');
     }
 
-    ['routeToConfirmRestore'].forEach((data) => {
+    ['routeToSubmit'].forEach((data) => {
       if (!form.dataset[data]) {
         throw new Error(`Missing data ${data} from form dataset.`);
       }

@@ -9,7 +9,7 @@ export default class DeleteBackupDialog extends DialogAbstract {
       throw new Error('Form not found');
     }
 
-    ['routeToConfirmDelete'].forEach((data) => {
+    ['routeToSubmit'].forEach((data) => {
       if (!form.dataset[data]) {
         throw new Error(`Missing data ${data} from form dataset.`);
       }
