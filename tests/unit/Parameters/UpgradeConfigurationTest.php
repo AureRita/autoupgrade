@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -25,33 +24,25 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
 
-namespace PrestaShop\Module\AutoUpgrade\Task\Restore;
+namespace Parameters;
 
-use PrestaShop\Module\AutoUpgrade\Analytics;
-use PrestaShop\Module\AutoUpgrade\Task\AbstractTask;
-use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
-use PrestaShop\Module\AutoUpgrade\Task\TaskName;
-use PrestaShop\Module\AutoUpgrade\Task\TaskType;
+use PHPUnit\Framework\TestCase;
+use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 
-/**
- * Only displays the success message.
- */
-class RestoreComplete extends AbstractTask
+class UpgradeConfigurationTest extends TestCase
 {
-    const TASK_TYPE = TaskType::TASK_TYPE_RESTORE;
-
-    public function run(): int
+    public function testUpdateConfigurationConfigIsFilledWithPrestaShopOne(): void
     {
-        $this->logger->info($this->translator->trans('Restoration process done. Congratulations! You can now reactivate your store.'));
-        $this->next = TaskName::TASK_COMPLETE;
+        $updateConfiguration = new UpgradeConfiguration();
 
-        $this->container->getFileStorage()->cleanAllRestoreFiles();
-        $this->container->getAnalytics()->track('Restore Succeeded', Analytics::WITH_RESTORE_PROPERTIES);
+        $this->assertFalse($updateConfiguration->hasAllTheShopConfiguration());
 
-        $this->container->getRestoreState()->setProgressPercentage(
-            $this->container->getCompletionCalculator()->getBasePercentageOfTask(self::class)
-        );
+        // We can't use the class PrestaShopConfiguration directly because of its reliance on the Core.
+        // Reproduce its alterations below:
+        $updateConfiguration->merge([
+            UpgradeConfiguration::INSTALLED_LANGUAGES => ['fr', 'de', 'jp'],
+        ]);
 
-        return ExitCode::SUCCESS;
+        $this->assertTrue($updateConfiguration->hasAllTheShopConfiguration());
     }
 }

@@ -206,11 +206,6 @@ abstract class AbstractTask
             $archiveXml = $updateConfiguration->getLocalChannelXml();
             $this->container->getFileLoader()->addXmlMd5File($this->container->getUpgrader()->getDestinationVersion(), $this->container->getProperty(UpgradeContainer::DOWNLOAD_PATH) . DIRECTORY_SEPARATOR . $archiveXml);
         }
-
-        if ($this::TASK_TYPE !== TaskType::TASK_TYPE_RESTORE && !$this->container->getUpdateState()->isInitialized()) {
-            $this->container->getUpdateState()->initDefault($this->container->getProperty(UpgradeContainer::PS_VERSION), $this->container->getUpgrader()->getDestinationVersion());
-            $this->logger->debug($this->translator->trans('Successfully initialized update state.'));
-        }
     }
 
     abstract public function run(): int;

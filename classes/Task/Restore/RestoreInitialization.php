@@ -49,6 +49,7 @@ class RestoreInitialization extends AbstractTask
      */
     public function run(): int
     {
+        $this->container->getFileStorage()->cleanAllRestoreFiles();
         $restoreConfiguration = $this->container->getRestoreConfiguration();
         $state = $this->container->getRestoreState();
         $state->initDefault($restoreConfiguration);

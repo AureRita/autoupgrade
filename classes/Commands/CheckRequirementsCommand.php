@@ -32,7 +32,6 @@ use PrestaShop\Module\AutoUpgrade\Exceptions\DistributionApiException;
 use PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
-use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 use PrestaShop\Module\AutoUpgrade\UpgradeSelfCheck;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -88,7 +87,6 @@ class CheckRequirementsCommand extends AbstractCommand
 
             $this->upgradeContainer->initPrestaShopAutoloader();
             $this->upgradeContainer->initPrestaShopCore();
-            $this->upgradeContainer->getUpdateState()->initDefault($this->upgradeContainer->getProperty(UpgradeContainer::PS_VERSION), $this->upgradeContainer->getUpgrader()->getDestinationVersion());
 
             $output->writeln('Result of prerequisite checks:');
             $this->exitCode = ExitCode::SUCCESS;

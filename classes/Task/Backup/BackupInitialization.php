@@ -44,6 +44,7 @@ class BackupInitialization extends AbstractTask
      */
     public function run(): int
     {
+        $this->container->getFileStorage()->cleanAllBackupFiles();
         $this->container->getBackupState()->initDefault(
             $this->container->getProperty(UpgradeContainer::PS_VERSION)
         );

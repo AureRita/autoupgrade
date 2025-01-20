@@ -49,6 +49,8 @@ class UpgradeConfiguration extends ArrayCollection
     const ARCHIVE_ZIP = 'archive_zip';
     const ARCHIVE_XML = 'archive_xml';
     const ARCHIVE_VERSION_NUM = 'archive_version_num';
+    const BACKUP_COMPLETED = 'backup_completed';
+    const INSTALLED_LANGUAGES = 'installed_languages';
 
     const CHANNEL_ONLINE = 'online';
     const CHANNEL_LOCAL = 'local';
@@ -72,6 +74,11 @@ class UpgradeConfiguration extends ArrayCollection
         self::PS_AUTOUP_REGEN_EMAIL => true,
         self::PS_AUTOUP_BACKUP => true,
         self::PS_AUTOUP_KEEP_IMAGES => true,
+        self::BACKUP_COMPLETED => false,
+    ];
+
+    const CONFIGURATION_KEYS_ABOUT_SHOP = [
+        self::INSTALLED_LANGUAGES,
     ];
 
     const DEFAULT_CHANNEL = self::CHANNEL_ONLINE;
@@ -145,6 +152,19 @@ class UpgradeConfiguration extends ArrayCollection
     public function isChannelOnline(): bool
     {
         return $this->getChannelOrDefault() === UpgradeConfiguration::CHANNEL_ONLINE;
+    }
+
+    public function isBackupCompleted(): bool
+    {
+        return $this->computeBooleanConfiguration(self::BACKUP_COMPLETED);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getInstalledLanguagesIsoCode(): array
+    {
+        return $this->get(self::INSTALLED_LANGUAGES);
     }
 
     /**
@@ -264,5 +284,16 @@ class UpgradeConfiguration extends ArrayCollection
         foreach ($array as $key => $value) {
             $this->set($key, $value);
         }
+    }
+
+    public function hasAllTheShopConfiguration(): bool
+    {
+        foreach (self::CONFIGURATION_KEYS_ABOUT_SHOP as $key) {
+            if ($this->get($key) === null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -825,7 +825,6 @@ class UpgradeContainer
 
             $this->upgradeSelfCheck = new UpgradeSelfCheck(
                 $this->getUpgrader(),
-                $this->getUpdateState(),
                 $this->getUpdateConfiguration(),
                 $this->getPrestaShopConfiguration(),
                 $this->getTranslator(),
@@ -833,7 +832,8 @@ class UpgradeContainer
                 $this->getChecksumCompare(),
                 $this->psRootDir,
                 $this->adminDir,
-                $this->getProperty(UpgradeContainer::WORKSPACE_PATH)
+                $this->getProperty(UpgradeContainer::WORKSPACE_PATH),
+                $this->getProperty(UpgradeContainer::PS_VERSION)
             );
         }
 

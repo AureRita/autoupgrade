@@ -68,7 +68,7 @@ class UpdatePageBackupOptionsController extends AbstractPageWithStepController
     public function submitUpdate(): JsonResponse
     {
         return $this->displayDialog('dialog-update', [
-            'backup_completed' => $this->upgradeContainer->getUpdateState()->isBackupCompleted(),
+            'backup_completed' => $this->upgradeContainer->getUpdateConfiguration()->isBackupCompleted(),
             'dialogId' => 'dialog-confirm-update',
 
             'form_route_to_confirm' => Routes::UPDATE_STEP_BACKUP_CONFIRM_UPDATE,
@@ -124,7 +124,7 @@ class UpdatePageBackupOptionsController extends AbstractPageWithStepController
         return array_merge(
             $updateSteps->getStepParams($this::CURRENT_STEP),
             [
-                'backup_completed' => $this->upgradeContainer->getUpdateState()->isBackupCompleted(),
+                'backup_completed' => $this->upgradeContainer->getUpdateConfiguration()->isBackupCompleted(),
                 'download_path' => $logsPath,
                 'filename' => basename($logsPath),
 
