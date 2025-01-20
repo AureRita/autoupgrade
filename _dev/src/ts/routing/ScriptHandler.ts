@@ -13,6 +13,7 @@ import RestorePagePostRestore from '../pages/RestorePagePostRestore';
 import RestoreBackupDialog from '../dialogs/RestoreBackupDialog';
 import DeleteBackupDialog from '../dialogs/DeleteBackupDialog';
 import StartUpdateDialog from '../dialogs/StartUpdateDialog';
+import StartBackupDialog from '../dialogs/StartBackupDialog';
 import SendErrorReportDialog from '../dialogs/SendErrorReportDialog';
 
 import { ScriptType, ScriptsMatching, CurrentScripts } from '../types/scriptHandlerTypes';
@@ -50,6 +51,7 @@ export default class ScriptHandler {
       'restore-backup-dialog': RestoreBackupDialog,
       'delete-backup-dialog': DeleteBackupDialog,
       'start-update-dialog': StartUpdateDialog,
+      'start-backup-dialog': StartBackupDialog,
       'send-error-report-dialog': SendErrorReportDialog
     }
   };

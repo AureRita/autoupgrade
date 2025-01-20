@@ -60,8 +60,11 @@ class UpdatePageBackupOptionsController extends AbstractPageWithStepController
     {
         $imagesIncluded = $this->upgradeContainer->getUpdateConfiguration()->shouldBackupImages();
 
-        return $this->displayDialog($imagesIncluded ? 'dialog-backup-all' : 'dialog-backup', [
+        return $this->displayDialog('dialog-backup', [
+            'image_included' => $imagesIncluded,
             'dialogId' => 'dialog-confirm-backup',
+
+            'form_route_to_confirm_backup' => Routes::UPDATE_STEP_BACKUP_CONFIRM_BACKUP,
         ]);
     }
 
@@ -131,7 +134,6 @@ class UpdatePageBackupOptionsController extends AbstractPageWithStepController
                 'form_route_to_save' => Routes::UPDATE_STEP_BACKUP_SAVE_OPTION,
                 'form_route_to_submit_backup' => Routes::UPDATE_STEP_BACKUP_SUBMIT_BACKUP,
                 'form_route_to_submit_update' => Routes::UPDATE_STEP_BACKUP_SUBMIT_UPDATE,
-                'form_route_to_confirm_backup' => Routes::UPDATE_STEP_BACKUP_CONFIRM_BACKUP,
 
                 'form_fields' => [
                     'include_images' => [
@@ -163,7 +165,16 @@ class UpdatePageBackupOptionsController extends AbstractPageWithStepController
      */
     private function displayDialog(string $dialogName, array $params): JsonResponse
     {
-        $options = $dialogName === 'dialog-update' ? ['addScript' => 'start-update-dialog'] : null;
+        switch ($dialogName) {
+            case 'dialog-update':
+                $options = ['addScript' => 'start-update-dialog'];
+                break;
+            case 'dialog-backup':
+                $options = ['addScript' => 'start-backup-dialog'];
+                break;
+            default:
+                $options = null;
+        }
 
         return AjaxResponseBuilder::hydrationResponse(
             PageSelectors::DIALOG_PARENT_ID,

@@ -2,7 +2,7 @@
 
 {% set title = 'Start backup?'|trans({}) %}
 {% set dialogSize = 'sm' %}
-{% set message = 'Your files and database will be backed up.'|trans({}) %}
+{% set message = image_included ? 'Your files, database, and images will be backed up.'|trans({}) : 'Your files and database will be backed up.'|trans({}) %}
 
 {% block dialog_content %}
   {{ parent() }}
@@ -15,8 +15,10 @@
     {{ 'Cancel'|trans({}) }}
   </button>
 
-  <button type="button" class="btn btn-primary">
-    <i class="material-icons">settings_backup_restore</i>
-    {{ 'Start backup'|trans({}) }}
-  </button>
+  <form id="form-confirm-backup" name="form-confirm-backup" data-route-to-submit="{{ form_route_to_confirm_backup }}">
+    <button type="submit" class="btn btn-primary">
+      <i class="material-icons">settings_backup_restore</i>
+      {{ 'Start backup'|trans({}) }}
+    </button>
+  </form>
 {% endblock %}
