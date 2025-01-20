@@ -2366,17 +2366,17 @@ Comment: directory already exists</note>
       <trans-unit id="8a862ffce3e06bbe655506fd73fe017c">
         <source>Something went wrong...</source>
         <target>Something went wrong...</target>
-        <note>Line: 9</note>
+        <note>Line: 5</note>
       </trans-unit>
       <trans-unit id="9af7e43160937bd2ba87e3828a4f90a6">
         <source>Go back to Update assistant</source>
         <target>Go back to Update assistant</target>
-        <note>Line: 22</note>
+        <note>Line: 18</note>
       </trans-unit>
       <trans-unit id="704563ab61497154143cbc7e22e42499">
         <source>The page you requested cannot be found.</source>
         <target>The page you requested cannot be found.</target>
-        <note>Line: 15</note>
+        <note>Line: 11</note>
       </trans-unit>
     </body>
   </file>
@@ -2385,7 +2385,7 @@ Comment: directory already exists</note>
       <trans-unit id="5368f5827707bbb2b9142d25d1f9b493">
         <source>The module is no longer responding. You can try again in a few moments.</source>
         <target>The module is no longer responding. You can try again in a few moments.</target>
-        <note>Line: 15</note>
+        <note>Line: 11</note>
       </trans-unit>
     </body>
   </file>
