@@ -5,7 +5,6 @@ export default class UpdatePageBackupOptions extends StepPage {
   protected stepCode = 'backup';
 
   public mount(): void {
-    console.log('YOLO');
     this.initStepper();
     this.#updateForm.addEventListener('submit', this.#onFormSubmit);
     this.#backupForm.addEventListener('submit', this.#onFormSubmit);
@@ -60,11 +59,7 @@ export default class UpdatePageBackupOptions extends StepPage {
   readonly #onFormSubmit = async (event: SubmitEvent): Promise<void> => {
     event.preventDefault();
 
-    console.log(event);
-
     const form = event.target as HTMLFormElement;
-
-    console.log(form);
 
     await api.post(form.dataset.routeToSubmit!, new FormData(form));
   };

@@ -5,6 +5,7 @@ import DomLifecycle from '../types/DomLifecycle';
 import { logStore } from '../store/LogStore';
 import api from '../api/RequestHandler';
 
+// TODO: clear the debounce on beforeDestroy
 export default class LogsViewer extends ComponentAbstract implements DomLifecycle {
   #logsIndexOffsets: Map<number, number> = new Map();
   #logsListHeight: number = this.#logsList.clientHeight;
