@@ -60,7 +60,7 @@ class ErrorHandlerTest extends TestCase
 
         $errors = $this->logger->getErrors();
         $this->assertCount(1, $errors);
-        $this->assertContains('[INTERNAL] ' . __FILE__ . ' line ' . $line . ' - Exception: ERMAGHERD', end($errors));
+        $this->assertContains(__FILE__ . ' line ' . $line . ' - Exception: ERMAGHERD', end($errors));
     }
 
     public function testWarningInErrorHandler()
@@ -70,7 +70,7 @@ class ErrorHandlerTest extends TestCase
         $msgs = $this->logger->getInfos();
         $this->assertCount(0, $this->logger->getErrors());
         $this->assertCount(1, $msgs);
-        $this->assertSame(end($msgs), 'WARNING - [INTERNAL] ' . __FILE__ . ' line ' . $line . ' - Trololo');
+        $this->assertSame(end($msgs), 'WARNING - ' . __FILE__ . ' line ' . $line . ' - Trololo');
     }
 
     /**
@@ -84,8 +84,8 @@ class ErrorHandlerTest extends TestCase
     public function logProvider()
     {
         return [
-            ["[INTERNAL] /var/www/html/modules/autoupgrade/classes/Task/Upgrade/BackupFiles.php line 55 - Class 'PrestaShop\Module\AutoUpgrade\Task\Upgrade\UpgradeContainer' not found"],
-            ["[INTERNAL] /var/www/html/modules/autoupgrade/classes/Task/Upgrade/BackupDb.php line 105 - Can't use method return value in write context"],
+            ["/var/www/html/modules/autoupgrade/classes/Task/Upgrade/BackupFiles.php line 55 - Class 'PrestaShop\Module\AutoUpgrade\Task\Upgrade\UpgradeContainer' not found"],
+            ["/var/www/html/modules/autoupgrade/classes/Task/Upgrade/BackupDb.php line 105 - Can't use method return value in write context"],
         ];
     }
 }

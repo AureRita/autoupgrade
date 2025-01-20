@@ -489,7 +489,7 @@ abstract class CoreUpgrader
             if (!empty($matches[1])) {
                 $drop = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . $matches[1] . '`;';
                 if ($this->db->execute($drop, false)) {
-                    $this->logger->debug($this->container->getTranslator()->trans('[DROP] SQL %s table has been dropped.', ['`' . _DB_PREFIX_ . $matches[1] . '`']));
+                    $this->logger->debug($this->container->getTranslator()->trans('SQL %s table has been dropped.', ['`' . _DB_PREFIX_ . $matches[1] . '`']));
                 }
             }
         }

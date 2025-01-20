@@ -139,7 +139,7 @@ class ModuleAdapter
         $dir = $this->modulesPath;
 
         if (!is_dir($dir)) {
-            throw (new UpgradeException($this->translator->trans('[ERROR] %dir% does not exist or is not a directory.', ['%dir%' => $dir])))->addQuickInfo($this->translator->trans('[ERROR] %s does not exist or is not a directory.', [$dir]))->setSeverity(UpgradeException::SEVERITY_ERROR);
+            throw (new UpgradeException($this->translator->trans('%dir% does not exist or is not a directory.', ['%dir%' => $dir])))->addQuickInfo($this->translator->trans('%s does not exist or is not a directory.', [$dir]))->setSeverity(UpgradeException::SEVERITY_ERROR);
         }
 
         foreach ($this->getInstalledVersionOfModules() as $moduleInstalled) {

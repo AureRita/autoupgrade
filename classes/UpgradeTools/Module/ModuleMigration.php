@@ -111,14 +111,14 @@ class ModuleMigration
 
             try {
                 if (!$this->loadAndCallFunction($migrationFilePath, $methodName, $moduleMigrationContext)) {
-                    throw (new UpgradeException($this->translator->trans('[WARNING] Migration failed while running the file %s. Module %s disabled.', [basename($migrationFilePath), $moduleMigrationContext->getModuleName()])))->setSeverity(UpgradeException::SEVERITY_WARNING);
+                    throw (new UpgradeException($this->translator->trans('Migration failed while running the file %s. Module %s disabled.', [basename($migrationFilePath), $moduleMigrationContext->getModuleName()])))->setSeverity(UpgradeException::SEVERITY_WARNING);
                 }
             } catch (UpgradeException $e) {
                 $moduleMigrationContext->getModuleInstance()->disable();
                 throw $e;
             } catch (Throwable $t) {
                 $moduleMigrationContext->getModuleInstance()->disable();
-                throw (new UpgradeException($this->translator->trans('[WARNING] Unexpected error when trying to upgrade module %s. Module %s disabled.', [$moduleMigrationContext->getModuleName(), $moduleMigrationContext->getModuleName()]), 0, $t))->setSeverity(UpgradeException::SEVERITY_WARNING);
+                throw (new UpgradeException($this->translator->trans('Unexpected error when trying to upgrade module %s. Module %s disabled.', [$moduleMigrationContext->getModuleName(), $moduleMigrationContext->getModuleName()]), 0, $t))->setSeverity(UpgradeException::SEVERITY_WARNING);
             }
         }
     }
@@ -129,7 +129,7 @@ class ModuleMigration
     public function saveVersionInDb(ModuleMigrationContext $moduleMigrationContext): void
     {
         if (!\Module::upgradeModuleVersion($moduleMigrationContext->getModuleName(), $moduleMigrationContext->getLocalVersion())) {
-            throw (new UpgradeException($this->translator->trans('[WARNING] Module %s version could not be updated. Database might be unavailable.', [$moduleMigrationContext->getModuleName()]), 0))->setSeverity(UpgradeException::SEVERITY_WARNING);
+            throw (new UpgradeException($this->translator->trans('Module %s version could not be updated. Database might be unavailable.', [$moduleMigrationContext->getModuleName()]), 0))->setSeverity(UpgradeException::SEVERITY_WARNING);
         }
     }
 
@@ -157,12 +157,12 @@ class ModuleMigration
         $pushedFileContents = file_put_contents($sandboxedFilePath, str_replace($methodName, $uniqueMethodName, file_get_contents($filePath)));
 
         if ($pushedFileContents === false) {
-            throw (new UpgradeException($this->translator->trans('[WARNING] Could not write temporary file %s.', [$sandboxedFilePath])))->setSeverity(UpgradeException::SEVERITY_WARNING);
+            throw (new UpgradeException($this->translator->trans('Could not write temporary file %s.', [$sandboxedFilePath])))->setSeverity(UpgradeException::SEVERITY_WARNING);
         }
 
         require_once $sandboxedFilePath;
         if (!function_exists($uniqueMethodName)) {
-            throw (new UpgradeException($this->translator->trans('[WARNING] Method %s does not exist. Module %s disabled.', [$uniqueMethodName, $moduleMigrationContext->getModuleName()])))->setSeverity(UpgradeException::SEVERITY_WARNING);
+            throw (new UpgradeException($this->translator->trans('Method %s does not exist. Module %s disabled.', [$uniqueMethodName, $moduleMigrationContext->getModuleName()])))->setSeverity(UpgradeException::SEVERITY_WARNING);
         }
 
         return call_user_func($uniqueMethodName, $moduleMigrationContext->getModuleInstance());
