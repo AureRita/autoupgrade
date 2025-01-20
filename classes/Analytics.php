@@ -164,4 +164,9 @@ class Analytics
         return isset($_SERVER[self::URL_TRACKING_ENV_NAME])
             && ((bool) $_SERVER[self::URL_TRACKING_ENV_NAME] === false || $_SERVER[self::URL_TRACKING_ENV_NAME] === 'false');
     }
+
+    public function getAnonymousId(): string
+    {
+        return $this->anonymousId;
+    }
 }

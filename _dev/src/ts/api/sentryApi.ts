@@ -70,7 +70,9 @@ export function sendUserFeedback(
     level,
     tags: {
       url: maskedUrl,
-      source: feedbackModalTag
+      source: feedbackModalTag,
+      phpVersion: window.AutoUpgradeVariables.php_version,
+      anonymousId: window.AutoUpgradeVariables.anonymous_id
     }
   });
 
@@ -85,7 +87,9 @@ export function sendUserFeedback(
         captureContext: {
           tags: {
             url: maskedUrl,
-            source: feedbackModalTag
+            source: feedbackModalTag,
+            phpVersion: window.AutoUpgradeVariables.php_version,
+            anonymousId: window.AutoUpgradeVariables.anonymous_id
           }
         }
       }

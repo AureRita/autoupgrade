@@ -31,6 +31,7 @@ use PrestaShop\Module\AutoUpgrade\Router\Router;
 use PrestaShop\Module\AutoUpgrade\Tools14;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 use PrestaShop\Module\AutoUpgrade\UpgradePage;
+use PrestaShop\Module\AutoUpgrade\VersionUtils;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminSelfUpgradeController extends ModuleAdminController
@@ -533,6 +534,8 @@ class AdminSelfUpgradeController extends ModuleAdminController
             'admin_dir' => $adminDir,
             'stepper_parent_id' => \PrestaShop\Module\AutoUpgrade\Twig\PageSelectors::STEPPER_PARENT_ID,
             'module_version' => $this->module->version,
+            'php_version' => VersionUtils::getHumanReadableVersionOf(PHP_VERSION_ID),
+            'anonymous_id' => $this->upgradeContainer->getAnalytics()->getAnonymousId(),
         ];
     }
 
