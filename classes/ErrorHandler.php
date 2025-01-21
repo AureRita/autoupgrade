@@ -140,7 +140,7 @@ class ErrorHandler
         if ($type >= Logger::CRITICAL) {
             http_response_code(500);
         }
-        $log = "[INTERNAL] $file line $line - $message";
+        $log = "$file line $line - $message";
         if (!empty($trace)) {
             $log .= PHP_EOL . $trace;
         }

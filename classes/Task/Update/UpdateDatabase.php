@@ -170,7 +170,7 @@ class UpdateDatabase extends AbstractTask
         $versionCompare = version_compare($destinationVersion, $currentVersion);
 
         if ($versionCompare === -1) {
-            throw new UpgradeException($this->container->getTranslator()->trans('[ERROR] Version to install is too old.') . ' ' . $this->container->getTranslator()->trans('Current version: %oldversion%. Version to install: %newversion%.', ['%oldversion%' => $currentVersion, '%newversion%' => $destinationVersion]));
+            throw new UpgradeException($this->container->getTranslator()->trans('Version to install is too old. Current version: %oldversion%. Version to install: %newversion%.', ['%oldversion%' => $currentVersion, '%newversion%' => $destinationVersion]));
         } elseif ($versionCompare === 0) {
             throw new UpgradeException($this->container->getTranslator()->trans('You already have the %s version.', [$destinationVersion]));
         }

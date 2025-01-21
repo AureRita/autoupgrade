@@ -246,7 +246,7 @@ class UpgradePage
         if (!file_exists($this->autoupgradePath . DIRECTORY_SEPARATOR . 'ajax-upgradetab.php')) {
             return [
                 'message' => $translator->trans(
-                    '[TECHNICAL ERROR] ajax-upgradetab.php is missing. Please reinstall or reset the module.'
+                    'ajax-upgradetab.php is missing. Please reinstall or reset the module.'
                 ),
             ];
         }
@@ -296,7 +296,7 @@ class UpgradePage
                 'processCancelledCheckForRestore' => $translator->trans('Operation canceled. Checking for restoration...'),
                 'confirmRestoreBackup' => $translator->trans('Do you want to restore %s?', [$this->backupName]),
                 'processCancelledWithError' => $translator->trans('Operation canceled. An error happened.'),
-                'missingAjaxUpgradeTab' => $translator->trans('[TECHNICAL ERROR] ajax-upgradetab.php is missing. Please reinstall the module.'),
+                'missingAjaxUpgradeTab' => $translator->trans('ajax-upgradetab.php is missing. Please reinstall the module.'),
                 'clickToRefreshAndUseNewConfiguration' => $translator->trans('Click to refresh the page and use the new configuration'),
                 'errorDetectedDuring' => $translator->trans('Error detected during'),
                 'downloadTimeout' => $translator->trans('The request exceeded the max_time_limit. Please change your server configuration.'),
