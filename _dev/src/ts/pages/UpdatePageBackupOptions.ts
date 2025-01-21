@@ -12,7 +12,7 @@ export default class UpdatePageBackupOptions extends StepPage {
   }
 
   public beforeDestroy(): void {
-    this.#updateForm.addEventListener('submit', this.#onFormSubmit);
+    this.#updateForm.removeEventListener('submit', this.#onFormSubmit);
     this.#backupForm.removeEventListener('submit', this.#onFormSubmit);
     this.#backupForm.removeEventListener('change', this.#onInputChange);
   }
