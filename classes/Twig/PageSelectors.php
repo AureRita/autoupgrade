@@ -4,7 +4,8 @@ namespace PrestaShop\Module\AutoUpgrade\Twig;
 
 class PageSelectors
 {
-    public const PAGE_PARENT_ID = 'update_assistant';
+    public const APP_PARENT_ID = 'update_assistant';
+    public const PAGE_PARENT_ID = 'ua_page';
     public const STEP_PARENT_ID = 'ua_container';
     public const STEPPER_PARENT_ID = 'stepper_content';
     public const DIALOG_PARENT_ID = 'ua_dialog';
@@ -18,6 +19,7 @@ class PageSelectors
     public static function getAllSelectors(): array
     {
         return [
+            'app_parent_id' => self::APP_PARENT_ID,
             'page_parent_id' => self::PAGE_PARENT_ID,
             'step_parent_id' => self::STEP_PARENT_ID,
             'stepper_parent_id' => self::STEPPER_PARENT_ID,
