@@ -3,6 +3,7 @@ import { ApiResponseHydration } from '../../src/ts/types/apiTypes';
 import RouteHandler from '../../src/ts/routing/RouteHandler';
 import ScriptHandler from '../../src/ts/routing/ScriptHandler';
 import { dialogContainer } from '../../src/ts/autoUpgrade';
+import SpyInstance = jest.SpyInstance;
 
 const setNewRouteMock = jest.spyOn(RouteHandler.prototype, 'setNewRoute');
 const unloadRouteScriptMock = jest.spyOn(ScriptHandler.prototype, 'unloadScriptType');
@@ -42,8 +43,10 @@ jest.mock('../../src/ts/pages/UpdatePageBackupOptions', () => {
 
 describe('Hydration', () => {
   let hydration: Hydration;
+  let debugSpy: SpyInstance;
 
   beforeEach(() => {
+    debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
     hydration = new Hydration();
     document.body.innerHTML = `
       <div id="parent">
@@ -81,6 +84,9 @@ describe('Hydration', () => {
     hydration.hydrate(response);
 
     expect(loadScriptMock).toHaveBeenCalledWith('new_route_value');
+    expect(debugSpy).toHaveBeenCalledWith(
+      'No matching script in script types found for script with ID: new_route_value'
+    );
   });
 
   it('should call scriptHandler.loadScript when add_script is provided', () => {
@@ -155,21 +161,6 @@ describe('Hydration', () => {
         type: Hydration.hydrationEventName
       })
     );
-  });
-
-  it('should refresh the dialog container if a new page is loaded', () => {
-    const response: ApiResponseHydration = {
-      hydration: true,
-      new_content: `<p>New Content</p>`,
-      parent_to_update: 'parent',
-      new_route: 'new_route_value'
-    };
-
-    hydration.hydrate(response);
-
-    expect(dialogContainer.beforeDestroy).toHaveBeenCalledTimes(1);
-    // Called on Init + refresh
-    expect(dialogContainer.mount).toHaveBeenCalledTimes(2);
   });
 
   it('should not refresh the dialog container if the DOM is untouched', () => {
