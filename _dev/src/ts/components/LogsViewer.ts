@@ -45,7 +45,7 @@ export default class LogsViewer extends ComponentAbstract implements DomLifecycl
   }
 
   public mount = () => {
-    this.#logsScroll.addEventListener('scroll', this.#debouncedRefreshView);
+    this.#logsScroll.addEventListener('scroll', this.#debouncedRefreshView.debounced);
 
     // delay needed because of side menu toggle on small screens
     // we set width to prevent the modification of the height of
@@ -57,8 +57,9 @@ export default class LogsViewer extends ComponentAbstract implements DomLifecycl
 
   public beforeDestroy = () => {
     logStore.clearLogs();
-    this.#logsScroll.removeEventListener('scroll', this.#debouncedRefreshView);
+    this.#logsScroll.removeEventListener('scroll', this.#debouncedRefreshView.debounced);
     this.#logsSummary.removeEventListener('click', this.#handleLinkEvent);
+    this.#debouncedRefreshView.cancel();
   };
 
   /**

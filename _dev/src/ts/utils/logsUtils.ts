@@ -50,18 +50,22 @@ export function parseLogWithSeverity(log: string): LogEntry {
 
 /**
  * @public
- * @param {T} func
- * @param {number} wait
- * @return {(...args: Parameters<T>) => void}
- * @description
+ * @template T
+ * @param {T} func - The function to debounce.
+ * @param {number} wait - The delay in milliseconds before the function is executed.
+ * @return {(...args: Parameters<T>) => void & { clear: () => void }} - A debounced function
+ * that delays the execution of `func` and provides a `clear` method to cancel any pending execution.
+ * @description Creates a debounced version of the given function, ensuring it is executed
+ * only after the specified delay has elapsed since the last invocation.
+ * The returned function also includes a `clear` method to cancel any pending executions.
  */
 export function debounce<T extends Procedure>(
   func: T,
   wait: number
-): (...args: Parameters<T>) => void {
+): { debounced: (...args: Parameters<T>) => void; cancel: () => void } {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-  return (...args: Parameters<T>): void => {
+  const debounced = (...args: Parameters<T>): void => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -70,6 +74,15 @@ export function debounce<T extends Procedure>(
       func(...args);
     }, wait);
   };
+
+  const cancel = (): void => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = undefined;
+    }
+  };
+
+  return { debounced, cancel };
 }
 
 /**
