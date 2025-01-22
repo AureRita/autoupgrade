@@ -91,6 +91,9 @@ abstract class AbstractCommand extends Command
         $this->upgradeContainer->setLogger($this->logger);
         (new ErrorHandler($this->logger))->enable();
         $this->logger->debug('Error handler enabled.');
+
+        $moduleDir = $this->upgradeContainer->getProperty(UpgradeContainer::WORKSPACE_PATH);
+        $this->upgradeContainer->getWorkspace()->init($moduleDir);
     }
 
     /**
