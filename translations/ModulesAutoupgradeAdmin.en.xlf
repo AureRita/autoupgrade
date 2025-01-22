@@ -1455,21 +1455,17 @@ Comment: directory already exists</note>
       </trans-unit>
     </body>
   </file>
-  <file original="views/templates/dialogs/dialog-backup-all.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
-    <body>
-      <trans-unit id="4de1325d17b745018ee0473aa24e40be">
-        <source>Your files, database, and images will be backed up.</source>
-        <target>Your files, database, and images will be backed up.</target>
-        <note>Line: 4</note>
-      </trans-unit>
-    </body>
-  </file>
   <file original="views/templates/dialogs/dialog-backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
       <trans-unit id="a55151123e9668d00ca7edbfbaf34b49">
         <source>Start backup?</source>
         <target>Start backup?</target>
         <note>Line: 3</note>
+      </trans-unit>
+      <trans-unit id="4de1325d17b745018ee0473aa24e40be">
+        <source>Your files, database, and images will be backed up.</source>
+        <target>Your files, database, and images will be backed up.</target>
+        <note>Line: 5</note>
       </trans-unit>
       <trans-unit id="c48b010e2f019b37cd748419f50a83c8">
         <source>Your files and database will be backed up.</source>
@@ -1479,7 +1475,7 @@ Comment: directory already exists</note>
       <trans-unit id="0b69cd55a690bee672a1fb91091222f1">
         <source>Start backup</source>
         <target>Start backup</target>
-        <note>Line: 20</note>
+        <note>Line: 21</note>
       </trans-unit>
     </body>
   </file>
@@ -1675,7 +1671,7 @@ Comment: directory already exists</note>
       <trans-unit id="b27bea61eb2963cb570ce625b87ea053">
         <source>Update without backup</source>
         <target>Update without backup</target>
-        <note>Line: 67</note>
+        <note>Line: 73</note>
       </trans-unit>
       <trans-unit id="8f54da32d0160f178f08b2530d1e690b">
         <source>Back up your store</source>
@@ -1695,12 +1691,12 @@ Comment: directory already exists</note>
       <trans-unit id="a946e4190a81d83574867d2182261e35">
         <source>Include images in your backup</source>
         <target>Include images in your backup</target>
-        <note>Line: 47</note>
+        <note>Line: 44</note>
       </trans-unit>
       <trans-unit id="2284aa8fec405e1dd014326b51cde020">
         <source>Launch backup</source>
         <target>Launch backup</target>
-        <note>Line: 72</note>
+        <note>Line: 79</note>
       </trans-unit>
     </body>
   </file>
