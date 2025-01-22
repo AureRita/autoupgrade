@@ -1,7 +1,7 @@
 import DialogAbstract from './DialogAbstract';
 
-export default class DeleteBackupDialog extends DialogAbstract {
-  protected readonly formId = 'backup_to_delete';
+export default class StartBackupDialog extends DialogAbstract {
+  protected readonly formId = 'form-confirm-backup';
 
   get form(): HTMLFormElement {
     const form = document.forms.namedItem(this.formId);

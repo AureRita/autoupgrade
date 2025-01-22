@@ -1,25 +1,24 @@
-import DomLifecycle from '../types/DomLifecycle';
-import api from '../api/RequestHandler';
+import DialogAbstract from './DialogAbstract';
 
-export default class StartUpdateDialog implements DomLifecycle {
+export default class StartUpdateDialog extends DialogAbstract {
   protected readonly formId = 'form-confirm-update';
   protected readonly confirmCheckboxId = 'dialog-start-update-own-backup';
 
-  public mount(): void {
-    this.#form.addEventListener('submit', this.#onSubmit);
-    this.#form.addEventListener('change', this.#onChange);
+  public mount = (): void => {
+    this.form.addEventListener('submit', this.onSubmit);
+    this.form.addEventListener('change', this.#onChange);
 
     this.#updateSubmitButtonStatus(
       document.getElementById('dialog-start-update-own-backup') as HTMLInputElement | undefined
     );
-  }
+  };
 
-  public beforeDestroy(): void {
-    this.#form.removeEventListener('submit', this.#onSubmit);
-    this.#form.removeEventListener('change', this.#onChange);
-  }
+  public beforeDestroy = (): void => {
+    this.form.removeEventListener('submit', this.onSubmit);
+    this.form.removeEventListener('change', this.#onChange);
+  };
 
-  get #form(): HTMLFormElement {
+  get form(): HTMLFormElement {
     const form = document.forms.namedItem(this.formId);
     if (!form) {
       throw new Error('Form not found');
@@ -37,12 +36,12 @@ export default class StartUpdateDialog implements DomLifecycle {
   }
 
   get #submitButton(): HTMLButtonElement {
-    const submitButton = Array.from(this.#form.elements).find(
+    const submitButton = Array.from(this.form.elements).find(
       (element) => element instanceof HTMLButtonElement && element.type === 'submit'
     ) as HTMLButtonElement | null;
 
     if (!submitButton) {
-      throw new Error(`No submit button found for form ${this.#form.id}`);
+      throw new Error(`No submit button found for form ${this.form.id}`);
     }
 
     return submitButton;
@@ -54,12 +53,6 @@ export default class StartUpdateDialog implements DomLifecycle {
     if (optionInput.id === this.confirmCheckboxId) {
       this.#updateSubmitButtonStatus(optionInput);
     }
-  };
-
-  readonly #onSubmit = async (event: Event) => {
-    event.preventDefault();
-
-    await api.post(this.#form.dataset.routeToSubmit!, new FormData(this.#form));
   };
 
   #updateSubmitButtonStatus(input?: HTMLInputElement): void {

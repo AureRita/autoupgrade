@@ -1,25 +1,20 @@
-import DomLifecycle from '../types/DomLifecycle';
 import { sendUserFeedback } from '../api/sentryApi';
 import { Feedback, FeedbackFields, Logs } from '../types/sentryApi';
 import { logStore } from '../store/LogStore';
 import { formatLogsMessages } from '../utils/logsUtils';
+import DialogAbstract from './DialogAbstract';
 
-export default class SendErrorReportDialog implements DomLifecycle {
+export default class SendErrorReportDialog extends DialogAbstract {
   protected readonly formId = 'form-error-feedback';
 
   public mount = (): void => {
-    this.#form.addEventListener('submit', this.#onSubmit);
+    this.form.addEventListener('submit', this.onSubmit);
 
-    const errorMessageArea: HTMLTextAreaElement = this.#form.querySelector('#errorMessage')!;
-    const errors = logStore.getErrors();
-    errorMessageArea.value = errors[errors.length - 1].message;
+    const errorMessageArea: HTMLTextAreaElement = this.form.querySelector('#errorMessage')!;
+    errorMessageArea.value = this.#lastErrorMessage;
   };
 
-  public beforeDestroy = (): void => {
-    this.#form.removeEventListener('submit', this.#onSubmit);
-  };
-
-  get #form(): HTMLFormElement {
+  get form(): HTMLFormElement {
     const form = document.forms.namedItem(this.formId);
     if (!form) {
       throw new Error('Form not found');
@@ -28,18 +23,25 @@ export default class SendErrorReportDialog implements DomLifecycle {
     return form;
   }
 
-  #onSubmit = (event: SubmitEvent) => {
+  get #lastErrorMessage(): string {
+    const latestError = logStore.getErrors().pop()?.message;
+
+    if (!latestError) {
+      throw new Error('No error message found to send');
+    }
+
+    return latestError;
+  }
+
+  onSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
 
     const logs = this.#getLogs();
     const feedback = this.#getFeedback(event.target as HTMLFormElement);
 
-    const latestError = logStore.getErrors().pop()?.message;
-    if (!latestError) {
-      throw new Error('No error message found to send');
-    }
+    sendUserFeedback(this.#lastErrorMessage, logs, feedback);
 
-    sendUserFeedback(latestError, logs, feedback);
+    this.dispatchDialogContainerOkEvent(event);
   };
 
   #getLogs(): Logs {

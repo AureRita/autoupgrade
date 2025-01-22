@@ -10,20 +10,20 @@ export default class DialogContainer implements DomLifecycle {
   public static readonly containerId = 'ua_dialog';
 
   public mount(): void {
-    this.DialogContainer.addEventListener(Hydration.hydrationEventName, this.#displayDialog);
-    this.DialogContainer.addEventListener('click', this.#onClick);
-    this.DialogContainer.addEventListener(DialogContainer.cancelEvent, this.#closeDialog);
-    this.DialogContainer.addEventListener(DialogContainer.okEvent, this.#closeDialog);
+    this.dialogContainer.addEventListener(Hydration.hydrationEventName, this.#displayDialog);
+    this.dialogContainer.addEventListener('click', this.#onClick);
+    this.dialogContainer.addEventListener(DialogContainer.cancelEvent, this.#closeDialog);
+    this.dialogContainer.addEventListener(DialogContainer.okEvent, this.#closeDialog);
   }
 
   public beforeDestroy(): void {
-    this.DialogContainer.removeEventListener(Hydration.hydrationEventName, this.#displayDialog);
-    this.DialogContainer.removeEventListener('click', this.#onClick);
-    this.DialogContainer.removeEventListener(DialogContainer.cancelEvent, this.#closeDialog);
-    this.DialogContainer.removeEventListener(DialogContainer.okEvent, this.#closeDialog);
+    this.dialogContainer.removeEventListener(Hydration.hydrationEventName, this.#displayDialog);
+    this.dialogContainer.removeEventListener('click', this.#onClick);
+    this.dialogContainer.removeEventListener(DialogContainer.cancelEvent, this.#closeDialog);
+    this.dialogContainer.removeEventListener(DialogContainer.okEvent, this.#closeDialog);
   }
 
-  public get DialogContainer(): HTMLElement {
+  public get dialogContainer(): HTMLElement {
     const container = document.getElementById(DialogContainer.containerId);
 
     if (!container) {
@@ -52,14 +52,12 @@ export default class DialogContainer implements DomLifecycle {
         target === dialog
       ) {
         dialog.dispatchEvent(new Event(DialogContainer.cancelEvent, { bubbles: true }));
-      } else if (target?.closest(".dialog__footer button:not([data-dismiss='dialog'])")) {
-        dialog.dispatchEvent(new Event(DialogContainer.okEvent, { bubbles: true }));
       }
     }
   }
 
   #closeDialog(ev: Event): void {
-    setTimeout(() => scriptHandler.unloadScriptType(ScriptType.DIALOG), 0);
+    scriptHandler.unloadScriptType(ScriptType.DIALOG);
     const dialog = ev.target as HTMLDialogElement;
     if (dialog) {
       dialog.close();

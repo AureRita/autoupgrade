@@ -1,4 +1,5 @@
 import Stepper from '../../src/ts/utils/Stepper';
+import SpyInstance = jest.SpyInstance;
 
 const createMockStepperHTML = () => {
   document.body.innerHTML = `
@@ -18,7 +19,10 @@ const createMockStepperHTML = () => {
 };
 
 describe('Stepper', () => {
+  let debugSpy: SpyInstance;
+
   beforeEach(() => {
+    debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
     createMockStepperHTML();
   });
 
@@ -139,5 +143,7 @@ describe('Stepper', () => {
 
     stepper.setCurrentStep('🐕');
     checkStepsStatus();
+
+    expect(debugSpy).toHaveBeenCalledWith('Step 🐕 not found in list.');
   });
 });
