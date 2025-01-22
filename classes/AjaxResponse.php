@@ -101,7 +101,6 @@ class AjaxResponse
             'status' => $this->getStatus(),
             'next_desc' => $this->logger->getLastInfo(),
             'nextQuickInfo' => $this->logger->getInfos(),
-            'nextErrors' => $this->logger->getErrors(),
             'nextParams' => array_merge(
                 $this->nextParams,
                 $this->state->export(),
