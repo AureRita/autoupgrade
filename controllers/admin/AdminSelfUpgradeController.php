@@ -45,15 +45,7 @@ class AdminSelfUpgradeController extends ModuleAdminController
      * Initialized in initPath().
      */
     /** @var string */
-    public $autoupgradePath;
-    /** @var string */
-    public $downloadPath;
-    /** @var string */
-    public $backupPath;
-    /** @var string */
-    public $latestPath;
-    /** @var string */
-    public $tmpPath;
+    private $autoupgradePath;
 
     /**
      * autoupgradeDir.
@@ -66,11 +58,6 @@ class AdminSelfUpgradeController extends ModuleAdminController
     public $prodRootDir = '';
     /** @var string */
     public $adminDir = '';
-
-    /** @var array<string, mixed[]> */
-    public $_fieldsUpgradeOptions = [];
-    /** @var array<string, mixed[]> */
-    public $_fieldsBackupOptions = [];
 
     /**
      * @var UpgradeContainer
@@ -213,6 +200,7 @@ class AdminSelfUpgradeController extends ModuleAdminController
         $this->prodRootDir = _PS_ROOT_DIR_;
         $this->adminDir = realpath(_PS_ADMIN_DIR_);
         $this->upgradeContainer = new UpgradeContainer($this->prodRootDir, $this->adminDir);
+        $this->autoupgradePath = $this->adminDir . DIRECTORY_SEPARATOR . $this->autoupgradeDir;
         if (!defined('__PS_BASE_URI__')) {
             // _PS_DIRECTORY_ replaces __PS_BASE_URI__ in 1.5
             if (defined('_PS_DIRECTORY_')) {
