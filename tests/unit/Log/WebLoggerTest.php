@@ -43,7 +43,7 @@ class WebLoggerTest extends TestCase
         $logger->log(WebLogger::INFO, 'Good bye');
 
         $this->assertSame('Good bye', $logger->getLastInfo());
-        $infos = $logger->getInfos();
+        $infos = $logger->getLogs();
         $this->assertSame([
             'INFO - Hello',
             'INFO - Good bye',
@@ -86,6 +86,6 @@ class WebLoggerTest extends TestCase
             'WARNING - Oh no',
             'WARNING - Oh no 2',
             'INFO - INFO #2',
-        ], $logger->getInfos());
+        ], $logger->getLogs());
     }
 }

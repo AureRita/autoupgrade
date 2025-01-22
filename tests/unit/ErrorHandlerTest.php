@@ -45,7 +45,7 @@ class ErrorHandlerTest extends TestCase
 
     public function testDefaultContentIsEmpty()
     {
-        $this->assertEmpty($this->logger->getInfos());
+        $this->assertEmpty($this->logger->getLogs());
     }
 
     public function testCheckExceptionAndContent()
@@ -58,7 +58,7 @@ class ErrorHandlerTest extends TestCase
         $this->errorHandler->exceptionHandler($exception);
         ob_end_clean();
 
-        $infos = $this->logger->getInfos();
+        $infos = $this->logger->getLogs();
         $this->assertCount(1, $infos);
         $this->assertContains(__FILE__ . ' line ' . $line . ' - Exception: ERMAGHERD', end($infos));
     }
@@ -67,7 +67,7 @@ class ErrorHandlerTest extends TestCase
     {
         $line = __LINE__;
         $this->errorHandler->errorHandler(E_WARNING, 'Trololo', __FILE__, $line);
-        $msgs = $this->logger->getInfos();
+        $msgs = $this->logger->getLogs();
         $this->assertCount(1, $msgs);
         $this->assertSame(end($msgs), 'WARNING - ' . __FILE__ . ' line ' . $line . ' - Trololo');
     }

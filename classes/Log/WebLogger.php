@@ -44,7 +44,7 @@ class WebLogger extends Logger
      *
      * @return string[]
      */
-    public function getInfos(): array
+    public function getLogs(): array
     {
         return $this->normalMessages;
     }

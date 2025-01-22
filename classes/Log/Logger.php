@@ -140,7 +140,7 @@ abstract class Logger implements LoggerInterface
      *
      * @return string[] Details on what happened during the execution. Verbose levels: DEBUG / INFO / WARNING
      */
-    public function getInfos(): array
+    public function getLogs(): array
     {
         return [];
     }
