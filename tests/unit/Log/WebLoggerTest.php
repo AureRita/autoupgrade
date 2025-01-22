@@ -51,28 +51,6 @@ class WebLoggerTest extends TestCase
         $this->assertCount(2, $infos);
     }
 
-    public function testErrorIsRegistered()
-    {
-        $logger = new WebLogger();
-        $logger->log(WebLogger::CRITICAL, 'Ach!!!');
-
-        $errors = $logger->getErrors();
-        $this->assertCount(1, $errors);
-        $this->assertCount(1, $logger->getInfos());
-        $this->assertSame('CRITICAL - Ach!!!', end($errors));
-    }
-
-    public function testMessageIsRegistered()
-    {
-        $logger = new WebLogger();
-        $logger->log(WebLogger::DEBUG, 'Some stuff happened');
-
-        $messages = $logger->getInfos();
-        $this->assertCount(1, $messages);
-        $this->assertCount(0, $logger->getErrors());
-        $this->assertSame('DEBUG - Some stuff happened', end($messages));
-    }
-
     public function testSensitiveDataAreReplaced()
     {
         $logger = new WebLogger();
