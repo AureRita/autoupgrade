@@ -54,10 +54,6 @@ export default class ProgressTracker extends ComponentAbstract implements DomLif
     this.#logsSummary?.setLogsSummaryText(data.next_desc ?? '');
     this.#progressBar?.setProgressPercentage(data.nextParams?.progressPercentage || 0);
     this.#logsViewer.addLogs(data.nextQuickInfo);
-
-    if (data.nextErrors) {
-      this.#logsViewer.addLogs(data.nextErrors);
-    }
   };
 
   /**

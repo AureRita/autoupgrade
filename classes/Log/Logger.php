@@ -135,23 +135,12 @@ abstract class Logger implements LoggerInterface
     }
 
     /**
-     * Equivalent of the old $nextErrors
-     * Used during upgrade. Will be displayed in the top right panel (not visible at the beginning).
-     *
-     * @return string[] Details of error which occured during the request. Verbose levels: ERROR
-     */
-    public function getErrors(): array
-    {
-        return [];
-    }
-
-    /**
      * Equivalent of the old $nextQuickInfo
      * Used during upgrade. Will be displayed in the lower panel.
      *
      * @return string[] Details on what happened during the execution. Verbose levels: DEBUG / INFO / WARNING
      */
-    public function getInfos(): array
+    public function getLogs(): array
     {
         return [];
     }

@@ -125,8 +125,7 @@ class ErrorHandler
     public function generateJsonLog(string $log): string
     {
         return json_encode([
-            'nextQuickInfo' => $this->logger->getInfos(),
-            'nextErrors' => array_merge($this->logger->getErrors(), [$log]),
+            'nextQuickInfo' => array_merge($this->logger->getLogs(), [$log]),
             'error' => true,
             'next' => 'error',
         ]);

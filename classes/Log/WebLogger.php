@@ -36,9 +36,6 @@ class WebLogger extends Logger
     /** @var string[] */
     protected $normalMessages = [];
 
-    /** @var string[] */
-    protected $severeMessages = [];
-
     /** @var ?string */
     protected $lastInfo;
 
@@ -47,17 +44,7 @@ class WebLogger extends Logger
      *
      * @return string[]
      */
-    public function getErrors(): array
-    {
-        return $this->severeMessages;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return string[]
-     */
-    public function getInfos(): array
+    public function getLogs(): array
     {
         return $this->normalMessages;
     }
@@ -96,10 +83,5 @@ class WebLogger extends Logger
         $log = $this->formatLog($level, $message);
 
         $this->normalMessages[] = $log;
-
-        // deprecated : todo need to be removed after NEW UI is completed.
-        if ($level > self::ERROR) {
-            $this->severeMessages[] = $log;
-        }
     }
 }

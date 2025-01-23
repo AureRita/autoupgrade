@@ -43,34 +43,12 @@ class WebLoggerTest extends TestCase
         $logger->log(WebLogger::INFO, 'Good bye');
 
         $this->assertSame('Good bye', $logger->getLastInfo());
-        $infos = $logger->getInfos();
+        $infos = $logger->getLogs();
         $this->assertSame([
             'INFO - Hello',
             'INFO - Good bye',
         ], $infos);
         $this->assertCount(2, $infos);
-    }
-
-    public function testErrorIsRegistered()
-    {
-        $logger = new WebLogger();
-        $logger->log(WebLogger::CRITICAL, 'Ach!!!');
-
-        $errors = $logger->getErrors();
-        $this->assertCount(1, $errors);
-        $this->assertCount(1, $logger->getInfos());
-        $this->assertSame('CRITICAL - Ach!!!', end($errors));
-    }
-
-    public function testMessageIsRegistered()
-    {
-        $logger = new WebLogger();
-        $logger->log(WebLogger::DEBUG, 'Some stuff happened');
-
-        $messages = $logger->getInfos();
-        $this->assertCount(1, $messages);
-        $this->assertCount(0, $logger->getErrors());
-        $this->assertSame('DEBUG - Some stuff happened', end($messages));
     }
 
     public function testSensitiveDataAreReplaced()
@@ -108,6 +86,6 @@ class WebLoggerTest extends TestCase
             'WARNING - Oh no',
             'WARNING - Oh no 2',
             'INFO - INFO #2',
-        ], $logger->getInfos());
+        ], $logger->getLogs());
     }
 }
