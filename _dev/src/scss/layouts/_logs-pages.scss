@@ -43,6 +43,10 @@ html {
           grid-template-columns: minmax(0, 1fr);
           min-height: calc(100cqh - var(--#{$ua-prefix}header-offset-mobile));
 
+          #ua_main {
+            height: 100%;
+          }
+
           #ua_container {
             flex-grow: 1;
           }
