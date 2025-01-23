@@ -26,11 +26,6 @@
   </file>
   <file original="classes/Parameters/LocalChannelConfigurationValidator.php" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="8cd1c74d3c55f934c1b312fc65f9022f">
-        <source>We couldn't find a PrestaShop version in the .zip file that was uploaded in your local archive. Please try again.</source>
-        <target>We couldn't find a PrestaShop version in the .zip file that was uploaded in your local archive. Please try again.</target>
-        <note>Line: 144</note>
-      </trans-unit>
       <trans-unit id="80c25611ea9134bac1da1d91eb03544a">
         <source>Both 'xml' and 'zip' files attributes must be provided to use the local channel.</source>
         <target>Both 'xml' and 'zip' files attributes must be provided to use the local channel.</target>
@@ -208,6 +203,11 @@
   </file>
   <file original="classes/Task/Miscellaneous/UpdateConfig.php" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="8cd1c74d3c55f934c1b312fc65f9022f">
+        <source>We couldn't find a PrestaShop version in the .zip file that was uploaded in your local archive. Please try again.</source>
+        <target>We couldn't find a PrestaShop version in the .zip file that was uploaded in your local archive. Please try again.</target>
+        <note>Line: 102</note>
+      </trans-unit>
       <trans-unit id="d70699057bcd09b03129da2391b47d67">
         <source>Update process will use archive.</source>
         <target>Update process will use archive.</target>
@@ -1481,6 +1481,11 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/dialogs/dialog-delete-backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="ea4788705e6873b424c65e91c2846b19">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>Line: 18</note>
+      </trans-unit>
       <trans-unit id="b6cf8e12bbbeee058067ebf8c8dda7e2">
         <source>Delete backup</source>
         <target>Delete backup</target>
@@ -1505,6 +1510,11 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/dialogs/dialog-error-report.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="f685da009437ded5271e842075eaf743">
+        <source>Send error report</source>
+        <target>Send error report</target>
+        <note>Line: 74</note>
+      </trans-unit>
       <trans-unit id="845ceb9fbcd6f7a5e5b55c0fc0264c3b">
         <source>Send error report?</source>
         <target>Send error report?</target>
@@ -1549,6 +1559,11 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/dialogs/dialog-restore-from-backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="2bd339d85ee3b33e513359ce781b60cc">
+        <source>Restore</source>
+        <target>Restore</target>
+        <note>Line: 21</note>
+      </trans-unit>
       <trans-unit id="d9ea955da44076b696c6e31e407bb7a9">
         <source>Restore from a backup?</source>
         <target>Restore from a backup?</target>
@@ -1577,10 +1592,10 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/dialogs/dialog-update.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="ea4788705e6873b424c65e91c2846b19">
-        <source>Cancel</source>
-        <target>Cancel</target>
-        <note>Line: 39</note>
+      <trans-unit id="880d6ec7b06e1f403347a16afbca8335">
+        <source>Start update</source>
+        <target>Start update</target>
+        <note>Line: 54</note>
       </trans-unit>
       <trans-unit id="2ca0ff94d146821c12f5340b117b9ecf">
         <source>Start update?</source>
@@ -1615,6 +1630,16 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/pages/errors/404.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="8a862ffce3e06bbe655506fd73fe017c">
+        <source>Something went wrong...</source>
+        <target>Something went wrong...</target>
+        <note>Line: 5</note>
+      </trans-unit>
+      <trans-unit id="9af7e43160937bd2ba87e3828a4f90a6">
+        <source>Go back to Update assistant</source>
+        <target>Go back to Update assistant</target>
+        <note>Line: 18</note>
+      </trans-unit>
       <trans-unit id="704563ab61497154143cbc7e22e42499">
         <source>The page you requested cannot be found.</source>
         <target>The page you requested cannot be found.</target>
@@ -1624,16 +1649,6 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/pages/errors/500.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="8a862ffce3e06bbe655506fd73fe017c">
-        <source>Something went wrong...</source>
-        <target>Something went wrong...</target>
-        <note>Line: 5</note>
-      </trans-unit>
-      <trans-unit id="9af7e43160937bd2ba87e3828a4f90a6">
-        <source>Go back to Update assistant</source>
-        <target>Go back to Update assistant</target>
-        <note>Line: 21</note>
-      </trans-unit>
       <trans-unit id="5368f5827707bbb2b9142d25d1f9b493">
         <source>The module is no longer responding. You can try again in a few moments.</source>
         <target>The module is no longer responding. You can try again in a few moments.</target>
@@ -1648,10 +1663,15 @@ Comment: directory already exists</note>
         <target>Download backup logs</target>
         <note>Line: 23</note>
       </trans-unit>
-      <trans-unit id="880d6ec7b06e1f403347a16afbca8335">
-        <source>Start update</source>
-        <target>Start update</target>
-        <note>Line: 63</note>
+      <trans-unit id="9c32ff52925ba5a296f9696cfbb7edcc">
+        <source>Backing up your store's files, database, and images means you can restore to a previous version if something goes wrong during the update. This keeps your data safe and ensures your business stays up and running.</source>
+        <target>Backing up your store's files, database, and images means you can restore to a previous version if something goes wrong during the update. This keeps your data safe and ensures your business stays up and running.</target>
+        <note>Line: 13</note>
+      </trans-unit>
+      <trans-unit id="b27bea61eb2963cb570ce625b87ea053">
+        <source>Update without backup</source>
+        <target>Update without backup</target>
+        <note>Line: 73</note>
       </trans-unit>
       <trans-unit id="8f54da32d0160f178f08b2530d1e690b">
         <source>Back up your store</source>
@@ -1680,32 +1700,8 @@ Comment: directory already exists</note>
       </trans-unit>
     </body>
   </file>
-  <file original="views/templates/steps/backup-selection.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
-    <body>
-      <trans-unit id="2bd339d85ee3b33e513359ce781b60cc">
-        <source>Restore</source>
-        <target>Restore</target>
-        <note>Line: 15</note>
-      </trans-unit>
-    </body>
-  </file>
   <file original="views/templates/steps/backup.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="f685da009437ded5271e842075eaf743">
-        <source>Send error report</source>
-        <target>Send error report</target>
-        <note>Line: 52</note>
-      </trans-unit>
-      <trans-unit id="9c32ff52925ba5a296f9696cfbb7edcc">
-        <source>Backing up your store's files, database, and images means you can restore to a previous version if something goes wrong during the update. This keeps your data safe and ensures your business stays up and running.</source>
-        <target>Backing up your store's files, database, and images means you can restore to a previous version if something goes wrong during the update. This keeps your data safe and ensures your business stays up and running.</target>
-        <note>Line: 12</note>
-      </trans-unit>
-      <trans-unit id="b27bea61eb2963cb570ce625b87ea053">
-        <source>Update without backup</source>
-        <target>Update without backup</target>
-        <note>Line: 42</note>
-      </trans-unit>
       <trans-unit id="d7f31683c24e4c4b7f0c7f376fe3a8fe">
         <source>Backup failed</source>
         <target>Backup failed</target>
@@ -1764,36 +1760,6 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/steps/post-restore.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="fef46e5063ce3dc78b8ae64fa474241d">
-        <source>Exit</source>
-        <target>Exit</target>
-        <note>Line: 64</note>
-      </trans-unit>
-      <trans-unit id="cce78dc6ebbec7385a01f2146d6d01c8">
-        <source>Next steps</source>
-        <target>Next steps</target>
-        <note>Line: 19</note>
-      </trans-unit>
-      <trans-unit id="e6196201ba7431ba94d3bac5d6af97c8">
-        <source>%startbold%Open the developer documentation%endbold% to keep this checklist at-hand.</source>
-        <target>%startbold%Open the developer documentation%endbold% to keep this checklist at-hand.</target>
-        <note>Line: 24</note>
-      </trans-unit>
-      <trans-unit id="289390be5b219643de2f47be7d8b9c53">
-        <source><![CDATA[%startbold%Disable the maintenance mode%endbold% in General settings > Maintenance.]]></source>
-        <target><![CDATA[%startbold%Disable the maintenance mode%endbold% in General settings > Maintenance.]]></target>
-        <note>Line: 30</note>
-      </trans-unit>
-      <trans-unit id="231cf4c70d866b616c21baddaeed0696">
-        <source>Troubleshooting</source>
-        <target>Troubleshooting</target>
-        <note>Line: 40</note>
-      </trans-unit>
-      <trans-unit id="4ba42d4d681d17d9bee2f6228c326069">
-        <source>Open developer documentation</source>
-        <target>Open developer documentation</target>
-        <note>Line: 69</note>
-      </trans-unit>
       <trans-unit id="3d6cd7dd6feb249f99dd689ec7db7e81">
         <source>Post-restore checklist</source>
         <target>Post-restore checklist</target>
@@ -1818,6 +1784,36 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/steps/post-update.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="fef46e5063ce3dc78b8ae64fa474241d">
+        <source>Exit</source>
+        <target>Exit</target>
+        <note>Line: 82</note>
+      </trans-unit>
+      <trans-unit id="cce78dc6ebbec7385a01f2146d6d01c8">
+        <source>Next steps</source>
+        <target>Next steps</target>
+        <note>Line: 19</note>
+      </trans-unit>
+      <trans-unit id="e6196201ba7431ba94d3bac5d6af97c8">
+        <source>%startbold%Open the developer documentation%endbold% to keep this checklist at-hand.</source>
+        <target>%startbold%Open the developer documentation%endbold% to keep this checklist at-hand.</target>
+        <note>Line: 24</note>
+      </trans-unit>
+      <trans-unit id="289390be5b219643de2f47be7d8b9c53">
+        <source><![CDATA[%startbold%Disable the maintenance mode%endbold% in General settings > Maintenance.]]></source>
+        <target><![CDATA[%startbold%Disable the maintenance mode%endbold% in General settings > Maintenance.]]></target>
+        <note>Line: 42</note>
+      </trans-unit>
+      <trans-unit id="231cf4c70d866b616c21baddaeed0696">
+        <source>Troubleshooting</source>
+        <target>Troubleshooting</target>
+        <note>Line: 52</note>
+      </trans-unit>
+      <trans-unit id="4ba42d4d681d17d9bee2f6228c326069">
+        <source>Open developer documentation</source>
+        <target>Open developer documentation</target>
+        <note>Line: 87</note>
+      </trans-unit>
       <trans-unit id="201ad8cac531a92e1ec77ae5c1e7aa20">
         <source>Post-update checklist</source>
         <target>Post-update checklist</target>
@@ -1881,6 +1877,11 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/steps/update-options.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
+      <trans-unit id="10ac3d04253ef7e1ddc73e6091c0cd55">
+        <source>Next</source>
+        <target>Next</target>
+        <note>Line: 52</note>
+      </trans-unit>
       <trans-unit id="754e7de2554f7664a9ccacff4791b8cc">
         <source>Deactivate non-native modules</source>
         <target>Deactivate non-native modules</target>
@@ -1934,11 +1935,6 @@ Comment: directory already exists</note>
   </file>
   <file original="views/templates/steps/version-choice.html.twig" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="10ac3d04253ef7e1ddc73e6091c0cd55">
-        <source>Next</source>
-        <target>Next</target>
-        <note>Line: 125</note>
-      </trans-unit>
       <trans-unit id="a7446965a3635b6a69697078130d961a">
         <source>You're up to date</source>
         <target>You're up to date</target>
