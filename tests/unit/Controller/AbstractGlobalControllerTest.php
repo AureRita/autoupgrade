@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
+use PrestaShop\Module\AutoUpgrade\Router\UrlGenerator;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +29,11 @@ class AbstractGlobalControllerTest extends TestCase
     {
         $upgradeContainer = $this->getMockBuilder(UpgradeContainer::class)
             ->disableOriginalConstructor()
+            ->setMethods(['getUrlGenerator'])
             ->getMock();
+
+        $upgradeContainer->method('getUrlGenerator')
+            ->willReturn(new UrlGenerator('/yo/doge', 'admin-wololo'));
 
         $server = [
             'HTTP_HOST' => 'localhost',
