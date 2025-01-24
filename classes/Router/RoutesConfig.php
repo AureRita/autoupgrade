@@ -15,7 +15,6 @@ use PrestaShop\Module\AutoUpgrade\Controller\UpdatePagePostUpdateController;
 use PrestaShop\Module\AutoUpgrade\Controller\UpdatePageUpdateController;
 use PrestaShop\Module\AutoUpgrade\Controller\UpdatePageUpdateOptionsController;
 use PrestaShop\Module\AutoUpgrade\Controller\UpdatePageVersionChoiceController;
-
 use PrestaShop\Module\AutoUpgrade\Router\Middlewares\LocalChannelXmlAndZipExist;
 use PrestaShop\Module\AutoUpgrade\Router\Middlewares\UpdateIsConfigured;
 
