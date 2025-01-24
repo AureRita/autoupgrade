@@ -9,6 +9,6 @@ class UpdateIsConfigured extends AbstractMiddleware
 {
     public function process(): ?string
     {
-        return $this->upgradeContainer->getFileStorage()->exists(UpgradeFileNames::UPDATE_CONFIG_FILENAME) ? null : Routes::UPDATE_PAGE_VERSION_CHOICE ;
+        return $this->upgradeContainer->getFileStorage()->exists(UpgradeFileNames::UPDATE_CONFIG_FILENAME) ? null : Routes::UPDATE_PAGE_VERSION_CHOICE;
     }
 }

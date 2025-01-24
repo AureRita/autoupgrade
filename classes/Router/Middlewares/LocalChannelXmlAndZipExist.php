@@ -2,13 +2,13 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Router\Middlewares;
 
-use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeFileNames;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
 
 class LocalChannelXmlAndZipExist extends AbstractMiddleware
 {
     /**
      * @return Routes::*|null
+     *
      * @throws \Exception
      */
     public function process(): ?string

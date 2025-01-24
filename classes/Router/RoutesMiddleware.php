@@ -2,8 +2,8 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Router;
 
-use PrestaShop\Module\AutoUpgrade\Router\Middlewares\UpdateIsConfigured;
 use PrestaShop\Module\AutoUpgrade\Router\Middlewares\LocalChannelXmlAndZipExist;
+use PrestaShop\Module\AutoUpgrade\Router\Middlewares\UpdateIsConfigured;
 
 class RoutesMiddleware
 {

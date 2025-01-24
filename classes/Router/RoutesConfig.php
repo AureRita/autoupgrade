@@ -61,7 +61,7 @@ class RoutesConfig
                 'method' => 'index',
                 'middleware' => [
                     RoutesMiddleware::UPDATE_IS_CONFIGURED,
-                    RoutesMiddleware::LOCAL_CHANNEL_XML_AND_ZIP_EXIST
+                    RoutesMiddleware::LOCAL_CHANNEL_XML_AND_ZIP_EXIST,
                 ],
             ],
             Routes::UPDATE_STEP_UPDATE_OPTIONS => [
