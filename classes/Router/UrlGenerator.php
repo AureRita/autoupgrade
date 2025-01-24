@@ -71,4 +71,13 @@ class UrlGenerator
     {
         return rtrim($this->getShopAbsolutePathFromRequest($request), '/') . '/' . $this->adminFolder;
     }
+
+    public function getUrlToRoute(Request $request, string $destinationRoute): string
+    {
+        $params = [];
+        parse_str($request->server->get('QUERY_STRING'), $params);
+        $nextQueryParams = http_build_query(array_merge($params, ['route' => $destinationRoute]));
+
+        return $request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo() . '?' . $nextQueryParams;
+    }
 }

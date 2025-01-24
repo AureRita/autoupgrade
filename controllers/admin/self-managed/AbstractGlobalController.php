@@ -57,10 +57,6 @@ abstract class AbstractGlobalController
 
     protected function redirectTo(string $destinationRoute): RedirectResponse
     {
-        $params = [];
-        parse_str($this->request->server->get('QUERY_STRING'), $params);
-        $nextQueryParams = http_build_query(array_merge($params, ['route' => $destinationRoute]));
-
-        return new RedirectResponse($this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $this->request->getPathInfo() . '?' . $nextQueryParams);
+        return new RedirectResponse($this->upgradeContainer->getUrlGenerator()->getUrlToRoute($this->request, $destinationRoute));
     }
 }

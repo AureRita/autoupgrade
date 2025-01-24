@@ -56,10 +56,7 @@ class Router
         $route = (new Middleware($this->upgradeContainer))->process($route);
 
         if ($routeName !== $route) {
-            $newUrl = $this->changeRouteRequestParam($request, $route);
-
-            header('Location: ' . $newUrl, true, 302);
-            exit;
+            $this->dirtyRedirectToRoute($request, $route);
         }
 
         $routeParams = RoutesConfig::ROUTES[$route];
@@ -72,17 +69,13 @@ class Router
      * @param Request $request
      * @param Routes::* $route
      *
-     * @return string
+     * @return never
      */
-    private function changeRouteRequestParam(Request $request, string $route): string
+    private function dirtyRedirectToRoute(Request $request, string $route): void
     {
-        $baseUrl = $request->getSchemeAndHttpHost() . $request->getBaseUrl();
-        $queryParams = $request->query->all();
+        $newUrl = $this->upgradeContainer->getUrlGenerator()->getUrlToRoute($request, $route);
 
-        $queryParams['route'] = $route;
-
-        $queryString = http_build_query($queryParams);
-
-        return $baseUrl . '?' . $queryString;
+        header('Location: ' . $newUrl, true, 302);
+        exit;
     }
 }
