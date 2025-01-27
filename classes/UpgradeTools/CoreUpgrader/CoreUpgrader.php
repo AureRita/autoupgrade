@@ -503,8 +503,8 @@ abstract class CoreUpgrader
         $error = $this->db->getMsgError();
         $error_number = $this->db->getNumberError();
 
-        $this->logger->warning('Error occurred during the execution of a query: ' . $error_number . ', ' . $error);
-        $this->logger->warning('Migration file: ' . $upgrade_file . ', Query: ' . $query);
+        $this->logger->warning($this->container->getTranslator()->trans('The execution of the query failed: %s, %s', [$error_number, $error]));
+        $this->logger->warning($this->container->getTranslator()->trans('Migration file: %s, Query: %s', [$upgrade_file, $query]));
 
         $duplicates = ['1050', '1054', '1060', '1061', '1062', '1091'];
         if (!in_array($error_number, $duplicates)) {

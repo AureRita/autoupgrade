@@ -236,7 +236,7 @@ class ModuleMigrationTest extends TestCase
         $this->moduleMigration->needMigration($moduleMigrationContext);
 
         $this->expectException(\PrestaShop\Module\AutoUpgrade\Exceptions\UpgradeException::class);
-        $this->expectExceptionMessage('Unexpected error when trying to upgrade module mymodule. Module mymodule disabled.');
+        $this->expectExceptionMessage('Unexpected issue when trying to upgrade module mymodule. Module mymodule disabled.');
 
         $this->moduleMigration->runMigration($moduleMigrationContext);
     }

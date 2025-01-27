@@ -118,7 +118,7 @@ class ModuleMigration
                 throw $e;
             } catch (Throwable $t) {
                 $moduleMigrationContext->getModuleInstance()->disable();
-                throw (new UpgradeException($this->translator->trans('Unexpected error when trying to upgrade module %s. Module %s disabled.', [$moduleMigrationContext->getModuleName(), $moduleMigrationContext->getModuleName()]), 0, $t))->setSeverity(UpgradeException::SEVERITY_WARNING);
+                throw (new UpgradeException($this->translator->trans('Unexpected issue when trying to upgrade module %s. Module %s disabled.', [$moduleMigrationContext->getModuleName(), $moduleMigrationContext->getModuleName()]), 0, $t))->setSeverity(UpgradeException::SEVERITY_WARNING);
             }
         }
     }
