@@ -8,6 +8,8 @@ export default class RouteHandler {
    *              to handle route changes.
    */
   constructor() {
+    this.#removeRedirectedParam();
+
     if (!this.getCurrentRoute()) {
       this.setNewRoute('home-page');
     }
@@ -67,6 +69,21 @@ export default class RouteHandler {
     const newRoute = this.getCurrentRoute();
     if (newRoute !== null) {
       await api.post(newRoute, new FormData(), true);
+    }
+  }
+
+  /**
+   * @private
+   * @description Removes the '_redirected' query parameter from the URL if it exists.
+   */
+  #removeRedirectedParam(): void {
+    const queryParams = this.#getQueryParams();
+
+    if (queryParams.has('_redirected')) {
+      queryParams.delete('_redirected');
+
+      const newUrl = `${this.#getCurrentUrl().pathname}?${queryParams.toString()}`;
+      window.history.replaceState(null, '', newUrl);
     }
   }
 }

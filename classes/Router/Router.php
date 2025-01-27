@@ -51,12 +51,16 @@ class Router
     public function handle(Request $request)
     {
         $routeName = $request->query->get('route') ?? Routes::HOME_PAGE;
+        $redirected = $request->query->get('_redirected') === '1';
+
         $route = isset(RoutesConfig::ROUTES[$routeName]) ? $routeName : Routes::ERROR_404;
 
-        $route = (new MiddlewareHandler($this->upgradeContainer))->process($route);
+        if (!$redirected) {
+            $route = (new MiddlewareHandler($this->upgradeContainer))->process($route);
 
-        if ($routeName !== $route) {
-            $this->dirtyRedirectToRoute($request, $route);
+            if ($routeName !== $route) {
+                $this->dirtyRedirectToRoute($request, $route);
+            }
         }
 
         $routeParams = RoutesConfig::ROUTES[$route];
@@ -73,7 +77,7 @@ class Router
      */
     private function dirtyRedirectToRoute(Request $request, string $route): void
     {
-        $newUrl = $this->upgradeContainer->getUrlGenerator()->getUrlToRoute($request, $route);
+        $newUrl = $this->upgradeContainer->getUrlGenerator()->getUrlToRoute($request, $route, ['_redirected' => '1']);
 
         header('Location: ' . $newUrl, true, 302);
         exit;

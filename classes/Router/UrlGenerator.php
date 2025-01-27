@@ -72,11 +72,17 @@ class UrlGenerator
         return rtrim($this->getShopAbsolutePathFromRequest($request), '/') . '/' . $this->adminFolder;
     }
 
-    public function getUrlToRoute(Request $request, string $destinationRoute): string
+    /**
+     * @param Request $request
+     * @param string $destinationRoute
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    public function getUrlToRoute(Request $request, string $destinationRoute, array $params = []): string
     {
-        $params = [];
-        parse_str($request->server->get('QUERY_STRING'), $params);
-        $nextQueryParams = http_build_query(array_merge($params, ['route' => $destinationRoute]));
+        $queryStringParams = [];
+        parse_str($request->server->get('QUERY_STRING'), $queryStringParams);
+        $nextQueryParams = http_build_query(array_merge($queryStringParams, $params, ['route' => $destinationRoute]));
 
         return $request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo() . '?' . $nextQueryParams;
     }
