@@ -3,21 +3,21 @@
 namespace PrestaShop\Module\AutoUpgrade\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\Module\AutoUpgrade\Router\Middleware;
+use PrestaShop\Module\AutoUpgrade\Router\MiddlewareHandler;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 
-class MiddlewareTest extends TestCase
+class MiddlewareHandlerTest extends TestCase
 {
     /**
-     * @var Middleware
+     * @var MiddlewareHandler
      */
     private $middleware;
 
     protected function setUp(): void
     {
         $upgradeContainer = new UpgradeContainer('/html', '/html/admin');
-        $this->middleware = new Middleware($upgradeContainer);
+        $this->middleware = new MiddlewareHandler($upgradeContainer);
     }
 
     public function testProcessReturnString(): void

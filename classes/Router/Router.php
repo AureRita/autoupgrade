@@ -53,7 +53,7 @@ class Router
         $routeName = $request->query->get('route') ?? Routes::HOME_PAGE;
         $route = array_key_exists($routeName, RoutesConfig::ROUTES) ? $routeName : Routes::ERROR_404;
 
-        $route = (new Middleware($this->upgradeContainer))->process($route);
+        $route = (new MiddlewareHandler($this->upgradeContainer))->process($route);
 
         if ($routeName !== $route) {
             $this->dirtyRedirectToRoute($request, $route);

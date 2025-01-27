@@ -4,7 +4,7 @@ namespace PrestaShop\Module\AutoUpgrade\Router;
 
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 
-class Middleware
+class MiddlewareHandler
 {
     /**
      * @var UpgradeContainer
