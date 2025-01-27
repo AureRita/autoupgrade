@@ -76,6 +76,7 @@ class UrlGenerator
      * @param Request $request
      * @param string $destinationRoute
      * @param array<string, mixed> $params
+     *
      * @return string
      */
     public function getUrlToRoute(Request $request, string $destinationRoute, array $params = []): string
