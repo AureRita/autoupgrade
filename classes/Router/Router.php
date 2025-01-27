@@ -51,7 +51,7 @@ class Router
     public function handle(Request $request)
     {
         $routeName = $request->query->get('route') ?? Routes::HOME_PAGE;
-        $route = array_key_exists($routeName, RoutesConfig::ROUTES) ? $routeName : Routes::ERROR_404;
+        $route = isset(RoutesConfig::ROUTES[$routeName]) ? $routeName : Routes::ERROR_404;
 
         $route = (new MiddlewareHandler($this->upgradeContainer))->process($route);
 
