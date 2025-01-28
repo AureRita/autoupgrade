@@ -4,7 +4,7 @@ import Hydration from '../utils/Hydration';
 import { AxiosError } from 'axios';
 
 export class RequestHandler {
-  private currentRequestAbortController: AbortController | null = null;
+  public currentRequestAbortController: AbortController | null = null;
 
   /**
    * @public
