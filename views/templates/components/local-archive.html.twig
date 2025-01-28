@@ -10,7 +10,6 @@
         class="form-control {% if errors[form_fields.archive_zip] %} error {% endif %}"
         id="{{ form_fields.archive_zip }}"
         name="{{ form_fields.archive_zip }}"
-        required
       >
         <option value="">{{ 'Select an archive'|trans({}) }}</option>
         {% for fileName in archiveFiles %}
@@ -43,7 +42,6 @@
         class="form-control {% if errors[form_fields.archive_xml] %} error {% endif %}"
         id="{{ form_fields.archive_xml }}"
         name="{{ form_fields.archive_xml }}"
-        required
       >
         <option value="">{{ 'Select a file'|trans({}) }}</option>
         {% for fileName in xmlFiles %}

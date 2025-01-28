@@ -90,6 +90,11 @@ export default class UpdatePageVersionChoice extends StepPage {
   };
 
   #saveForm = async () => {
+    api.abortCurrentPost();
+
+    this.#localInputElement?.classList.remove(this.radioLoadingClass);
+    this.#onlineInputElement?.classList.remove(this.radioLoadingClass);
+
     const routeToSave = this.#form!.dataset.routeToSave;
 
     if (!routeToSave) {
