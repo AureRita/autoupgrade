@@ -82,6 +82,10 @@ class RoutesConfig
             Routes::UPDATE_PAGE_BACKUP_OPTIONS => [
                 'controller' => UpdatePageBackupOptionsController::class,
                 'method' => 'index',
+                'middleware' => [
+                    UpdateIsConfigured::class,
+                    LocalChannelXmlAndZipExist::class,
+                ],
             ],
             Routes::UPDATE_STEP_BACKUP_OPTIONS => [
                 'controller' => UpdatePageBackupOptionsController::class,
