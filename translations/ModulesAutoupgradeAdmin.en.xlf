@@ -1329,22 +1329,22 @@ Comment: directory already exists</note>
       <trans-unit id="04f8084b8320ddd1d2ecd6b5e7513974">
         <source>Select an archive</source>
         <target>Select an archive</target>
-        <note>Line: 15</note>
+        <note>Line: 14</note>
       </trans-unit>
       <trans-unit id="647dca555edd0836cd8b882d91a22ecf">
         <source>XML file to use</source>
         <target>XML file to use</target>
-        <note>Line: 38</note>
+        <note>Line: 37</note>
       </trans-unit>
       <trans-unit id="792744786ed30c5623dd1cf0c16f4ffe">
         <source>Select a file</source>
         <target>Select a file</target>
-        <note>Line: 48</note>
+        <note>Line: 46</note>
       </trans-unit>
       <trans-unit id="965d52547523b6380bc716f5ed0ce570">
         <source>No archive found in the following directory: /your-admin-directory/autoupgrade/download/</source>
         <target>No archive found in the following directory: /your-admin-directory/autoupgrade/download/</target>
-        <note>Line: 82</note>
+        <note>Line: 80</note>
       </trans-unit>
     </body>
   </file>
