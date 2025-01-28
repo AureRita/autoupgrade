@@ -4,7 +4,14 @@ import Hydration from '../utils/Hydration';
 import { AxiosError } from 'axios';
 
 export class RequestHandler {
-  public currentRequestAbortController: AbortController | null = null;
+  #currentRequestAbortController: AbortController | null = null;
+
+  /**
+   * @description allows the current post call to be abort
+   */
+  public abortCurrentPost = (): void => {
+    this.#currentRequestAbortController?.abort();
+  };
 
   /**
    * @public
@@ -19,14 +26,11 @@ export class RequestHandler {
     data: FormData = new FormData(),
     fromPopState?: boolean
   ): Promise<void> {
-    // Cancel any previous request if it exists
-    if (this.currentRequestAbortController) {
-      this.currentRequestAbortController.abort();
-    }
+    this.abortCurrentPost();
 
     // Create a new AbortController for the current request (used to cancel previous request)
-    this.currentRequestAbortController = new AbortController();
-    const { signal } = this.currentRequestAbortController;
+    this.#currentRequestAbortController = new AbortController();
+    const { signal } = this.#currentRequestAbortController;
 
     // Append admin dir required by backend
     data.append('dir', window.AutoUpgradeVariables.admin_dir);
