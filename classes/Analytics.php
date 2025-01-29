@@ -114,7 +114,6 @@ class Analytics
         switch ($type) {
             case self::WITH_BACKUP_PROPERTIES:
                 $additionalProperties = [
-                    'backup_files_and_databases' => $this->updateConfiguration->shouldBackupFilesAndDatabase(),
                     'backup_images' => $this->updateConfiguration->shouldBackupImages(),
                 ];
                 $upgradeProperties = $this->properties[self::WITH_BACKUP_PROPERTIES] ?? [];
