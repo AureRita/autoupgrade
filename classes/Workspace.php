@@ -54,12 +54,18 @@ class Workspace
         $this->paths = $paths;
     }
 
+    /**
+     * @throws IOException
+     */
     public function createFolders(): void
     {
         foreach ($this->paths as $path) {
-            if (!file_exists($path) && !@mkdir($path)) {
-                throw new IOException($this->translator->trans('Unable to create directory %s', [$path]));
+            try {
+                $this->filesystem->mkdir($path);
+            } catch (IOException $e) {
+                throw new IOException($this->translator->trans('Unable to create directory %s: %s', [$path, $e->getMessage()]));
             }
+
             if (!is_writable($path)) {
                 throw new IOException($this->translator->trans('Cannot write to the directory. Please ensure you have the necessary write permissions on "%s".', [$path]));
             }

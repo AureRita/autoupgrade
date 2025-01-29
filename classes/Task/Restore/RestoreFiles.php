@@ -55,8 +55,8 @@ class RestoreFiles extends AbstractTask
 
         // loop
         $this->next = TaskName::TASK_RESTORE_FILES;
-        if (!file_exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::FILES_FROM_ARCHIVE_LIST)
-            || !file_exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::FILES_TO_REMOVE_LIST)) {
+        if (!$this->container->getFileSystem()->exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::FILES_FROM_ARCHIVE_LIST)
+            || !$this->container->getFileSystem()->exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::FILES_TO_REMOVE_LIST)) {
             // cleanup current PS tree
             $fromArchive = $this->container->getZipAction()->listContent($this->container->getProperty(UpgradeContainer::BACKUP_PATH) . DIRECTORY_SEPARATOR . $state->getRestoreFilesFilename());
             foreach ($fromArchive as $k => $v) {
@@ -119,7 +119,7 @@ class RestoreFiles extends AbstractTask
 
             if (!empty($toRemoveOnly)) {
                 foreach ($toRemoveOnly as $fileToRemove) {
-                    @unlink($this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . $fileToRemove);
+                    $this->container->getFileSystem()->remove($this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . $fileToRemove);
                 }
             }
 

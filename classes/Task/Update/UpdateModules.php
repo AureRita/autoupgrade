@@ -44,7 +44,6 @@ use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleUnzipper;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleUnzipperContext;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleVersionAdapter;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\Source\ModuleSourceAggregate;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Upgrade all partners modules according to the installed prestashop version.
@@ -69,7 +68,7 @@ class UpdateModules extends AbstractTask
         $moduleSourceList = new ModuleSourceAggregate($this->container->getModuleSourceProviders());
         $moduleDownloader = new ModuleDownloader($this->container->getDownloadService(), $this->translator, $this->logger, $this->container->getProperty(UpgradeContainer::TMP_PATH));
         $moduleUnzipper = new ModuleUnzipper($this->translator, $this->container->getZipAction(), $modulesPath);
-        $moduleMigration = new ModuleMigration($this->translator, $this->logger, $this->container->getProperty(UpgradeContainer::TMP_PATH));
+        $moduleMigration = new ModuleMigration($this->container->getFileSystem(), $this->translator, $this->logger, $this->container->getProperty(UpgradeContainer::TMP_PATH));
 
         if ($listModules->getRemainingTotal()) {
             $moduleInfos = $listModules->getNext();
@@ -112,7 +111,7 @@ class UpdateModules extends AbstractTask
             } finally {
                 // Cleanup of module assets
                 if (!empty($moduleDownloaderContext) && !empty($moduleDownloaderContext->getPathToModuleUpdate())) {
-                    (new Filesystem())->remove([$moduleDownloaderContext->getPathToModuleUpdate()]);
+                    $this->container->getFileSystem()->remove([$moduleDownloaderContext->getPathToModuleUpdate()]);
                 }
             }
         }

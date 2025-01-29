@@ -117,38 +117,6 @@ class Tools14
     }
 
     /**
-     * Delete directory and subdirectories.
-     *
-     * @param string $dirname Directory name
-     */
-    public static function deleteDirectory(string $dirname, bool $delete_self = true): bool
-    {
-        $dirname = rtrim($dirname, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        if (file_exists($dirname)) {
-            if ($files = scandir($dirname)) {
-                foreach ($files as $file) {
-                    if ($file != '.' && $file != '..' && $file != '.svn') {
-                        if (is_file($dirname . $file)) {
-                            unlink($dirname . $file);
-                        } elseif (is_dir($dirname . $file . DIRECTORY_SEPARATOR)) {
-                            self::deleteDirectory($dirname . $file . DIRECTORY_SEPARATOR, true);
-                        }
-                    }
-                }
-                if ($delete_self && file_exists($dirname)) {
-                    if (!rmdir($dirname)) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Check if submit has been posted.
      *
      * @param string $submit submit name

@@ -35,7 +35,7 @@ use PrestaShop\Module\AutoUpgrade\Task\ExitCode;
 use PrestaShop\Module\AutoUpgrade\Task\TaskName;
 use PrestaShop\Module\AutoUpgrade\Task\TaskType;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
-use PrestaShop\Module\AutoUpgrade\UpgradeTools\FilesystemAdapter;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 class UpdateFiles extends AbstractTask
 {
@@ -126,18 +126,19 @@ class UpdateFiles extends AbstractTask
         }
         if (is_dir($orig)) {
             // if $dest is not a directory (that can happen), just remove that file
-            if (!is_dir($dest) && file_exists($dest)) {
-                unlink($dest);
+            if (!is_dir($dest) && $this->container->getFileSystem()->exists($dest)) {
+                $this->container->getFileSystem()->remove($dest);
                 $this->logger->debug($this->translator->trans('File %1$s has been deleted.', [$file]));
             }
-            if (!file_exists($dest)) {
-                if (mkdir($dest)) {
+            if (!$this->container->getFileSystem()->exists($dest)) {
+                try {
+                    $this->container->getFileSystem()->mkdir($dest);
                     $this->logger->debug($this->translator->trans('Directory %1$s created.', [$file]));
 
                     return true;
-                } else {
+                } catch (IOException $e) {
                     $this->next = TaskName::TASK_ERROR;
-                    $this->logger->error($this->translator->trans('Error while creating directory %s.', [$dest]));
+                    $this->logger->error($this->translator->trans('Error while creating directory %s: %s.', [$dest, $e->getMessage()]));
 
                     return false;
                 }
@@ -148,7 +149,7 @@ class UpdateFiles extends AbstractTask
             }
         } elseif (is_file($orig)) {
             $translationAdapter = $this->container->getTranslationAdapter();
-            if ($translationAdapter->isTranslationFile($file) && file_exists($dest)) {
+            if ($translationAdapter->isTranslationFile($file) && $this->container->getFileSystem()->exists($dest)) {
                 $type_trad = $translationAdapter->getTranslationFileType($file);
                 if ($translationAdapter->mergeTranslationFile($orig, $dest, $type_trad)) {
                     $this->logger->info($this->translator->trans('The translation files have been merged into file %s.', [$dest]));
@@ -163,25 +164,24 @@ class UpdateFiles extends AbstractTask
 
             // upgrade exception were above. This part now process all files that have to be upgraded (means to modify or to remove)
             // delete before updating (and this will also remove deprecated files)
-            if (copy($orig, $dest)) {
+            try {
+                $this->container->getFileSystem()->copy($orig, $dest, true);
                 $this->logger->debug($this->translator->trans('Copied %1$s.', [$file]));
 
                 return true;
-            } else {
+            } catch (IOException $e) {
                 $this->next = TaskName::TASK_ERROR;
-                $this->logger->error($this->translator->trans('Error while copying file %s', [$file]));
+                $this->logger->error($this->translator->trans('Error while copying file %s: %s', [$file, $e->getMessage()]));
 
                 return false;
             }
         } elseif (is_file($dest)) {
-            if (file_exists($dest)) {
-                unlink($dest);
-            }
+            $this->container->getFileSystem()->remove($dest);
             $this->logger->debug(sprintf('Removed file %1$s.', $file));
 
             return true;
         } elseif (is_dir($dest)) {
-            FilesystemAdapter::deleteDirectory($dest);
+            $this->container->getFileSystem()->remove($dest);
             $this->logger->debug(sprintf('Removed dir %1$s.', $file));
 
             return true;
@@ -214,15 +214,15 @@ class UpdateFiles extends AbstractTask
 
         // Replace the name of the admin folder inside the release to match our admin folder name
         $admin_dir = str_replace($this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . DIRECTORY_SEPARATOR, '', $this->container->getProperty(UpgradeContainer::PS_ADMIN_PATH));
-        if (file_exists($newReleasePath . DIRECTORY_SEPARATOR . 'admin')) {
-            rename($newReleasePath . DIRECTORY_SEPARATOR . 'admin', $newReleasePath . DIRECTORY_SEPARATOR . $admin_dir);
-        } elseif (file_exists($newReleasePath . DIRECTORY_SEPARATOR . 'admin-dev')) {
-            rename($newReleasePath . DIRECTORY_SEPARATOR . 'admin-dev', $newReleasePath . DIRECTORY_SEPARATOR . $admin_dir);
+        if ($this->container->getFileSystem()->exists($newReleasePath . DIRECTORY_SEPARATOR . 'admin')) {
+            $this->container->getFileSystem()->rename($newReleasePath . DIRECTORY_SEPARATOR . 'admin', $newReleasePath . DIRECTORY_SEPARATOR . $admin_dir);
+        } elseif ($this->container->getFileSystem()->exists($newReleasePath . DIRECTORY_SEPARATOR . 'admin-dev')) {
+            $this->container->getFileSystem()->rename($newReleasePath . DIRECTORY_SEPARATOR . 'admin-dev', $newReleasePath . DIRECTORY_SEPARATOR . $admin_dir);
         }
 
         // Rename develop installer directory, it would be ignored anyway because it's present in getFilesToIgnoreOnUpgrade()
-        if (file_exists($newReleasePath . DIRECTORY_SEPARATOR . 'install-dev')) {
-            rename($newReleasePath . DIRECTORY_SEPARATOR . 'install-dev', $newReleasePath . DIRECTORY_SEPARATOR . 'install');
+        if ($this->container->getFileSystem()->exists($newReleasePath . DIRECTORY_SEPARATOR . 'install-dev')) {
+            $this->container->getFileSystem()->rename($newReleasePath . DIRECTORY_SEPARATOR . 'install-dev', $newReleasePath . DIRECTORY_SEPARATOR . 'install');
         }
 
         $destinationVersion = $state->getDestinationVersion();

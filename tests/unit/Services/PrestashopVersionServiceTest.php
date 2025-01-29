@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use PrestaShop\Module\AutoUpgrade\Services\PrestashopVersionService;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PrestashopVersionServiceTest extends TestCase
 {
@@ -18,7 +19,7 @@ class PrestashopVersionServiceTest extends TestCase
 
         $this->fixturePath = __DIR__ . '/../../fixtures/localChannel/';
 
-        $this->versionService = new PrestashopVersionService($this->container->getZipAction());
+        $this->versionService = new PrestashopVersionService($this->container->getZipAction(), new Filesystem());
     }
 
     public function testExtractPrestashopVersionFromZipFileNotFound(): void

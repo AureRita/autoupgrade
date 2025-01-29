@@ -27,9 +27,21 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Services;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class ComposerService
 {
     const COMPOSER_PACKAGE_TYPE = 'prestashop-module';
+
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
 
     /**
      * Returns packages defined as PrestaShop modules in composer.lock
@@ -38,7 +50,7 @@ class ComposerService
      */
     public function getModulesInComposerLock(string $composerFile): array
     {
-        if (!file_exists($composerFile)) {
+        if (!$this->filesystem->exists($composerFile)) {
             return [];
         }
         // Native modules are the one integrated in PrestaShop release via composer
@@ -52,7 +64,8 @@ class ComposerService
         $modules = array_filter($content['packages'], function (array $package) {
             return self::COMPOSER_PACKAGE_TYPE === $package['type'] && !empty($package['name']);
         });
-        $modules = array_map(function (array $package) {
+
+        return array_map(function (array $package) {
             $vendorName = explode('/', $package['name']);
 
             return [
@@ -60,7 +73,5 @@ class ComposerService
                 'version' => ltrim($package['version'], 'v'),
             ];
         }, $modules);
-
-        return $modules;
     }
 }

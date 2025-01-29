@@ -64,9 +64,10 @@ class RestoreDatabase extends AbstractTask
             _DB_PREFIX_ . 'statssearch',
         ];
         $startTime = time();
+        $queriesToRestoreListPath = $this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST;
 
         // deal with running backup rest if exist
-        if (file_exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST)) {
+        if ($this->container->getFileSystem()->exists($queriesToRestoreListPath)) {
             $backlog = Backlog::fromContents($this->container->getFileStorage()->load(UpgradeFileNames::QUERIES_TO_RESTORE_LIST));
         }
 
@@ -170,8 +171,8 @@ class RestoreDatabase extends AbstractTask
             do {
                 // @phpstan-ignore booleanNot.alwaysFalse (Need a refacto of this whole task)
                 if (!$backlog->getRemainingTotal()) {
-                    if (file_exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST)) {
-                        unlink($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST);
+                    if ($this->container->getFileSystem()->exists($queriesToRestoreListPath)) {
+                        $this->container->getFileSystem()->remove($queriesToRestoreListPath);
                     }
 
                     $restoreDbFilenamesCount = count($state->getRestoreDbFilenames());
@@ -207,7 +208,7 @@ class RestoreDatabase extends AbstractTask
                     if (!$this->container->getDb()->execute($query, false)) {
                         $this->logger->error($this->translator->trans('Error during database restoration: ') . ' ' . $query . ' - ' . $this->container->getDb()->getMsgError());
                         $this->setErrorFlag();
-                        unlink($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST);
+                        $this->container->getFileSystem()->remove($queriesToRestoreListPath);
 
                         return ExitCode::FAIL;
                     }
@@ -220,8 +221,8 @@ class RestoreDatabase extends AbstractTask
 
             if ($queries_left > 0) {
                 $this->container->getFileStorage()->save($backlog->dump(), UpgradeFileNames::QUERIES_TO_RESTORE_LIST);
-            } elseif (file_exists($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST)) {
-                unlink($this->container->getProperty(UpgradeContainer::WORKSPACE_PATH) . DIRECTORY_SEPARATOR . UpgradeFileNames::QUERIES_TO_RESTORE_LIST);
+            } elseif ($this->container->getFileSystem()->exists($queriesToRestoreListPath)) {
+                $this->container->getFileSystem()->remove($queriesToRestoreListPath);
             }
 
             $this->stepDone = false;
@@ -251,7 +252,7 @@ class RestoreDatabase extends AbstractTask
         $this->container->initPrestaShopAutoloader();
 
         // Loads the parameters.php file on PrestaShop 1.7, needed for accessing the database
-        if (file_exists($this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . '/config/bootstrap.php')) {
+        if ($this->container->getFileSystem()->exists($this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . '/config/bootstrap.php')) {
             require_once $this->container->getProperty(UpgradeContainer::PS_ROOT_PATH) . '/config/bootstrap.php';
         }
     }

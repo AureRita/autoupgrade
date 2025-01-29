@@ -30,6 +30,7 @@ use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\State\RestoreState;
 use PrestaShop\Module\AutoUpgrade\State\UpdateState;
 use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
+use Symfony\Component\Filesystem\Filesystem;
 
 class AnalyticsTest extends TestCase
 {
@@ -43,7 +44,7 @@ class AnalyticsTest extends TestCase
     public function testProperties()
     {
         $fixturesDir = __DIR__ . '/../../fixtures/config/';
-        $fileStorage = new FileStorage($fixturesDir);
+        $fileStorage = new FileStorage(new Filesystem(), $fixturesDir);
 
         $restoreState = (new RestoreState($fileStorage))
             ->setRestoreName('V1.2.3_blablabla-🐶');

@@ -29,6 +29,7 @@ use PrestaShop\Module\AutoUpgrade\Log\Logger;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleMigration;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\ModuleMigrationContext;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ModuleMigrationTest extends TestCase
 {
@@ -72,7 +73,7 @@ class ModuleMigrationTest extends TestCase
             });
 
         $this->logger = $this->createMock(Logger::class);
-        $this->moduleMigration = new ModuleMigration($translator, $this->logger, self::$fixtureFolder);
+        $this->moduleMigration = new ModuleMigration(new Filesystem(), $translator, $this->logger, self::$fixtureFolder);
     }
 
     public function testNeedMigrationWithSameVersion()

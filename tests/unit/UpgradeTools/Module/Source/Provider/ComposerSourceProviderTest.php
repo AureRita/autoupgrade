@@ -29,6 +29,7 @@ use PrestaShop\Module\AutoUpgrade\Parameters\FileStorage;
 use PrestaShop\Module\AutoUpgrade\Services\ComposerService;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\Source\ModuleSource;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Module\Source\Provider\ComposerSourceProvider;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ComposerSourceProviderTest extends TestCase
 {
@@ -37,7 +38,7 @@ class ComposerSourceProviderTest extends TestCase
         $prestashopContents = realpath(__DIR__ . '/../../../../../fixtures/prestashop-release');
         $fileConfigurationStorageMock = $this->createMock(FileStorage::class);
 
-        $sourceProvider = new ComposerSourceProvider($prestashopContents, new ComposerService(), $fileConfigurationStorageMock);
+        $sourceProvider = new ComposerSourceProvider($prestashopContents, new ComposerService(new Filesystem()), $fileConfigurationStorageMock);
 
         $fileConfigurationStorageMock->expects($this->once())->method('exists');
         $fileConfigurationStorageMock->expects($this->once())->method('save');
@@ -58,7 +59,7 @@ class ComposerSourceProviderTest extends TestCase
         $prestashopContents = realpath(__DIR__ . '/../../../../../../');
         $fileConfigurationStorageMock = $this->createMock(FileStorage::class);
 
-        $sourceProvider = new ComposerSourceProvider($prestashopContents, new ComposerService(), $fileConfigurationStorageMock);
+        $sourceProvider = new ComposerSourceProvider($prestashopContents, new ComposerService(new Filesystem()), $fileConfigurationStorageMock);
 
         $fileConfigurationStorageMock->expects($this->once())->method('exists');
         $fileConfigurationStorageMock->expects($this->once())->method('save');
@@ -75,7 +76,7 @@ class ComposerSourceProviderTest extends TestCase
         $fileConfigurationStorageMock->method('exists')->willReturn(true);
         $fileConfigurationStorageMock->method('load')->willReturn([]);
 
-        $sourceProvider = new ComposerSourceProvider($prestashopContents, new ComposerService(), $fileConfigurationStorageMock);
+        $sourceProvider = new ComposerSourceProvider($prestashopContents, new ComposerService(new Filesystem()), $fileConfigurationStorageMock);
 
         $fileConfigurationStorageMock->expects($this->once())->method('exists');
         $fileConfigurationStorageMock->expects($this->once())->method('load');

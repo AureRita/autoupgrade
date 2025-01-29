@@ -47,10 +47,10 @@ class FileStorage
      */
     private $filesystem;
 
-    public function __construct(string $path)
+    public function __construct(Filesystem $filesystem, string $path)
     {
+        $this->filesystem = $filesystem;
         $this->configPath = $path;
-        $this->filesystem = new Filesystem();
     }
 
     /**
@@ -65,7 +65,7 @@ class FileStorage
         $configFilePath = $this->configPath . $fileName;
         $config = [];
 
-        if (file_exists($configFilePath)) {
+        if ($this->filesystem->exists($configFilePath)) {
             $config = @unserialize(base64_decode(Tools14::file_get_contents($configFilePath)));
         }
 

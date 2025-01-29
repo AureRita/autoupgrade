@@ -31,6 +31,7 @@ use Configuration;
 use PrestaShop\Module\AutoUpgrade\Tools14;
 use PrestaShop\Module\AutoUpgrade\Upgrader;
 use SimpleXMLElement;
+use Symfony\Component\Filesystem\Filesystem;
 
 class FileLoader
 {
@@ -39,6 +40,13 @@ class FileLoader
 
     /** @var array<string, string> */
     private $version_md5 = [];
+    /** @var Filesystem */
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
 
     /**
      * @return SimpleXMLElement|false
@@ -48,17 +56,17 @@ class FileLoader
         // @TODO : this has to be moved in autoupgrade.php > install method
         if (!is_dir(_PS_ROOT_DIR_ . '/config/xml')) {
             if (is_file(_PS_ROOT_DIR_ . '/config/xml')) {
-                unlink(_PS_ROOT_DIR_ . '/config/xml');
+                $this->filesystem->remove(_PS_ROOT_DIR_ . '/config/xml');
             }
-            mkdir(_PS_ROOT_DIR_ . '/config/xml', 0777);
+            $this->filesystem->mkdir(_PS_ROOT_DIR_ . '/config/xml');
         }
         // End TODO
 
-        if ($refresh || !file_exists($xml_localfile) || @filemtime($xml_localfile) < (time() - (3600 * Upgrader::DEFAULT_CHECK_VERSION_DELAY_HOURS))) {
+        if ($refresh || !$this->filesystem->exists($xml_localfile) || @filemtime($xml_localfile) < (time() - (3600 * Upgrader::DEFAULT_CHECK_VERSION_DELAY_HOURS))) {
             $xml_string = Tools14::file_get_contents($xml_remotefile, false, stream_context_create(['http' => ['timeout' => 10]]));
             $xml = @simplexml_load_string($xml_string);
             if ($xml !== false) {
-                file_put_contents($xml_localfile, $xml_string);
+                $this->filesystem->dumpFile($xml_localfile, $xml_string);
             }
         } else {
             $xml = @simplexml_load_file($xml_localfile);

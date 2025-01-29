@@ -55,8 +55,8 @@ class CoreUpgrader80 extends CoreUpgrader
         ];
 
         foreach ($filesToForceRemove as $file) {
-            if (file_exists(_PS_ROOT_DIR_ . $file)) {
-                unlink(_PS_ROOT_DIR_ . $file);
+            if ($this->fileSystem->exists(_PS_ROOT_DIR_ . $file)) {
+                $this->fileSystem->remove(_PS_ROOT_DIR_ . $file);
             }
         }
     }

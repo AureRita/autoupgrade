@@ -32,6 +32,7 @@ use PrestaShop\Module\AutoUpgrade\Log\LoggerInterface;
 use PrestaShop\Module\AutoUpgrade\Parameters\UpgradeConfiguration;
 use PrestaShop\Module\AutoUpgrade\Progress\Backlog;
 use PrestaShop\Module\AutoUpgrade\UpgradeTools\Translator;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use ZipArchive;
 
@@ -57,12 +58,18 @@ class ZipAction
     private $translator;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
      * @var string Path to the shop, in order to remove it from the archived file paths
      */
     private $prodRootDir;
 
-    public function __construct(Translator $translator, LoggerInterface $logger, UpgradeConfiguration $updateConfiguration, string $prodRootDir)
+    public function __construct(Filesystem $filesystem, Translator $translator, LoggerInterface $logger, UpgradeConfiguration $updateConfiguration, string $prodRootDir)
     {
+        $this->filesystem = $filesystem;
         $this->translator = $translator;
         $this->logger = $logger;
         $this->prodRootDir = $prodRootDir;
@@ -94,7 +101,7 @@ class ZipAction
                 $error = $zip->getStatusString();
                 // if an error occur, it's more safe to delete the corrupted backup
                 $zip->close();
-                (new Filesystem())->remove($toFile);
+                $this->filesystem->remove($toFile);
                 $this->logger->error($this->translator->trans(
                     'Unable to add %filename% to archive %archive%: %error%',
                     [
@@ -147,14 +154,14 @@ class ZipAction
             return false;
         }
 
-        if (!file_exists($to_dir)) {
-            // ToDo: Use Filesystem from Symfony
-            if (!mkdir($to_dir)) {
+        if (!$this->filesystem->exists($to_dir)) {
+            try {
+                $this->filesystem->mkdir($to_dir, 0775);
+            } catch (IOException $exception) {
                 $this->logger->error($this->translator->trans('Unable to create directory %s.', [$to_dir]));
 
                 return false;
             }
-            chmod($to_dir, 0775);
         }
 
         try {
@@ -197,7 +204,7 @@ class ZipAction
      */
     public function listContent(string $zipFile): array
     {
-        if (!file_exists($zipFile)) {
+        if (!$this->filesystem->exists($zipFile)) {
             return [];
         }
 

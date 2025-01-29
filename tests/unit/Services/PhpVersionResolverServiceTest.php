@@ -87,6 +87,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetLatestPrestashop17ReleaseWillReturnRelease()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
@@ -123,6 +124,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetLatestPrestashop17ReleaseWillReturnNull()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
@@ -148,6 +150,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetPrestashopDestinationReleaseForPHP71()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
@@ -185,6 +188,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetPrestashopDestinationReleaseForPHP73()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
@@ -236,6 +240,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetPrestashopDestinationReleaseWithNoMatchingChannelXml()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
@@ -288,6 +293,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetPrestashopDestinationReleaseWithCurrentVersionUpToDate()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
@@ -339,6 +345,7 @@ class PhpVersionResolverServiceTest extends TestCase
     public function testGetPrestashopDestinationReleaseWhenAPIReturnEmptyResponse()
     {
         $fileLoader = $this->getMockBuilder(FileLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getXmlChannel'])
             ->getMock();
 
