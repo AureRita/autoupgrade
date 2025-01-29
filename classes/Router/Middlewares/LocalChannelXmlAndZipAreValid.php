@@ -4,13 +4,8 @@ namespace PrestaShop\Module\AutoUpgrade\Router\Middlewares;
 
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
 
-class LocalChannelXmlAndZipExist extends AbstractMiddleware
+class LocalChannelXmlAndZipAreValid extends AbstractMiddleware
 {
-    /**
-     * @return Routes::*|null
-     *
-     * @throws \Exception
-     */
     public function process(): ?string
     {
         $updateConfiguration = $this->upgradeContainer->getUpdateConfiguration();

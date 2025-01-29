@@ -15,7 +15,7 @@ use PrestaShop\Module\AutoUpgrade\Controller\UpdatePagePostUpdateController;
 use PrestaShop\Module\AutoUpgrade\Controller\UpdatePageUpdateController;
 use PrestaShop\Module\AutoUpgrade\Controller\UpdatePageUpdateOptionsController;
 use PrestaShop\Module\AutoUpgrade\Controller\UpdatePageVersionChoiceController;
-use PrestaShop\Module\AutoUpgrade\Router\Middlewares\LocalChannelXmlAndZipExist;
+use PrestaShop\Module\AutoUpgrade\Router\Middlewares\LocalChannelXmlAndZipAreValid;
 use PrestaShop\Module\AutoUpgrade\Router\Middlewares\UpdateIsConfigured;
 
 class RoutesConfig
@@ -63,7 +63,7 @@ class RoutesConfig
                 'method' => 'index',
                 'middleware' => [
                     UpdateIsConfigured::class,
-                    LocalChannelXmlAndZipExist::class,
+                    LocalChannelXmlAndZipAreValid::class,
                 ],
             ],
             Routes::UPDATE_STEP_UPDATE_OPTIONS => [
@@ -82,6 +82,10 @@ class RoutesConfig
             Routes::UPDATE_PAGE_BACKUP_OPTIONS => [
                 'controller' => UpdatePageBackupOptionsController::class,
                 'method' => 'index',
+                'middleware' => [
+                    UpdateIsConfigured::class,
+                    LocalChannelXmlAndZipAreValid::class,
+                ],
             ],
             Routes::UPDATE_STEP_BACKUP_OPTIONS => [
                 'controller' => UpdatePageBackupOptionsController::class,
