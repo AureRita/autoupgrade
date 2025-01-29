@@ -2,8 +2,8 @@
 
 namespace PrestaShop\Module\AutoUpgrade\Router\Middlewares;
 
-use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
+use PrestaShop\Module\AutoUpgrade\UpgradeContainer;
 
 abstract class AbstractMiddleware
 {
