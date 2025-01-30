@@ -186,7 +186,7 @@ test.describe('Verify the New UI', () => {
       expect(isModuleVisible).toEqual(true);
     });
 
-    // Go to the old UI
+    // Go to the New UI
     test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
       await boModuleManagerPage.goToConfigurationPage(page, dataModules.autoupgrade.tag);
 
@@ -194,16 +194,6 @@ test.describe('Verify the New UI', () => {
       expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
     });
   }
-
-  // @todelete : Display new UI
-  test('should display the new interface', async () => {
-    const url = await modAutoupgradeBoMain.getCurrentURL(page);
-    const uurl = url.split('&token');
-    await modAutoupgradeBoMain.goTo(page, `${uurl[0]}&new-ui=1&route=home-page&token${uurl[1]}`);
-
-    const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
-    expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
-  });
 
   test('should click on update your store radio button then get started', async () => {
     const isStepContentVisible = await modAutoupgradeBoMain.updateYourStore(page);
