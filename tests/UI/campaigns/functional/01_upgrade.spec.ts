@@ -192,7 +192,7 @@ test.describe('Verify the New UI', () => {
 
       const pageTitle = await modAutoupgradeBoMain.getPageTitle(page);
       expect(pageTitle).toEqual(modAutoupgradeBoMain.pageTitle);
-    }); 
+    });
   }
 
   test('should click on update your store radio button then get started', async () => {
