@@ -61,7 +61,6 @@ class AnalyticsTest extends TestCase
             UpgradeConfiguration::PS_AUTOUP_CUSTOM_MOD_DESACT => false,
             UpgradeConfiguration::PS_AUTOUP_CHANGE_DEFAULT_THEME => true,
             UpgradeConfiguration::PS_AUTOUP_REGEN_EMAIL => true,
-            UpgradeConfiguration::PS_AUTOUP_BACKUP => true,
             UpgradeConfiguration::PS_AUTOUP_KEEP_IMAGES => false,
             UpgradeConfiguration::CHANNEL => UpgradeConfiguration::CHANNEL_LOCAL,
             UpgradeConfiguration::ARCHIVE_ZIP => 'zip.zip',
@@ -131,7 +130,6 @@ class AnalyticsTest extends TestCase
                 'autoupgrade_version' => '9.8.7',
                 'module' => 'autoupgrade',
 
-                'backup_files_and_databases' => true,
                 'backup_images' => false,
             ],
         ],

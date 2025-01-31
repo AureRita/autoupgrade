@@ -42,7 +42,6 @@ class UpgradeConfiguration extends ArrayCollection
     const PS_AUTOUP_CUSTOM_MOD_DESACT = 'PS_AUTOUP_CUSTOM_MOD_DESACT';
     const PS_AUTOUP_CHANGE_DEFAULT_THEME = 'PS_AUTOUP_CHANGE_DEFAULT_THEME';
     const PS_AUTOUP_REGEN_EMAIL = 'PS_AUTOUP_REGEN_EMAIL';
-    const PS_AUTOUP_BACKUP = 'PS_AUTOUP_BACKUP';
     const PS_AUTOUP_KEEP_IMAGES = 'PS_AUTOUP_KEEP_IMAGES';
     const PS_DISABLE_OVERRIDES = 'PS_DISABLE_OVERRIDES';
     const CHANNEL = 'channel';
@@ -59,7 +58,6 @@ class UpgradeConfiguration extends ArrayCollection
         self::PS_AUTOUP_CUSTOM_MOD_DESACT,
         self::PS_AUTOUP_CHANGE_DEFAULT_THEME,
         self::PS_AUTOUP_REGEN_EMAIL,
-        self::PS_AUTOUP_BACKUP,
         self::PS_AUTOUP_KEEP_IMAGES,
         self::PS_DISABLE_OVERRIDES,
         self::CHANNEL,
@@ -72,7 +70,6 @@ class UpgradeConfiguration extends ArrayCollection
         self::PS_AUTOUP_CUSTOM_MOD_DESACT => true,
         self::PS_AUTOUP_CHANGE_DEFAULT_THEME => false,
         self::PS_AUTOUP_REGEN_EMAIL => true,
-        self::PS_AUTOUP_BACKUP => true,
         self::PS_AUTOUP_KEEP_IMAGES => true,
         self::BACKUP_COMPLETED => false,
     ];
@@ -197,11 +194,6 @@ class UpgradeConfiguration extends ArrayCollection
     public function getMaxFileToBackup(): int
     {
         return $this::PERFORMANCE_VALUES['maxBackupFileSize'];
-    }
-
-    public function shouldBackupFilesAndDatabase(): bool
-    {
-        return $this->computeBooleanConfiguration(self::PS_AUTOUP_BACKUP);
     }
 
     /**
