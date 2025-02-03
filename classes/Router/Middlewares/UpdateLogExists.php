@@ -3,16 +3,16 @@
 namespace PrestaShop\Module\AutoUpgrade\Router\Middlewares;
 
 use PrestaShop\Module\AutoUpgrade\Router\Routes;
+use PrestaShop\Module\AutoUpgrade\Task\TaskType;
 
 class UpdateLogExists extends AbstractMiddleware
 {
     public function process(): ?string
     {
-        $activeUpdateLogFile = $this->upgradeContainer->getLogsState()->getActiveRestoreLogFile();
-        $activeUpdateLogPath = $this->upgradeContainer->getProperty($this->upgradeContainer::LOGS_PATH) . DIRECTORY_SEPARATOR . $activeUpdateLogFile;
+        $activeUpdateLogPath = $this->upgradeContainer->getLogsService()->getLogsPath(TaskType::TASK_TYPE_UPDATE);
 
-        if ($activeUpdateLogFile === null
-            || !$this->upgradeContainer->getFileStorage()->exists($activeUpdateLogPath)) {
+        if ($activeUpdateLogPath === null
+            || !$this->upgradeContainer->getFileSystem()->exists($activeUpdateLogPath)) {
             return Routes::HOME_PAGE;
         }
 
