@@ -186,7 +186,7 @@ test.describe('Verify the New UI', () => {
       expect(isModuleVisible).toEqual(true);
     });
 
-    // Go to the New UI
+    
     test(`should go to the configuration page of the module '${dataModules.autoupgrade.name}'`, async () => {
       await boModuleManagerPage.goToConfigurationPage(page, dataModules.autoupgrade.tag);
 
