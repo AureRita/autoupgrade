@@ -239,47 +239,47 @@
       <trans-unit id="6a5e5c0047907eaf8062e9933f0de8df">
         <source>%s: File format does not match.</source>
         <target>%s: File format does not match.</target>
-        <note>Line: 81</note>
+        <note>Line: 82</note>
       </trans-unit>
       <trans-unit id="c2bcd4d44d646c47753473ff94cc66ac">
         <source>Opening backup database file %filename% in %extension% mode</source>
         <target>Opening backup database file %filename% in %extension% mode</target>
-        <note>Line: 93</note>
+        <note>Line: 94</note>
       </trans-unit>
       <trans-unit id="5ce67d010ab9c98ae1dbd6b5ea149982">
         <source>Database backup is empty.</source>
         <target>Database backup is empty.</target>
-        <note>Line: 131</note>
+        <note>Line: 132</note>
       </trans-unit>
       <trans-unit id="ad12a553fe534ba86e1cebf77b27300d">
         <source>Database restoration file %filename% done. %filescount% file(s) left...</source>
         <target>Database restoration file %filename% done. %filescount% file(s) left...</target>
-        <note>Line: 180</note>
+        <note>Line: 181</note>
       </trans-unit>
       <trans-unit id="55fc6682e256e387afb10ebf6c95aed5">
         <source>Database restoration file %1$s done.</source>
         <target>Database restoration file %1$s done.</target>
-        <note>Line: 187</note>
+        <note>Line: 188</note>
       </trans-unit>
       <trans-unit id="5b37242b8a0a39af0a9dc28abdabba28">
         <source>Database has been restored.</source>
         <target>Database has been restored.</target>
-        <note>Line: 196</note>
+        <note>Line: 197</note>
       </trans-unit>
       <trans-unit id="3830c02583d9671297848d8b9aa7d016">
         <source>Error during database restoration: </source>
         <target>Error during database restoration:</target>
-        <note>Line: 208</note>
+        <note>Line: 209</note>
       </trans-unit>
       <trans-unit id="85f6ad54304538449ff3da4435be5336">
         <source>%numberqueries% queries left for file %filename%...</source>
         <target>%numberqueries% queries left for file %filename%...</target>
-        <note>Line: 230</note>
+        <note>Line: 231</note>
       </trans-unit>
       <trans-unit id="30da45f850d1f1a2b42f215836382f19">
         <source>Database restoration done.</source>
         <target>Database restoration done.</target>
-        <note>Line: 240</note>
+        <note>Line: 241</note>
       </trans-unit>
     </body>
   </file>
@@ -364,42 +364,42 @@
       <trans-unit id="fb1ca1f5f3eb5a2ca85201f449525527">
         <source>You need allow_url_fopen or cURL enabled for automatic download to work. You can also manually upload it in filepath %s.</source>
         <target>You need allow_url_fopen or cURL enabled for automatic download to work. You can also manually upload it in filepath %s.</target>
-        <note>Line: 53</note>
+        <note>Line: 52</note>
       </trans-unit>
       <trans-unit id="f31c50f6d0edbbb94aa24943b118e316">
         <source>Downloading from %s</source>
         <target>Downloading from %s</target>
-        <note>Line: 63</note>
+        <note>Line: 62</note>
       </trans-unit>
       <trans-unit id="73227d741d23c1c6c0ae027b2dbc9e73">
         <source>File will be saved in %s</source>
         <target>File will be saved in %s</target>
-        <note>Line: 64</note>
+        <note>Line: 63</note>
       </trans-unit>
       <trans-unit id="53be0a7251b3bd0de81f488687bc0464">
         <source>Download directory has been emptied</source>
         <target>Download directory has been emptied</target>
-        <note>Line: 67</note>
+        <note>Line: 74</note>
       </trans-unit>
       <trans-unit id="5385901e5bed459563860e2f08a90a1c">
         <source>Download directory %s is not writable.</source>
         <target>Download directory %s is not writable.</target>
-        <note>Line: 74</note>
+        <note>Line: 81</note>
       </trans-unit>
       <trans-unit id="a55401a11251f53f612e950d4115e116">
         <source>Download complete. Now extracting...</source>
         <target>Download complete. Now extracting...</target>
-        <note>Line: 97</note>
+        <note>Line: 104</note>
       </trans-unit>
       <trans-unit id="2d9a3f4a92c008b32903541e9af8aff0">
         <source>Download complete but MD5 sum does not match (%s).</source>
         <target>Download complete but MD5 sum does not match (%s).</target>
-        <note>Line: 99</note>
+        <note>Line: 106</note>
       </trans-unit>
       <trans-unit id="31cc7d01dc7b85c42d9eb731b1060af7">
         <source>The .zip archive could not be downloaded. The update is currently impossible. Please try again later.</source>
         <target>The .zip archive could not be downloaded. The update is currently impossible. Please try again later.</target>
-        <note>Line: 103</note>
+        <note>Line: 110</note>
       </trans-unit>
     </body>
   </file>
@@ -408,27 +408,27 @@
       <trans-unit id="654f7ceb787fd455c166d5d8744cbf90">
         <source>"/latest" directory has been emptied</source>
         <target>"/latest" directory has been emptied</target>
-        <note>Line: 61</note>
+        <note>Line: 65</note>
       </trans-unit>
       <trans-unit id="01d9d38b1d4d8eff5b530eeecfd3ccd5">
         <source>Extraction directory %s is not writable.</source>
         <target>Extraction directory %s is not writable.</target>
-        <note>Line: 66</note>
+        <note>Line: 70</note>
       </trans-unit>
       <trans-unit id="69ae4bbd4b14ae388e4e3882945a542e">
         <source>Unable to extract %filepath% file into %destination% folder...</source>
         <target>Unable to extract %filepath% file into %destination% folder...</target>
-        <note>Line: 100</note>
+        <note>Line: 105</note>
       </trans-unit>
       <trans-unit id="5d3c14ccb814427455842b838bbd6f21">
         <source>No prestashop/ folder found in the ZIP file. Aborting.</source>
         <target>No prestashop/ folder found in the ZIP file. Aborting.</target>
-        <note>Line: 115</note>
+        <note>Line: 119</note>
       </trans-unit>
       <trans-unit id="c308874e9b5347709e9dc8bad11d8198">
         <source>File extraction complete. Now updating files...</source>
         <target>File extraction complete. Now updating files...</target>
-        <note>Line: 129</note>
+        <note>Line: 133</note>
       </trans-unit>
     </body>
   </file>
@@ -444,15 +444,15 @@
         <target>Shop updated to %s. Congratulations! You can now reactivate your shop.</target>
         <note>Line: 60</note>
       </trans-unit>
-      <trans-unit id="d2b9f1e39aa8e96bb61f3a4bfe133f58">
-        <source>%s removed</source>
-        <target>%s removed</target>
-        <note>Line: 72</note>
-      </trans-unit>
       <trans-unit id="75802ba44ba3369defd92ef897bf2f21">
         <source>Please remove %s by FTP</source>
         <target>Please remove %s by FTP</target>
-        <note>Line: 74</note>
+        <note>Line: 94</note>
+      </trans-unit>
+      <trans-unit id="d2b9f1e39aa8e96bb61f3a4bfe133f58">
+        <source>%s removed</source>
+        <target>%s removed</target>
+        <note>Line: 92</note>
       </trans-unit>
     </body>
   </file>
@@ -535,38 +535,38 @@
       <trans-unit id="cbfafdaa2e7968a86bd6a437027edfea">
         <source>Directory %1$s created.</source>
         <target>Directory %1$s created.</target>
-        <note>Line: 135</note>
+        <note>Line: 136</note>
       </trans-unit>
-      <trans-unit id="a61e66de5e0b581cc66f73f5662660c6">
-        <source>Error while creating directory %s.</source>
-        <target>Error while creating directory %s.</target>
-        <note>Line: 140</note>
+      <trans-unit id="47e555d00d52a54c20b5f936ee706fc8">
+        <source>Error while creating directory %s: %s.</source>
+        <target>Error while creating directory %s: %s.</target>
+        <note>Line: 141</note>
       </trans-unit>
       <trans-unit id="0a6c2db1b18cb6420ad40d46db8707de">
         <source>Directory %s already exists.</source>
         <target>Directory %s already exists.</target>
-        <note>Line: 145
+        <note>Line: 146
 Comment: directory already exists</note>
       </trans-unit>
       <trans-unit id="e33b6cbf66a4417503eac526d8a94626">
         <source>The translation files have been merged into file %s.</source>
         <target>The translation files have been merged into file %s.</target>
-        <note>Line: 154</note>
+        <note>Line: 155</note>
       </trans-unit>
       <trans-unit id="7cfde7149c7a53bbbe854a0562ac0807">
         <source>The translation files have not been merged into file %filename%. Switch to copy %filename%.</source>
         <target>The translation files have not been merged into file %filename%. Switch to copy %filename%.</target>
-        <note>Line: 159</note>
+        <note>Line: 160</note>
       </trans-unit>
       <trans-unit id="b8db10001e04b8f947415aeb8b8fd19f">
         <source>Copied %1$s.</source>
         <target>Copied %1$s.</target>
-        <note>Line: 167</note>
+        <note>Line: 169</note>
       </trans-unit>
-      <trans-unit id="eae82e869fe0a47087214e2748ae710a">
-        <source>Error while copying file %s</source>
-        <target>Error while copying file %s</target>
-        <note>Line: 172</note>
+      <trans-unit id="4a6c74e011e44e5fb206a6dcedfc1185">
+        <source>Error while copying file %s: %s</source>
+        <target>Error while copying file %s: %s</target>
+        <note>Line: 174</note>
       </trans-unit>
       <trans-unit id="20aed4fb9f6ee15bc601227bbfb85acd">
         <source>Could not assert the folder %s contains a valid PrestaShop release, exiting.</source>
@@ -649,37 +649,37 @@ Comment: directory already exists</note>
       <trans-unit id="78c6e760441165ec762746a0ab4b64cd">
         <source>Checking updates of module %module%...</source>
         <target>Checking updates of module %module%...</target>
-        <note>Line: 78</note>
+        <note>Line: 77</note>
       </trans-unit>
       <trans-unit id="2b4da2b27a96bf23f0de18c59e9b1afe">
         <source>Module %module% is up-to-date.</source>
         <target>Module %module% is up-to-date.</target>
-        <note>Line: 84</note>
+        <note>Line: 83</note>
       </trans-unit>
-      <trans-unit id="ba68d1e67c393074426f6cc1127f0e6a">
-        <source>Error when trying to retrieve module %s instance.</source>
-        <target>Error when trying to retrieve module %s instance.</target>
-        <note>Line: 95</note>
+      <trans-unit id="798df2395d946f1f5b75ef9f6d8d8b1e">
+        <source>Retrieving the module instance of %s failed.</source>
+        <target>Retrieving the module instance of %s failed.</target>
+        <note>Line: 94</note>
       </trans-unit>
       <trans-unit id="a5db680b38097b4289b24d4925b8368e">
         <source>Module %s does not need to be migrated. Module is up to date.</source>
         <target>Module %s does not need to be migrated. Module is up to date.</target>
-        <note>Line: 101</note>
+        <note>Line: 100</note>
       </trans-unit>
       <trans-unit id="cf131dfbf6e4bd352b1e5ed65b169b0e">
         <source>%s modules left to check.</source>
         <target>%s modules left to check.</target>
-        <note>Line: 129</note>
+        <note>Line: 128</note>
       </trans-unit>
       <trans-unit id="d47b7d2553af843c2c037185c0279268">
         <source>All modules have been updated.</source>
         <target>All modules have been updated.</target>
-        <note>Line: 134</note>
+        <note>Line: 133</note>
       </trans-unit>
       <trans-unit id="5775d9e6d353c11bc7c6fe21776d3b2c">
         <source>%s modules will be updated.</source>
         <target>%s modules will be updated.</target>
-        <note>Line: 162</note>
+        <note>Line: 161</note>
       </trans-unit>
     </body>
   </file>
@@ -860,7 +860,7 @@ Comment: directory already exists</note>
       <trans-unit id="1ef478938e58dcb132dc969cda209fcb">
         <source>File %s removed</source>
         <target>File %s removed</target>
-        <note>Line: 90</note>
+        <note>Line: 85</note>
       </trans-unit>
     </body>
   </file>
@@ -940,6 +940,16 @@ Comment: directory already exists</note>
         <source>SQL %s table has been dropped.</source>
         <target>SQL %s table has been dropped.</target>
         <note>Line: 492</note>
+      </trans-unit>
+      <trans-unit id="a5f51c587cf3395667758cbdb04a5e0b">
+        <source>The execution of the query failed: %s, %s</source>
+        <target>The execution of the query failed: %s, %s</target>
+        <note>Line: 506</note>
+      </trans-unit>
+      <trans-unit id="10cdbccd344337ec910129a02cdfaac2">
+        <source>Migration file: %s, Query: %s</source>
+        <target>Migration file: %s, Query: %s</target>
+        <note>Line: 507</note>
       </trans-unit>
       <trans-unit id="53983059bf39e1325bba11081ca40e97">
         <source>Keeping current theme</source>
@@ -1088,37 +1098,37 @@ Comment: directory already exists</note>
       <trans-unit id="ffecf7f010dec7170bcc2749d49c41ff">
         <source>No version present in database for module %s, all files for update will be applied.</source>
         <target>No version present in database for module %s, all files for update will be applied.</target>
-        <note>Line: 74</note>
+        <note>Line: 80</note>
       </trans-unit>
       <trans-unit id="b7158eb495a4a06e4a75736c3707e1da">
         <source>(%s/%s) Applying migration file %s.</source>
         <target>(%s/%s) Applying migration file %s.</target>
-        <note>Line: 108</note>
+        <note>Line: 114</note>
       </trans-unit>
       <trans-unit id="058ed3d02fc89ad3fe8acab223bec2f7">
         <source>Migration failed while running the file %s. Module %s disabled.</source>
         <target>Migration failed while running the file %s. Module %s disabled.</target>
-        <note>Line: 114</note>
+        <note>Line: 120</note>
       </trans-unit>
-      <trans-unit id="533a97cff1e4588fb25132424eadcf97">
-        <source>Unexpected error when trying to upgrade module %s. Module %s disabled.</source>
-        <target>Unexpected error when trying to upgrade module %s. Module %s disabled.</target>
-        <note>Line: 121</note>
+      <trans-unit id="f044ca443a1f50d889be336f90a355b7">
+        <source>Unexpected issue when trying to upgrade module %s. Module %s disabled.</source>
+        <target>Unexpected issue when trying to upgrade module %s. Module %s disabled.</target>
+        <note>Line: 127</note>
       </trans-unit>
       <trans-unit id="84d66da5dc8362f2103d65efdb405865">
         <source>Module %s version could not be updated. Database might be unavailable.</source>
         <target>Module %s version could not be updated. Database might be unavailable.</target>
-        <note>Line: 132</note>
+        <note>Line: 138</note>
       </trans-unit>
       <trans-unit id="094e7ea97940f72a1decb2dc4d79ebfd">
         <source>Could not write temporary file %s.</source>
         <target>Could not write temporary file %s.</target>
-        <note>Line: 160</note>
+        <note>Line: 167</note>
       </trans-unit>
       <trans-unit id="911a8f7a6f03e27072bf825463ac5a7e">
         <source>Method %s does not exist. Module %s disabled.</source>
         <target>Method %s does not exist. Module %s disabled.</target>
-        <note>Line: 165</note>
+        <note>Line: 172</note>
       </trans-unit>
     </body>
   </file>
@@ -1136,31 +1146,31 @@ Comment: directory already exists</note>
       <trans-unit id="3188ac0ee6355c23c3b26c3b5e71f3dd">
         <source>File %s does not exist, merge skipped.</source>
         <target>File %s does not exist, merge skipped.</target>
-        <note>Line: 143</note>
+        <note>Line: 147</note>
       </trans-unit>
       <trans-unit id="9e25d028554081cd5afb26eaf99dbd9e">
         <source>%variablename% variable missing in file %filename%. Merge skipped.</source>
         <target>%variablename% variable missing in file %filename%. Merge skipped.</target>
-        <note>Line: 131</note>
+        <note>Line: 135</note>
       </trans-unit>
       <trans-unit id="688481c74263a37393118aff2b012987">
         <source>%variablename% variable missing in file %filename%. File %filename% deleted and merge skipped.</source>
         <target>%variablename% variable missing in file %filename%. File %filename% deleted and merge skipped.</target>
-        <note>Line: 155</note>
+        <note>Line: 159</note>
       </trans-unit>
     </body>
   </file>
   <file original="classes/Workspace.php" source-language="en-US" target-language="en-US" datatype="plaintext">
     <body>
-      <trans-unit id="da7732ee7365d4fe5b24788b687b0c04">
-        <source>Unable to create directory %s</source>
-        <target>Unable to create directory %s</target>
-        <note>Line: 61</note>
+      <trans-unit id="fff77a9b7fadd2dd38b16678c8b000cf">
+        <source>Unable to create directory %s: %s</source>
+        <target>Unable to create directory %s: %s</target>
+        <note>Line: 66</note>
       </trans-unit>
       <trans-unit id="8dd96e697f4c74182122bacf75fa32f4">
         <source>Cannot write to the directory. Please ensure you have the necessary write permissions on "%s".</source>
         <target>Cannot write to the directory. Please ensure you have the necessary write permissions on "%s".</target>
-        <note>Line: 64</note>
+        <note>Line: 70</note>
       </trans-unit>
     </body>
   </file>
@@ -1169,52 +1179,52 @@ Comment: directory already exists</note>
       <trans-unit id="31098a445d00d6606542c429524f464f">
         <source>Unable to add %filename% to archive %archive%: %error%</source>
         <target>Unable to add %filename% to archive %archive%: %error%</target>
-        <note>Line: 99</note>
+        <note>Line: 106</note>
       </trans-unit>
       <trans-unit id="1d7a665a8b724a2a30e72af54b8fd313">
         <source>%filename% added to archive. %filescount% files left.</source>
         <target>%filename% added to archive. %filescount% files left.</target>
-        <note>Line: 111</note>
+        <note>Line: 118</note>
       </trans-unit>
       <trans-unit id="e2791f065857bf0bec8ce49645861c2f">
         <source>Could not close the Zip file %toFile%: %error%</source>
         <target>Could not close the Zip file %toFile%: %error%</target>
-        <note>Line: 123</note>
+        <note>Line: 130</note>
       </trans-unit>
       <trans-unit id="9311ab161709b4f5efe9c6ff08b33699">
         <source>%s is not a file</source>
         <target>%s is not a file</target>
-        <note>Line: 145</note>
+        <note>Line: 152</note>
       </trans-unit>
       <trans-unit id="3d72a59cd44079c486a184a6a7bcec34">
         <source>Unable to create directory %s.</source>
         <target>Unable to create directory %s.</target>
-        <note>Line: 153</note>
+        <note>Line: 161</note>
       </trans-unit>
       <trans-unit id="47cb4b86d62a75548519cd992be451d5">
         <source>Could not extract %file% from archive: %error%</source>
         <target>Could not extract %file% from archive: %error%</target>
-        <note>Line: 172</note>
+        <note>Line: 179</note>
       </trans-unit>
       <trans-unit id="b6fadb405627a21f30cbe97d9f47d7a3">
         <source>Content of archive %zip% is extracted</source>
         <target>Content of archive %zip% is extracted</target>
-        <note>Line: 186</note>
+        <note>Line: 193</note>
       </trans-unit>
       <trans-unit id="206e6b8346294e90dc99fa4c130afbcc">
         <source>Unable to list archived files</source>
         <target>Unable to list archived files</target>
-        <note>Line: 207</note>
+        <note>Line: 214</note>
       </trans-unit>
       <trans-unit id="fe718bdde198efa66b9e3a9a5cf476e6">
         <source>File %filename% (size: %filesize%) has been skipped during backup.</source>
         <target>File %filename% (size: %filesize%) has been skipped during backup.</target>
-        <note>Line: 245</note>
+        <note>Line: 252</note>
       </trans-unit>
       <trans-unit id="ced3e0d550ba1c19d14f9cf7080de9b6">
         <source>Unable to open archive %s: %s</source>
         <target>Unable to open archive %s: %s</target>
-        <note>Line: 273</note>
+        <note>Line: 280</note>
       </trans-unit>
     </body>
   </file>
